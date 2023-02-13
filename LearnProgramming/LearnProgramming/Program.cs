@@ -1,0 +1,90 @@
+using LearnProgramming.API;
+using LearnProgramming.Core.Interfaces;
+using LearnProgramming.Domain.Entities;
+using LearnProgramming.Infrastructure.Database;
+using LearnProgramming.Infrastructure.Repositories;
+using LearnProgramming.Infrastructure.Services;
+using LearnProgramming.Infrastructure.Settings;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
+
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddRazorPages();
+builder.Services.AddControllers();
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
+builder.Services.AddDbContext<DatabaseContext>(options =>
+{
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
+    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
+});
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(name: "Cors", builder =>
+    {
+        builder.WithOrigins("http://localhost:3000")
+        .AllowAnyHeader()
+        .AllowAnyMethod()
+        .AllowCredentials();
+    });
+});
+
+var jwt = new JwtSettings();
+builder.Configuration.GetSection(JwtSettings.SectionName).Bind(jwt);
+
+builder.Services.AddSingleton(jwt);
+builder.Services.AddTransient<IJwtServ, JwtService>();
+builder.Services.AddTransient<IHashServ, HashService>();
+builder.Services.AddTransient<IUserRep, UserRepository>();
+builder.Services.AddTransient<ILearningTopicsRep, LearningTopicsRepository>();
+builder.Services.AddTransient<IShopItem, ShopItemRepository>();
+builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
+
+var jwtSettings = builder.Services.BuildServiceProvider().GetService<JwtSettings>();
+
+builder.Services.AddAuthentication(x =>
+{
+    x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+    x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+}).AddJwtBearer(x =>
+{
+    x.SaveToken = true;
+    x.TokenValidationParameters = new TokenValidationParameters
+    {
+        ValidateIssuerSigningKey = true,
+        IssuerSigningKey = new SymmetricSecurityKey(Encoding.ASCII.GetBytes(jwt!.Secret)),
+        ValidateIssuer = false,
+        ValidateAudience = false,
+        RequireExpirationTime = true,
+        ValidateLifetime = true,
+    };
+});
+
+var app = builder.Build();
+app.UseCors("Cors");
+app.UseSwagger();
+app.UseSwaggerUI();
+
+// Configure the HTTP request pipeline.
+if (!app.Environment.IsDevelopment())
+{
+    app.UseExceptionHandler("/Error");
+    // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
+    app.UseHsts();
+}
+
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.MapControllers();
+app.UseAuthentication();
+app.UseAuthorization();
+app.MapRazorPages();
+app.Run();

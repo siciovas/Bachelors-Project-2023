@@ -1,0 +1,9 @@
+# IDE
+.idea/
+.vs/
+
+# dotnet core
+bin/
+obj/
+project.lock.json
+NuGetScratch/
