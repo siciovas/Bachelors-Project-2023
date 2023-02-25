@@ -5,11 +5,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnProgramming.Core.Dto
+namespace LearnProgramming.Core.Dto.DtoPost
 {
-    public class LearningTopicsDto
+    public class LearningTopicsPostDto
     {
-        public int Id { get; set; }
         public byte[] Photo { get; set; }
         public string Title { get; set; }
         public int NumberOfSubTopics { get; set; }

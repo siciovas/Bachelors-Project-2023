@@ -9,11 +9,11 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.AutoMapper
 {
-    public class ShopItemProfile : Profile
+    public class ShopProfile : Profile
     {
-        public ShopItemProfile()
+        public ShopProfile()
         {
-            CreateMap<ShopItem, ShopItemDto>();
+            CreateMap<Shop, ShopDto>();
         }
     }
 }

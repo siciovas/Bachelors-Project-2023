@@ -3,6 +3,7 @@ using System;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnProgramming.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230222173923_removedSex")]
+    partial class removedSex
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,7 +49,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LearningTopics", (string)null);
+                    b.ToTable("LearningTopics");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.ShopItem", b =>
@@ -92,7 +94,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("ShopItem", (string)null);
+                    b.ToTable("ShopItem");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.SubTopic", b =>
@@ -112,7 +114,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("LearningTopicId");
 
-                    b.ToTable("SubTopics", (string)null);
+                    b.ToTable("SubTopics");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.TaskInfo", b =>
@@ -144,7 +146,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("SubTopicId");
 
-                    b.ToTable("Task", (string)null);
+                    b.ToTable("Task");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.User", b =>
@@ -206,7 +208,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.SubTopic", b =>

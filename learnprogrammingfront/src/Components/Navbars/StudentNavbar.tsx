@@ -1,4 +1,4 @@
-import React, { ReactElement } from "react";
+import React, { ReactElement, useCallback, useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -49,6 +49,7 @@ const StudentNavbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const token = localStorage.getItem("accessToken");
 
   const Logout = (e: any): void => {
     e.preventDefault();
@@ -56,6 +57,24 @@ const StudentNavbar = () => {
     localStorage.removeItem("role");
     navigate("/");
   };
+
+  const [avatar, setAvatar] = useState<string>();
+
+  const getUserAvatar = useCallback(async () => {
+    const response = await fetch(`https://localhost:7266/api/getAvatar`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "GET",
+    });
+    const avatar = await response.json();
+    setAvatar("data:image/jpeg;base64," + avatar.avatar);
+  }, []);
+
+  useEffect(() => {
+    getUserAvatar();
+  }, []);
 
   return (
     <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
@@ -101,12 +120,7 @@ const StudentNavbar = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar
-                size={"sm"}
-                src={
-                  "https://images.unsplash.com/photo-1493666438817-866a91353ca9?ixlib=rb-0.3.5&q=80&fm=jpg&crop=faces&fit=crop&h=200&w=200&s=b616b2c5b373a80ffc9636ba24f7a4a9"
-                }
-              />
+              <Avatar size={"md"} src={avatar} />
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>

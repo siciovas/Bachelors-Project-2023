@@ -8,6 +8,7 @@ using LearnProgramming.Infrastructure.Settings;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,7 +17,32 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(option =>
+{
+    option.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+    {
+        In = ParameterLocation.Header,
+        Description = "Please enter a valid token",
+        Name = "Authorization",
+        Type = SecuritySchemeType.Http,
+        BearerFormat = "JWT",
+        Scheme = "Bearer"
+    });
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        {
+            new OpenApiSecurityScheme
+            {
+                Reference = new OpenApiReference
+                {
+                    Type=ReferenceType.SecurityScheme,
+                    Id="Bearer"
+                }
+            },
+            new string[]{}
+        }
+    });
+});
 
 builder.Services.AddDbContext<DatabaseContext>(options =>
 {
@@ -43,7 +69,8 @@ builder.Services.AddTransient<IJwtServ, JwtService>();
 builder.Services.AddTransient<IHashServ, HashService>();
 builder.Services.AddTransient<IUserRep, UserRepository>();
 builder.Services.AddTransient<ILearningTopicsRep, LearningTopicsRepository>();
-builder.Services.AddTransient<IShopItem, ShopItemRepository>();
+builder.Services.AddTransient<IShopRep, ShopRepository>();
+builder.Services.AddTransient<ISubTopicsRep, SubTopicsRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var jwtSettings = builder.Services.BuildServiceProvider().GetService<JwtSettings>();

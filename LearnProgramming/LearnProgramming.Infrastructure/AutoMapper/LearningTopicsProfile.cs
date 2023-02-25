@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace LearnProgramming.Infrastructure.AutoMapper
     {
         public LearningTopicsProfile()
         {
-            CreateMap<LearningTopics, LearningTopicsDto>();
+            CreateMap<LearningTopic, LearningTopicsDto>();
+            CreateMap<LearningTopic, LearningTopicsPostDto>();
         }
     }
 }

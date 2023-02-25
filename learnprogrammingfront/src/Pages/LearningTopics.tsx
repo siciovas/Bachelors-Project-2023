@@ -3,14 +3,24 @@ import { Box, Image, Badge, Grid } from "@chakra-ui/react";
 import { StarIcon } from "@chakra-ui/icons";
 import { LearningTopic } from "./Types/LearningTopicsTypes";
 import { useNavigate } from "react-router-dom";
+import { GetTopicDifficulty } from "../Helpers/GetTopicDifficulty";
+import { GetDifficultyColor } from "../Helpers/GetDifficultyColor";
 
 const LearningTopics = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [topics, setTopics] = useState<LearningTopic[]>([]);
 
+  const NavigateToSubTopics = (learningTopicId : number) => {
+    navigate('/uzdaviniai',{
+      state:{
+        learningTopicId: learningTopicId
+      }
+    })
+  }
+
   const getLearningTopics = useCallback(async () => {
-    const topics = await fetch(`https://localhost:7266/api/learningtopics`, {
+    const topics = await fetch(`https://localhost:7266/api/learningtopic`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -32,7 +42,7 @@ const LearningTopics = () => {
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
             <Image
               cursor={"pointer"}
-              onClick={() => navigate("/uzdaviniai")}
+              onClick={ () => NavigateToSubTopics(topic.id)}
               maxWidth="100%"
               maxHeight="100%"
               src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
@@ -40,8 +50,8 @@ const LearningTopics = () => {
 
             <Box p="6">
               <Box display="flex" alignItems="baseline">
-                <Badge borderRadius="full" px="2" colorScheme="teal">
-                  {topic.difficultyInText}
+                <Badge borderRadius="full" px="2" colorScheme={GetDifficultyColor(topic.difficultyInText)}>
+                  {GetTopicDifficulty(topic.difficultyInText)}
                 </Badge>
                 <Box
                   color="gray.500"

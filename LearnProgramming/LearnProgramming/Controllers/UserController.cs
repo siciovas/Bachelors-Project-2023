@@ -10,6 +10,7 @@ using System.Text;
 using System.Security.Claims;
 using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
+using LearnProgramming.Core.Dto.DtoUpdate;
 
 namespace LearnProgramming.API.Controllers
 {
@@ -57,7 +58,6 @@ namespace LearnProgramming.API.Controllers
                 Name = register.Name,
                 Surname = register.Surname,
                 Email = register.Email,
-                Sex = register.Sex,
                 PasswordHash = passwordHash,
                 PasswordSalt = passwordSalt,
                 City = register.City,
@@ -88,10 +88,7 @@ namespace LearnProgramming.API.Controllers
                 }
             }
 
-            using var hmac = new HMACSHA256(user.PasswordSalt);
-            var hash = hmac.ComputeHash(Encoding.UTF8.GetBytes(login.Password));
-
-            if (!hash.SequenceEqual(user.PasswordHash))
+            if (!_hashService.VerifyPassword(login.Password, user.PasswordHash, user.PasswordSalt))
             {
                 return BadRequest("Neteisingi duomenys");
             }
@@ -104,11 +101,70 @@ namespace LearnProgramming.API.Controllers
         [Authorize]
         [HttpGet]
         [Route("me")]
-        public async Task<ActionResult<int>> Me()
+        public async Task<ActionResult<UserDto>> Me()
         {
             var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
 
-            return Ok(user.Role);
+            var userDto = _mapper.Map<UserDto>(user);
+
+            return Ok(userDto);
+        }
+
+        [HttpPut]
+        [Route("updateProfile")]
+        [Authorize]
+        public async Task<ActionResult<UserUpdateDto>> UpdateMyProfile(UserUpdateDto userDto)
+        {
+            var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
+            if (user == null) return NotFound();
+
+            user.Avatar = userDto.Avatar;
+            user.UserName = userDto.UserName;
+            user.Email = userDto.Email;
+            user.City = userDto.City;
+            user.School = userDto.School;
+
+            await _userRepository.Update(user);
+
+            return Ok(userDto);
+        }
+
+        [HttpGet]
+        [Route("getAvatar")]
+        [Authorize]
+        public async Task<ActionResult<UserAvatarDto>> GetUserAvatar()
+        {
+            var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
+            if (user == null) return NotFound();
+            
+            var userDto = _mapper.Map<UserAvatarDto>(user);
+
+            return Ok(userDto);
+        }
+
+        [HttpPut]
+        [Route("updatePassword")]
+        [Authorize]
+        public async Task<ActionResult> UpdatePassword(UserPasswordDto userDto)
+        {
+            var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
+
+            if (user == null) return NotFound();
+
+            if (_hashService.VerifyPassword(userDto.OldPassword, user.PasswordHash, user.PasswordSalt))
+            {
+                if(userDto.NewPassword == userDto.RepeatPassword)
+                {
+                    var (passwordHash, passwordSalt) = _hashService.HashPassword(userDto.NewPassword);
+
+                    user.PasswordSalt = passwordSalt;
+                    user.PasswordHash = passwordHash;
+                }
+            }
+
+            await _userRepository.Update(user);
+
+            return Ok();
         }
     }
 }

@@ -111,7 +111,7 @@ const LoginPage = () => {
                   align={"start"}
                   justify={"space-between"}
                 >
-                  <Checkbox>Remember me</Checkbox>
+                  <Checkbox>Prisiminti mane</Checkbox>
                   <Link
                     color={"blue.400"}
                     onClick={() => navigate("/atkurimas")}
@@ -121,8 +121,8 @@ const LoginPage = () => {
                 </Stack>
                 <Button
                   type="submit"
-                  bg={"blue.400"}
-                  color={"white"}
+                  bg={"blue.500"}
+                  color={"black"}
                   _hover={{
                     bg: "blue.500",
                   }}

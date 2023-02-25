@@ -117,7 +117,7 @@ const RegisterPage = () => {
             Registruokis
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
-            ir tapk programuotoju! ✌️
+            ir įgyk programavimo patirties! ✌️
           </Text>
         </Stack>
         <Box
@@ -202,16 +202,6 @@ const RegisterPage = () => {
                     </AccordionButton>
                   </h2>
                   <AccordionPanel pb={4}>
-                    <FormControl id="sex">
-                      <FormLabel>Lytis</FormLabel>
-                      <RadioGroup onChange={setSex} value={sex}>
-                        <Stack direction="row">
-                          <Radio value="1">Vyras</Radio>
-                          <Radio value="2">Moteris</Radio>
-                          <Radio value="3">Kita</Radio>
-                        </Stack>
-                      </RadioGroup>
-                    </FormControl>
                     <FormControl id="city">
                       <FormLabel>Miestas</FormLabel>
                       <Input
@@ -244,7 +234,7 @@ const RegisterPage = () => {
                     bg: "blue.500",
                   }}
                 >
-                  Sign up
+                  Registruotis
                 </Button>
               </Stack>
               <Stack pt={6}>

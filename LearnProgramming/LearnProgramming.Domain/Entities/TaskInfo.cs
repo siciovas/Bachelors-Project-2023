@@ -13,7 +13,7 @@ namespace LearnProgramming.Domain.Entities
         public string Description { get; set; } = string.Empty!;
         public string DataAndAnswers { get; set; } = string.Empty!;
         public byte[] AdditionalInformacionFile { get; set; }
-        public SubTopics SubTopics { get; set; }
+        public SubTopic SubTopic { get; set; }
 
     }
 }

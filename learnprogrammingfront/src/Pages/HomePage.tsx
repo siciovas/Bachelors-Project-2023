@@ -39,10 +39,9 @@ const HomePage = () => {
 
   return (
     <Box
-      className="sliderBox"
-      position={"relative"}
-      height={"100vh"}
-      width={"full"}
+      className="sliderBox"   
+      maxH={"100%"}
+      maxW={"100%"}   
       overflow={"hidden"}
     >
       {/* Slider */}

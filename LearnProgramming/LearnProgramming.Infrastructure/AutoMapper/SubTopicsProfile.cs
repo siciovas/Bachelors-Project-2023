@@ -13,7 +13,8 @@ namespace LearnProgramming.Infrastructure.AutoMapper
     {
         public SubTopicsProfile()
         {
-            CreateMap<SubTopics, SubTopicsDto>();
+            CreateMap<SubTopic, SubTopicDto>();
+            CreateMap<SubTopic, SubTopicPostDto>();
         }
     }
 }

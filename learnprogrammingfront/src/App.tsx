@@ -1,6 +1,7 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-import { ChakraProvider } from '@chakra-ui/react'
+import { ChakraProvider, extendTheme } from '@chakra-ui/react'
+import { StepsTheme as Steps } from 'chakra-ui-steps';
 import { NavBar } from "./Components/Navbars/Navbar";
 import { LearningTopics } from './Pages/LearningTopics';
 import { HomePage } from './Pages/HomePage';
@@ -10,16 +11,22 @@ import { RegisterPage } from './Components/RegisterPage';
 import { ShoppingCart } from './Pages/ShoppingCart';
 import { Submissions } from './Pages/Submissions';
 import { ForgotPassword } from './Components/ForgotPassword';
-import { Footer } from './Components/Footer';
 import { LoginPage } from './Components/LoginPage';
 import { LearningSubTopics } from './Pages/LearningSubTopics';
 import { ShopItemPage } from './Pages/ShopItemPage';
+import { Task } from './Pages/Task';
 
 
 function App() {
 
+  const theme = extendTheme({
+    components: {
+      Steps,
+    },
+  });
+
   return (
-    <ChakraProvider>
+    <ChakraProvider theme={theme}>
       <div className="App" style={{ height: '100vh' }}>
         <BrowserRouter>
           <NavBar />
@@ -35,8 +42,8 @@ function App() {
             <Route path="/atkurimas" element={<ForgotPassword />} />
             <Route path="/uzdaviniai" element={<LearningSubTopics/>}/>
             <Route path="/preke" element={<ShopItemPage/>} />
+            <Route path="/uzd" element={<Task/>} />
           </Routes>
-          <Footer />
         </BrowserRouter>
       </div>
     </ChakraProvider>

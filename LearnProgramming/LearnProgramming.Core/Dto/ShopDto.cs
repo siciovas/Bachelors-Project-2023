@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Dto
 {
-    public class ShopItemDto
+    public class ShopDto
     {
         public byte[] Photo { get; set; }
         public string Name { get; set; }

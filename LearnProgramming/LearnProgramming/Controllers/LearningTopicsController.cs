@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using Microsoft.AspNetCore.Mvc;
@@ -7,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace LearnProgramming.API.Controllers
 {
     [ApiController]
-    [Route("api/learningtopics")]
+    [Route("api/learningtopic")]
     public class LearningTopicsController : Controller
     {
         private readonly IMapper _mapper;
@@ -20,7 +21,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<LearningTopics>>> GetAll()
+        public async Task<ActionResult<List<LearningTopicsDto>>> GetAll()
         {
             var topics = await _learningTopicsRep.GetAll();
 
@@ -30,7 +31,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<LearningTopics>> Get(int id)
+        public async Task<ActionResult<LearningTopicsDto>> Get(int id)
         {
             var topics = await _learningTopicsRep.Get(id);
             if (topics == null) return NotFound();
@@ -41,7 +42,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<LearningTopics>> Delete(int id)
+        public async Task<ActionResult> Delete(int id)
         {
             var topics = await _learningTopicsRep.Get(id);
             if (topics == null) return NotFound();
@@ -70,9 +71,9 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<LearningTopicsDto>> Post(LearningTopicsDto learningTopics)
+        public async Task<ActionResult<LearningTopicsPostDto>> Post(LearningTopicsPostDto learningTopics)
         {
-            var newTopic = new LearningTopics
+            var newTopic = new LearningTopic
             {
                 Photo = learningTopics.Photo,
                 Title = learningTopics.Title,
@@ -84,7 +85,7 @@ namespace LearnProgramming.API.Controllers
 
             await _learningTopicsRep.Create(newTopic);
 
-            return Ok(newTopic);
+            return Created($"api/learningtopic{newTopic.Id}", _mapper.Map<LearningTopicsPostDto>(newTopic));
         }
     }
 }
