@@ -22,13 +22,13 @@ namespace LearnProgramming.Infrastructure.Repositories
             _db = db;
         }
 
-        public async Task<List<LearningTopics>> GetAll()
+        public async Task<List<LearningTopic>> GetAll()
         {
             var learningTopics = await _db.LearningTopics.ToListAsync();
 
             return learningTopics;
         }
-        public async Task<LearningTopics> Create(LearningTopics learningTopics)
+        public async Task<LearningTopic> Create(LearningTopic learningTopics)
         {
             _db.Add(learningTopics);
             await _db.SaveChangesAsync();
@@ -36,19 +36,19 @@ namespace LearnProgramming.Infrastructure.Repositories
             return learningTopics;
         }
 
-        public async Task Delete(LearningTopics learningTopics)
+        public async Task Delete(LearningTopic learningTopics)
         {
             _db.LearningTopics.Remove(learningTopics);
             await _db.SaveChangesAsync();
         }
 
-        public async Task<LearningTopics> Get(int id)
+        public async Task<LearningTopic> Get(int id)
         {
             return await _db.LearningTopics.FirstOrDefaultAsync(topics => topics.Id == id);
         }
 
 
-        public async Task<LearningTopics> Update(LearningTopics learningTopics)
+        public async Task<LearningTopic> Update(LearningTopic learningTopics)
         {
            _db.LearningTopics.Update(learningTopics);
            await _db.SaveChangesAsync();

@@ -12,12 +12,11 @@ namespace LearnProgramming.Domain.Entities
     {
         // User information
         public Guid Id { get; set; }
-        public byte[] Avatar { get; set; }
+        public byte[] Avatar { get; set; } 
         public string UserName { get; set; } = string.Empty!;
         public string Name { get; set; } = string.Empty!;
         public string Surname { get; set; } = string.Empty!;
         public string Email { get; set; } = string.Empty!;
-        public string Sex { get; set; } = string.Empty!;
         public byte[] PasswordHash { get; set; }
         public byte[] PasswordSalt { get; set; }
         public string City { get; set; }

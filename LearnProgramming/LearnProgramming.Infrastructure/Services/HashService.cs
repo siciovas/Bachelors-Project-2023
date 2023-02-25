@@ -22,5 +22,13 @@ namespace LearnProgramming.Infrastructure.Services
 
             return resp;
         }
+
+        public bool VerifyPassword(string password, byte[] hash, byte[] salt)
+        {
+            using var hmac = new HMACSHA256(salt);
+            var hashToCompare = hmac.ComputeHash(Encoding.UTF8.GetBytes(password));
+
+            return hashToCompare.SequenceEqual(hash);
+        }
     }
 }

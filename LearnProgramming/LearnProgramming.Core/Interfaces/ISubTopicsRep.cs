@@ -1,4 +1,5 @@
-﻿using LearnProgramming.Domain.Entities;
+﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,10 +10,10 @@ namespace LearnProgramming.Core.Interfaces
 {
     public interface ISubTopicsRep
     {
-        Task<List<SubTopics>> GetAll(int learningTopicId);
-        Task<SubTopics> Get(int id);
-        Task<SubTopics> Create(SubTopics subTopics);
-        Task<SubTopics> Update(SubTopics subTopics);
-        Task Delete(SubTopics subTopics);
+        Task<List<SubTopic>> GetAll(int learningTopicId);
+        Task<SubTopic> Get(int id, int topicId);
+        Task<SubTopic> Create(SubTopic subTopic);
+        Task<SubTopic> Update(SubTopic subTopic);
+        Task Delete(SubTopic subTopic);
     }
 }

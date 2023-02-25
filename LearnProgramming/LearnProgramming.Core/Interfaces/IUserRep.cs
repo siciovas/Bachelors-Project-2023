@@ -14,5 +14,6 @@ namespace LearnProgramming.Core.Interfaces
         Task<IEnumerable<User>> GetAll();
         Task<User> GetById(Guid id);
         Task<User> Register(User user);
+        Task<User> Update(User user);
     }
 }

@@ -4,9 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace LearnProgramming.Core.Interfaces
+namespace LearnProgramming.Core.Dto.DtoUpdate
 {
-    public interface ITaskInfo
+    public class UserAvatarDto
     {
+        public byte[] Avatar { get; set; }
     }
 }

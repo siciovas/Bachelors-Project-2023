@@ -53,6 +53,14 @@ namespace LearnProgramming.Infrastructure.Repositories
             await _db.SaveChangesAsync();
 
             return user;
-        }   
+        }
+
+        public async Task<User> Update(User user)
+        {
+            _db.Users.Update(user);
+            await _db.SaveChangesAsync();
+
+            return user;
+        }
     }
 }

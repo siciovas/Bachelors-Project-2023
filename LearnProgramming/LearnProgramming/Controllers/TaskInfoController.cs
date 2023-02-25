@@ -1,6 +1,10 @@
-﻿namespace LearnProgramming.API.Controllers
+﻿using Microsoft.AspNetCore.Mvc;
+
+namespace LearnProgramming.API.Controllers
 {
-    public class TaskInfoController
+    [ApiController]
+    [Route("api/learningtopic/{learningtopicId}/subtopic/{subtopicId}/task")]
+    public class TaskInfoController : Controller
     {
     }
 }

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Dto
 {
-    public class SubTopicsDto
+    public class SubTopicUpdateDto
     {
-        public string SubTopicName { get; set; }
+        public string SubTopicName { get; set; } = string.Empty!;
     }
 }

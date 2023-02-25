@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Domain.Entities
 {
-    public class LearningTopics
+    public class LearningTopic
     {
         public int Id { get; set; }
         public byte[] Photo { get; set; }

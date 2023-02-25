@@ -11,6 +11,7 @@ namespace LearnProgramming.Core.Interfaces
     public interface IHashServ
     {
         HashPasswordResponse HashPassword(string password);
+        bool VerifyPassword(string password, byte[] hash, byte[] salt);
     }
 
 }

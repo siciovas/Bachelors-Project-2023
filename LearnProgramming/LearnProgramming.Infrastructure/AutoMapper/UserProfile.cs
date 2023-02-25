@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -14,6 +15,8 @@ namespace LearnProgramming.Infrastructure.AutoMapper
         public UserProfile()
         {
             CreateMap<User, UserDto>();
+            CreateMap<User, UserAvatarDto>();
+            CreateMap<User, UserPasswordDto>();
         }
     }
 }

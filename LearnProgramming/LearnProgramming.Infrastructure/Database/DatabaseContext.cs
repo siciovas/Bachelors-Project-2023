@@ -13,9 +13,9 @@ namespace LearnProgramming.Infrastructure.Database
         public DatabaseContext(DbContextOptions<DatabaseContext> options) : base(options) { }
 
         public DbSet<User> Users { get; set; }
-        public DbSet<LearningTopics> LearningTopics { get; set; }
-        public DbSet<SubTopics> SubTopics { get; set; }
+        public DbSet<LearningTopic> LearningTopics { get; set; }
+        public DbSet<SubTopic> SubTopics { get; set; }
         public DbSet<TaskInfo> Task { get; set; }
-        public DbSet<ShopItem> ShopItem { get; set; }
+        public DbSet<Shop> ShopItem { get; set; }
     }
 }
