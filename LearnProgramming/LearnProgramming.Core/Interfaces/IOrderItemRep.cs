@@ -7,12 +7,10 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Interfaces
 {
-    public interface IShopRep
+    public interface IOrderItemRep
     {
-        Task<List<Shop>> GetAll();
-        Task<Shop> Get(int id);
-        Task<Shop> Create(Shop shopItem);
-        Task<Shop> Update (Shop shopItem);
-        Task Delete (Shop shopItem);
+        Task<List<OrderItem>> GetAll(int orderId);
+        Task<OrderItem> Get(int id, int orderId);
+        Task<OrderItem> Create(OrderItem orderItem);
     }
 }

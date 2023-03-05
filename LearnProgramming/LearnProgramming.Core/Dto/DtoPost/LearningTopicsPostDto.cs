@@ -9,11 +9,8 @@ namespace LearnProgramming.Core.Dto.DtoPost
 {
     public class LearningTopicsPostDto
     {
-        public byte[] Photo { get; set; }
-        public string Title { get; set; }
-        public int NumberOfSubTopics { get; set; }
-        public int NumberOfAllTasks { get; set; }
+        public byte[] Photo { get; set; } 
+        public string Title { get; set; } = string.Empty!;
         public Difficulty DifficultyInText { get; set; }
-        public int DifficultyInStars { get; set; }
     }
 }

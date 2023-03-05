@@ -3,6 +3,7 @@ using System;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnProgramming.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230301205434_addedProduct")]
+    partial class addedProduct
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,16 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DifficultyInStars")
+                        .HasColumnType("int");
+
                     b.Property<int>("DifficultyInText")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfAllTasks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfSubTopics")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Photo")
@@ -47,13 +58,19 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<double>("CartPrice")
+                        .HasColumnType("double");
+
                     b.Property<Guid>("OrderNumber")
                         .HasColumnType("char(36)");
 
                     b.Property<DateTime>("OrderTime")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<double>("Total")
+                    b.Property<double>("Shipping")
+                        .HasColumnType("double");
+
+                    b.Property<double>("TotalPrice")
                         .HasColumnType("double");
 
                     b.Property<Guid>("UserId")
@@ -79,17 +96,9 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.Property<int>("OrderId")
                         .HasColumnType("int");
 
-                    b.Property<int>("ProductId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Quantity")
-                        .HasColumnType("int");
-
                     b.HasKey("Id");
 
                     b.HasIndex("OrderId");
-
-                    b.HasIndex("ProductId");
 
                     b.ToTable("OrderItem");
                 });
@@ -100,8 +109,9 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BookCoverType")
-                        .HasColumnType("int");
+                    b.Property<string>("BookCoverType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -138,63 +148,7 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.ToTable("Product");
                 });
 
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShippingInformation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("City")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("PhoneNumber")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Region")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("RepeatEmail")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Street")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Surname")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.Property<string>("ZipCode")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("ShippingInformation");
-                });
-
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShoppingCartItem", b =>
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShoppingCart", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -215,31 +169,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCartItems");
-                });
-
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Topic")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Submission");
+                    b.ToTable("ShoppingCart");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.SubTopic", b =>
@@ -300,11 +230,19 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("char(36)");
 
+                    b.Property<string>("Address")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.Property<byte[]>("Avatar")
                         .IsRequired()
                         .HasColumnType("longblob");
 
                     b.Property<string>("City")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<string>("Country")
                         .IsRequired()
                         .HasColumnType("longtext");
 
@@ -339,6 +277,10 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<string>("ZipCode")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
                     b.HasKey("Id");
 
                     b.ToTable("Users");
@@ -363,29 +305,10 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearnProgramming.Domain.Entities.Product", "Product")
-                        .WithMany()
-                        .HasForeignKey("ProductId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("Order");
-
-                    b.Navigation("Product");
                 });
 
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShippingInformation", b =>
-                {
-                    b.HasOne("LearnProgramming.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShoppingCartItem", b =>
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.ShoppingCart", b =>
                 {
                     b.HasOne("LearnProgramming.Domain.Entities.Product", "Product")
                         .WithMany()
@@ -400,17 +323,6 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("Product");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>
-                {
-                    b.HasOne("LearnProgramming.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Dto
 {
-    public class SubTopicDto
+    public class SubmissionUserDto : SubmissionDto
     {
-        public int SubTopicId { get; set; }
-        public string SubTopicName { get; set; } = string.Empty!;
+        public string Name { get; set; } = string.Empty!;
+        public string Surname { get; set; } = string.Empty!;
     }
 }

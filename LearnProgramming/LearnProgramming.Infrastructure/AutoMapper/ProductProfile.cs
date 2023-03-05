@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.AutoMapper
 {
-    public class SubTopicsProfile : Profile
+    public class ProductProfile : Profile
     {
-        public SubTopicsProfile()
+        public ProductProfile()
         {
-            CreateMap<SubTopic, SubTopicDto>();
-            CreateMap<SubTopic, SubTopicPostDto>();
-            CreateMap<SubTopic, SubTopicUpdateDto>();
+            CreateMap<Product, ProductDto>();
         }
     }
 }
