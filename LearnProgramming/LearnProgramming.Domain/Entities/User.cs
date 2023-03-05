@@ -23,11 +23,5 @@ namespace LearnProgramming.Domain.Entities
         public string School { get; set; }
         public AllRoles Role { get; set; } = AllRoles.Student;
 
-        // Shipping information
-
-        public string Country { get; set; } = string.Empty!;
-        public string Address { get; set; } = string.Empty!;
-        public string ZipCode { get; set; } = string.Empty!;
-
     }
 }

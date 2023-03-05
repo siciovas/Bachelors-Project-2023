@@ -8,42 +8,42 @@ namespace LearnProgramming.API.Controllers
 {
     [ApiController]
     [Route("api/shop")]
-    public class ShopController : Controller
+    public class ProductController : Controller
     {
         private readonly IMapper _mapper;
-        private readonly IShopRep _shopItemRep;
+        private readonly IProductRep _shopItemRep;
 
-        public ShopController(IMapper mapper, IShopRep shopItemRep)
+        public ProductController(IMapper mapper, IProductRep shopItemRep)
         {
             _mapper = mapper;
             _shopItemRep = shopItemRep;
         }
 
         [HttpGet]
-        public async Task<ActionResult<List<Shop>>> GetAll()
+        public async Task<ActionResult<List<Product>>> GetAll()
         {
             var item = await _shopItemRep.GetAll();
 
-            var itemDto = item.Select(x => _mapper.Map<Shop>(x)).ToList();
+            var itemDto = item.Select(x => _mapper.Map<Product>(x)).ToList();
 
             return Ok(itemDto);
         }
 
         [HttpGet]
         [Route("{id}")]
-        public async Task<ActionResult<Shop>> Get(int id)
+        public async Task<ActionResult<Product>> Get(int id)
         {
             var item = await _shopItemRep.Get(id);
 
             if (item == null) return NotFound();
 
-            var itemDto = _mapper.Map<Shop>(item);
+            var itemDto = _mapper.Map<Product>(item);
 
             return Ok(itemDto);
         }
 
         [HttpDelete("{id}")]
-        public async Task<ActionResult<Shop>> Delete(int id)
+        public async Task<ActionResult<Product>> Delete(int id)
         {
             var item = await _shopItemRep.Get(id);
             if (item == null) return NotFound();
@@ -54,7 +54,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut]
-        public async Task<ActionResult<ShopDto>> Update(ShopDto itemsDto, int id)
+        public async Task<ActionResult<ProductDto>> Update(ProductDto itemsDto, int id)
         {
             var item = await _shopItemRep.Get(id);
             if (item == null) return NotFound();
@@ -75,9 +75,9 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
-        public async Task<ActionResult<ShopDto>> Post(ShopDto itemDto)
+        public async Task<ActionResult<ProductDto>> Post(ProductDto itemDto)
         {
-            var newTopic = new Shop
+            var newItem = new Product
             {
                 Photo = itemDto.Photo,
                 ReleaseDate = itemDto.ReleaseDate,
@@ -90,9 +90,9 @@ namespace LearnProgramming.API.Controllers
                 Price = itemDto.Price,
             };
 
-            await _shopItemRep.Create(newTopic);
+            await _shopItemRep.Create(newItem);
 
-            return Ok(newTopic);
+            return Created($"api/shop{newItem.Id}", _mapper.Map<ProductDto>(newItem));
         }
     }
 }

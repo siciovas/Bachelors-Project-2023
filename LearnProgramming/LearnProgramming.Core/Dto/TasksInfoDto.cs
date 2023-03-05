@@ -8,8 +8,8 @@ namespace LearnProgramming.Core.Dto
 {
     public class TasksInfoDto : TasksInfoBaseDto
     {
-        public string Description { get; set; }
-        public string DataAndAnswers { get; set; }
+        public string Description { get; set; } = string.Empty!;
+        public string DataAndAnswers { get; set; } = string.Empty!;
         public byte[] AdditionalInformacionFile { get; set; }
     }
 }

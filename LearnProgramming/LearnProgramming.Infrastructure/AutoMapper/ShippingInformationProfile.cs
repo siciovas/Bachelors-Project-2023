@@ -1,5 +1,5 @@
 ﻿using AutoMapper;
-using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,13 +9,11 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.AutoMapper
 {
-    public class SubTopicsProfile : Profile
+    public class ShippingInformationProfile : Profile
     {
-        public SubTopicsProfile()
+        public ShippingInformationProfile()
         {
-            CreateMap<SubTopic, SubTopicDto>();
-            CreateMap<SubTopic, SubTopicPostDto>();
-            CreateMap<SubTopic, SubTopicUpdateDto>();
+            CreateMap<ShippingInformation, ShippingInformationPostDto>();
         }
     }
 }

@@ -3,6 +3,7 @@ using System;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnProgramming.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230304130021_addedSubmissionsAndOther")]
+    partial class addedSubmissionsAndOther
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -25,7 +27,16 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
+                    b.Property<int>("DifficultyInStars")
+                        .HasColumnType("int");
+
                     b.Property<int>("DifficultyInText")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfAllTasks")
+                        .HasColumnType("int");
+
+                    b.Property<int>("NumberOfSubTopics")
                         .HasColumnType("int");
 
                     b.Property<byte[]>("Photo")
@@ -100,8 +111,9 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("int");
 
-                    b.Property<int>("BookCoverType")
-                        .HasColumnType("int");
+                    b.Property<string>("BookCoverType")
+                        .IsRequired()
+                        .HasColumnType("longtext");
 
                     b.Property<string>("Description")
                         .IsRequired()

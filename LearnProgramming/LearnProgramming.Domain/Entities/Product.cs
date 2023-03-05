@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LearnProgramming.Domain.Enums;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Domain.Entities
 {
-    public class Shop
+    public class Product
     {
         public int Id { get; set; }
         public byte[] Photo { get; set; }
@@ -15,7 +16,7 @@ namespace LearnProgramming.Domain.Entities
         public string Description { get; set; } = string.Empty!;
         public int PageNumber { get; set; }
         public string Language { get; set; } = string.Empty!;
-        public string BookCoverType { get; set; } = string.Empty!;
+        public BookCover BookCoverType { get; set; }
         public string Publisher { get; set; } = string.Empty!;
         public string ReleaseDate { get; set; }
     }

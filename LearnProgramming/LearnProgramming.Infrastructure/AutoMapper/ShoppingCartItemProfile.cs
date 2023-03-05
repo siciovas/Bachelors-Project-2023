@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,14 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.AutoMapper
 {
-    public class ShopProfile : Profile
+    public class ShoppingCartItemProfile : Profile
     {
-        public ShopProfile()
+        public ShoppingCartItemProfile()
         {
-            CreateMap<Shop, ShopDto>();
+            CreateMap<ShoppingCartItem, ShoppingCartDto>();
+            CreateMap<ShoppingCartItem, ShoppingCartItemPostDto>();
+
         }
     }
+
 }

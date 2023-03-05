@@ -25,7 +25,7 @@ namespace LearnProgramming.Infrastructure.Repositories
         {
             var users = await _db.Users.ToListAsync();
 
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == email);
+            var user = await _db.Users.FirstOrDefaultAsync(user => user.Email == email);
 
             return user;
         }
@@ -34,14 +34,14 @@ namespace LearnProgramming.Infrastructure.Repositories
         {
             var users = await _db.Users.ToListAsync();
 
-            var user = await _db.Users.FirstOrDefaultAsync(x => x.UserName == username);
+            var user = await _db.Users.FirstOrDefaultAsync(user => user.UserName == username);
 
             return user;
         }
 
         public async Task<User> GetById(Guid id)
         {
-            var user = await _db.Users.FirstAsync(x => x.Id == id);
+            var user = await _db.Users.FirstAsync(user => user.Id == id);
 
             return user;
         }

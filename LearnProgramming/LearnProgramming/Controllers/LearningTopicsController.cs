@@ -60,10 +60,7 @@ namespace LearnProgramming.API.Controllers
 
             topics.Photo = learningTopics.Photo;
             topics.Title = learningTopics.Title;
-            topics.NumberOfSubTopics = learningTopics.NumberOfSubTopics;
-            topics.NumberOfAllTasks = learningTopics.NumberOfAllTasks;
             topics.DifficultyInText = learningTopics.DifficultyInText;
-            topics.DifficultyInStars = learningTopics.DifficultyInStars;
 
             await _learningTopicsRep.Update(topics);
 
@@ -77,9 +74,6 @@ namespace LearnProgramming.API.Controllers
             {
                 Photo = learningTopics.Photo,
                 Title = learningTopics.Title,
-                NumberOfSubTopics = learningTopics.NumberOfSubTopics,
-                NumberOfAllTasks = learningTopics.NumberOfAllTasks,
-                DifficultyInStars = learningTopics.DifficultyInStars,
                 DifficultyInText = learningTopics.DifficultyInText
             };
 

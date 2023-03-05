@@ -6,9 +6,7 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Dto
 {
-    public class SubTopicDto
+    public class OrderDto
     {
-        public int SubTopicId { get; set; }
-        public string SubTopicName { get; set; } = string.Empty!;
     }
 }

@@ -31,12 +31,6 @@ namespace LearnProgramming.API.Controllers
                 {
                     SubTopicId = x.Id,
                     SubTopicName = x.SubTopicName,
-                    Tasks = x.Tasks.Select(t => new TasksInfoBaseDto
-                    {
-                        Id = t.Id,
-                        Name = t.Name,
-                    })
-                    .ToList()
                 })
                 .ToList();
 
@@ -56,11 +50,7 @@ namespace LearnProgramming.API.Controllers
             {
                 SubTopicId = subTopic.Id,
                 SubTopicName = subTopic.SubTopicName,
-                Tasks = subTopic.Tasks.Select(x => new TasksInfoBaseDto
-                {
-                    Id = x.Id,
-                    Name = x.Name,
-                }).ToList()
+
             };
 
         }

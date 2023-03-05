@@ -15,7 +15,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddControllers();
+builder.Services.AddControllers().AddNewtonsoftJson();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {
@@ -69,8 +69,13 @@ builder.Services.AddTransient<IJwtServ, JwtService>();
 builder.Services.AddTransient<IHashServ, HashService>();
 builder.Services.AddTransient<IUserRep, UserRepository>();
 builder.Services.AddTransient<ILearningTopicsRep, LearningTopicsRepository>();
-builder.Services.AddTransient<IShopRep, ShopRepository>();
 builder.Services.AddTransient<ISubTopicsRep, SubTopicsRepository>();
+builder.Services.AddTransient<IProductRep, ProductRepository>();
+builder.Services.AddTransient<IShoppingCartItemRep, ShoppingCartItemRepository>();
+builder.Services.AddTransient<IShippingInformationRep, ShippingInformationRepository>();
+builder.Services.AddTransient<IOrderRep, OrderRepository>();
+builder.Services.AddTransient<IOrderItemRep, OrderItemRepository>();
+builder.Services.AddTransient<ISubmissionRep, SubmissionRepository>();
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var jwtSettings = builder.Services.BuildServiceProvider().GetService<JwtSettings>();
@@ -93,6 +98,8 @@ builder.Services.AddAuthentication(x =>
         ValidateLifetime = true,
     };
 });
+
+builder.Services.AddAuthorization();
 
 var app = builder.Build();
 app.UseCors("Cors");
