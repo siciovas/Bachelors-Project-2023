@@ -14,7 +14,7 @@ import { ForgotPassword } from './Components/ForgotPassword';
 import { LoginPage } from './Components/LoginPage';
 import { LearningSubTopics } from './Pages/LearningSubTopics';
 import { ShopItemPage } from './Pages/ShopItemPage';
-import { Task } from './Pages/Task';
+import { ProgrammingTasksList } from './Pages/ProgrammingTasksList';
 
 
 function App() {
@@ -40,9 +40,9 @@ function App() {
             <Route path="/krepselis" element={<ShoppingCart />} />
             <Route path="/prasymai" element={<Submissions />} />
             <Route path="/atkurimas" element={<ForgotPassword />} />
-            <Route path="/uzdaviniai" element={<LearningSubTopics/>}/>
+            <Route path="/potemes" element={<LearningSubTopics/>}/>
             <Route path="/preke" element={<ShopItemPage/>} />
-            <Route path="/uzd" element={<Task/>} />
+            <Route path="/uzduotys" element={<ProgrammingTasksList/>} />
           </Routes>
         </BrowserRouter>
       </div>

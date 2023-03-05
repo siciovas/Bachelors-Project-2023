@@ -10,6 +10,7 @@ import {
   Avatar,
   Center,
   useToast,
+  Box,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -213,7 +214,7 @@ const Profile = () => {
                 ></Avatar>
               </Center>    
               <Center w="full">
-                <div className="mb-3">
+                <Box mb={3}>
                   <label className="form-label">Nuotraukos keitimas</label>
                   <input
                     onChange={(e) => {
@@ -223,7 +224,7 @@ const Profile = () => {
                     type="file"
                     id="formFile"
                   />
-                </div>
+                </Box>
               </Center>
             </Stack>
           </FormControl>

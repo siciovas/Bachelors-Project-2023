@@ -1,3 +1,8 @@
+export enum BookCover {
+  Soft,
+  Hard,
+}
+
 export interface ShopTypes {
   id: number;
   photo: Blob;
@@ -6,7 +11,7 @@ export interface ShopTypes {
   description: string;
   pageNumber: number;
   language: string;
-  bookCoverType: string;
+  bookCoverType: BookCover;
   publisher: string;
   releaseDate: string;
 }
