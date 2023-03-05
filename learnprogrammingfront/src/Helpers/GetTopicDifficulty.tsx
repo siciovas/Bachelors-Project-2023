@@ -1,8 +1,7 @@
-import React from "react";
 import { Difficulty } from "../Pages/Types/LearningTopicsTypes";
 
 const GetTopicDifficulty = (difficulty: Difficulty) : string => {
-    switch(difficulty.toString()){
+    switch(difficulty){
         
         case Difficulty.Easy: {
             return "Lengva";

@@ -13,8 +13,6 @@ import {
   Text,
   useColorModeValue,
   Link,
-  RadioGroup,
-  Radio,
   Accordion,
   AccordionItem,
   AccordionButton,
@@ -33,7 +31,6 @@ const RegisterPage = () => {
   const [surname, setSurname] = useState<string>();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const [sex, setSex] = useState<string>();
   const [city, setCity] = useState<string>();
   const [school, setSchool] = useState<string>();
 
@@ -76,7 +73,6 @@ const RegisterPage = () => {
         surname,
         email,
         password,
-        sex,
         city,
         school,
       }),
@@ -196,7 +192,7 @@ const RegisterPage = () => {
                   <h2>
                     <AccordionButton>
                       <Box as="span" flex="1" textAlign="left">
-                        Papildoma informacija{" "}
+                        Papildoma informacija
                       </Box>
                       <AccordionIcon />
                     </AccordionButton>

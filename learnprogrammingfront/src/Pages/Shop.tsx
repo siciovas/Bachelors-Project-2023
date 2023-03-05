@@ -1,12 +1,18 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import { Box, Image, Badge, Grid } from "@chakra-ui/react";
 import { ShopTypes } from "./Types/ShopTypes";
 import { useNavigate } from "react-router-dom";
+import {
+  useToast,
+} from "@chakra-ui/react";
+import { AddNewShopItem } from "../Components/AddNewShopItem";
 
 const Shop = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const toast = useToast();
 
   const NavigateToItem = (shopItemId : number) => {
     navigate('/preke',{
@@ -16,24 +22,71 @@ const Shop = () => {
     })
   }
 
+  const AddShopItem = useCallback(async (e: FormEvent<HTMLFormElement>, photo: string, name:string, price:number,
+    description: string, pageNumber: number, language: string, bookCoverType: string, publisher: string, releaseDate: string): Promise<void> => {
+    e.preventDefault();
+    const response = await fetch("https://localhost:7266/api/shop", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+       photo,
+       name,
+       price,
+       description,
+       pageNumber,
+       language,
+       bookCoverType,
+       publisher,
+       releaseDate,
+      }),
+    });
+
+    const data = await response.json();
+
+    if (response.status === 201) {
+      setIsLoading(true);
+      toast({
+        title: "Prekė pridėta",
+        status: "success",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+      //onClose();
+    } else {
+      toast({
+        title: "Nepavyko",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
+  },[]);
+
   const getShopItems = useCallback(async () => {
-    const items = await fetch(`https://localhost:7266/api/shop`, {
+    const response = await fetch(`https://localhost:7266/api/shop`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
       method: "GET",
     });
-    const allItems = await items.json();
+    const allItems = await response.json();
     setItems(allItems);
   }, []);
 
   useEffect(() => {
     getShopItems();
-  }, []);
+  }, [isLoading]);
+
 
   return (
     <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={6}>
+      <AddNewShopItem AddShopItem = {AddShopItem}/>
       {items.map((item) => {
         return (
           <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
@@ -42,7 +95,7 @@ const Shop = () => {
               onClick={() => NavigateToItem(item.id)}
               maxWidth="100%"
               maxHeight="100%"
-              src="https://img.freepik.com/free-photo/wide-angle-shot-single-tree-growing-clouded-sky-during-sunset-surrounded-by-grass_181624-22807.jpg"
+              src={"data:image/jpeg;base64," + item.photo}
             />
 
             <Box p="6">

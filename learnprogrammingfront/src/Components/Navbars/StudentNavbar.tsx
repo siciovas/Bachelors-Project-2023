@@ -18,6 +18,7 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
 import { useNavigate } from "react-router-dom";
+import { Submissions } from "../../Pages/Submissions";
 
 interface LinksProps {
   title: string;
@@ -26,7 +27,6 @@ interface LinksProps {
 
 const LinksStudents: LinksProps[] = [
   { title: "Mano kursai", url: "/kursai" },
-  { title: "Prašymai", url: "/prasymai" },
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
@@ -103,6 +103,7 @@ const StudentNavbar = () => {
               {link.title}
             </Button>
           ))}
+          <Submissions/>
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
           <Box> Naudojatės studento prieiga</Box>

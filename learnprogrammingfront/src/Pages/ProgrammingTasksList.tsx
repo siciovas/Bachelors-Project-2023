@@ -11,7 +11,7 @@ import { LearningSubTopicsType } from "./Types/LearningSubTopicsType";
 import { LearningTopicTypes } from "./Types/LearningTopicsTypes";
 import { AddNewSubTopic } from "../Components/AddNewSubTopic";
 
-const LearningSubTopics = () => {
+const ProgrammingTasksList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [subtopics, setSubTopics] = useState<LearningSubTopicsType[]>([]);
@@ -19,50 +19,50 @@ const LearningSubTopics = () => {
   const [topics, setTopics] = useState<LearningTopicTypes>();
 
   const NavigateToTask = (subtopicId: number) => {
-    navigate("/uzduotys", {
+    navigate("/uzduotis", {
       state: {
         subtopicId: subtopicId,
       },
     });
   };
 
-  const getLearningTopics = useCallback(async () => {
-    const response = await fetch(
-      `https://localhost:7266/api/learningtopic/${state.learningTopicId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "GET",
-      }
-    );
-    const allTopics = await response.json();
-    setTopics(allTopics);
-  }, []);
+  // const getLearningTopics = useCallback(async () => {
+  //   const response = await fetch(
+  //     `https://localhost:7266/api/learningtopic/${state.learningTopicId}`,
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       method: "GET",
+  //     }
+  //   );
+  //   const allTopics = await response.json();
+  //   setTopics(allTopics);
+  // }, []);
 
-  useEffect(() => {
-    getLearningTopics();
-  }, []);
+  // useEffect(() => {
+  //   getLearningTopics();
+  // }, []);
 
-  const getLearningSubTopics = useCallback(async () => {
-    const response = await fetch(
-      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "GET",
-      }
-    );
-    const allTopics = await response.json();
-    setSubTopics(allTopics);
-  }, []);
+  // const getLearningSubTopics = useCallback(async () => {
+  //   const response = await fetch(
+  //     `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic`,
+  //     {
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //         Authorization: `Bearer ${token}`,
+  //       },
+  //       method: "GET",
+  //     }
+  //   );
+  //   const allTopics = await response.json();
+  //   setSubTopics(allTopics);
+  // }, []);
 
-  useEffect(() => {
-    getLearningSubTopics();
-  }, []);
+  // useEffect(() => {
+  //   getLearningSubTopics();
+  // }, []);
 
   return (
     <Box className="container mt-5">
@@ -141,4 +141,4 @@ const LearningSubTopics = () => {
   );
 };
 
-export { LearningSubTopics };
+export { ProgrammingTasksList };
