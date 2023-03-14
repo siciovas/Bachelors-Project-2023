@@ -36,6 +36,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         [Route("{id}")]
         public async Task<ActionResult<List<SubmissionDto>>> GetById()
         {

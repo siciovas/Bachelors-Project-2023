@@ -5,75 +5,89 @@ import {
   Flex,
   Grid,
   Heading,
+  Spinner,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { AddNewProgramminTask } from "../Components/AddNewProgrammingTask";
 import { LearningSubTopicsType } from "./Types/LearningSubTopicsType";
-import { LearningTopicTypes } from "./Types/LearningTopicsTypes";
-import { AddNewSubTopic } from "../Components/AddNewSubTopic";
+import { ProgrammingTaskTypes } from "./Types/ProgrammingTaskTypes";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const ProgrammingTasksList = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
-  const [subtopics, setSubTopics] = useState<LearningSubTopicsType[]>([]);
   const { state } = useLocation();
-  const [topics, setTopics] = useState<LearningTopicTypes>();
+  const [subTopic, setSubTopic] = useState<LearningSubTopicsType>();
+  const [tasks, setTasks] = useState<ProgrammingTaskTypes[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
-  const NavigateToTask = (subtopicId: number) => {
+  const NavigateToTask = (id: number) => {
     navigate("/uzduotis", {
       state: {
-        subtopicId: subtopicId,
+       learningTopicId: state.learningTopicId,
+       subtopicId: state.subtopicId,
+       id: id
       },
     });
   };
 
-  // const getLearningTopics = useCallback(async () => {
-  //   const response = await fetch(
-  //     `https://localhost:7266/api/learningtopic/${state.learningTopicId}`,
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       method: "GET",
-  //     }
-  //   );
-  //   const allTopics = await response.json();
-  //   setTopics(allTopics);
-  // }, []);
+  const getLearningSubTopicName = useCallback(async () => {
+    const response = await fetch(
+      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subtopicId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    const subTopic = await response.json();
+    setSubTopic(subTopic);
+  }, []);
 
-  // useEffect(() => {
-  //   getLearningTopics();
-  // }, []);
+  useEffect(() => {
+    getLearningSubTopicName();
+  }, []);
 
-  // const getLearningSubTopics = useCallback(async () => {
-  //   const response = await fetch(
-  //     `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic`,
-  //     {
-  //       headers: {
-  //         "Content-Type": "application/json",
-  //         Authorization: `Bearer ${token}`,
-  //       },
-  //       method: "GET",
-  //     }
-  //   );
-  //   const allTopics = await response.json();
-  //   setSubTopics(allTopics);
-  // }, []);
+const getProgrammingTasks = useCallback(async () => {
+    const response = await fetch(
+      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subtopicId}/task`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    const allTasks = await response.json();
+    setTasks(allTasks);
+    setIsLoading(false);
+  }, []);
 
-  // useEffect(() => {
-  //   getLearningSubTopics();
-  // }, []);
+  useEffect(() => {
+    getProgrammingTasks();
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
+        <Spinner size='xl' />
+      </Flex>
+    )
+  }
 
   return (
     <Box className="container mt-5">
       <Grid className="col-md-12">
         <Flex justifyContent={"center"}>
           <Box>
-            <Heading size={"lg"}>„{topics?.title}“ potemės</Heading>
+            <Heading size={"lg"}>„{subTopic?.subTopicName}“ užduotys</Heading>
           </Box>
         </Flex>
-        <AddNewSubTopic/>
-        {subtopics.map((subtopic) => {
+        <AddNewProgramminTask/>
+        {tasks.map((task) => {
           return (
             <Box mt={3}>
               <Flex flexDir={"column"}>
@@ -93,10 +107,10 @@ const ProgrammingTasksList = () => {
                       color="gray.500"
                       fontWeight="semibold"
                       letterSpacing="wide"
+                      onClick={() => NavigateToTask(task.id)}
                       textTransform="uppercase"
                       size={"sm"}
                       cursor={"pointer"}
-                      onClick={() => NavigateToTask(subtopic.subTopicId)}
                       position="relative"
                       _hover={{
                         _after: {
@@ -117,19 +131,12 @@ const ProgrammingTasksList = () => {
                         transition: "transform 0.25s ease-out",
                       }}
                     >
-                      {subtopic.subTopicName}
+                      {task.name}
                     </Heading>
-                    <Box
-                      color="gray.500"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      textTransform="uppercase"
-                    >
-                      uždaviniai/ių:
-                    </Box>
                     <Button colorScheme={"green"} variant="outline">
                       Pažymėti kaip atliktą
                     </Button>
+                    <DeleteIcon cursor={"pointer"}/>
                   </Flex>
                 </Flex>
               </Flex>

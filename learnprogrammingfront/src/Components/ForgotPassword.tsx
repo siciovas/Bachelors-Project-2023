@@ -12,16 +12,13 @@ import {
 const ForgotPassword = () => {
   return (
     <Flex
-      minH={"100vh"}
-      align={"center"}
       justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
+      mt={10}
     >
       <Stack
         spacing={4}
         w={"full"}
         maxW={"md"}
-        bg={useColorModeValue("white", "gray.700")}
         rounded={"xl"}
         boxShadow={"lg"}
         p={6}
@@ -32,7 +29,6 @@ const ForgotPassword = () => {
         </Heading>
         <Text
           fontSize={{ base: "sm", sm: "md" }}
-          color={useColorModeValue("gray.800", "gray.400")}
         >
           Suvesk ir patikrink savo pašto dėžutę!
         </Text>

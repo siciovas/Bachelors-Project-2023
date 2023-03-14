@@ -6,11 +6,11 @@ import {
   Heading,
   Input,
   Stack,
-  useColorModeValue,
   Avatar,
   Center,
   useToast,
   Box,
+  Spinner,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -20,11 +20,14 @@ import {
   useState,
 } from "react";
 import { useNavigate } from "react-router-dom";
+import eventBus from "../Helpers/EventBus";
+import { Unauthorized } from "../Constants/Auth";
 
 const Profile = () => {
   useNavigate();
   const token = localStorage.getItem("accessToken");
   const toast = useToast();
+  const [isLoading, setIsLoading] = useState(true);
 
   const [avatar, setAvatar] = useState<string>();
   const [username, setUsername] = useState<string>();
@@ -94,19 +97,32 @@ const Profile = () => {
       },
       method: "GET",
     });
-    const user = await response.json();
-    setAvatar(user.avatar);
-    setName(user.name);
-    setSurname(user.surname);
-    setUsername(user.userName);
-    setEmail(user.email);
-    setCity(user.city);
-    setSchool(user.school);
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    } else if (response.status === 200) {
+      const user = await response.json();
+      setAvatar(user.avatar);
+      setName(user.name);
+      setSurname(user.surname);
+      setUsername(user.userName);
+      setEmail(user.email);
+      setCity(user.city);
+      setSchool(user.school);
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Netikėta klaida",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   }, []);
 
   useEffect(() => {
     getUserInformation();
-  }, []);
+  }, [isLoading]);
 
   const UpdateUserProfile = async (
     e: FormEvent<HTMLFormElement>
@@ -126,8 +142,11 @@ const Profile = () => {
         school,
       }),
     });
-
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", "");
+    }
     if (response.status === 200) {
+      setIsLoading(true);
       toast({
         title: "Atnaujinta",
         status: "success",
@@ -135,7 +154,6 @@ const Profile = () => {
         position: "top-right",
         isClosable: true,
       });
-      window.location.reload();
     } else {
       toast({
         title: "Atnaujinti nepavyko",
@@ -163,8 +181,11 @@ const Profile = () => {
         repeatPassword,
       }),
     });
-
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", "");
+    }
     if (response.status === 200) {
+      setIsLoading(true);
       toast({
         title: "Slaptažodis pakeistas",
         status: "success",
@@ -172,7 +193,6 @@ const Profile = () => {
         position: "top-right",
         isClosable: true,
       });
-      window.location.reload();
     } else {
       toast({
         title: "Atnaujinti nepavyko",
@@ -184,24 +204,30 @@ const Profile = () => {
     }
   };
 
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left="50%" position="fixed">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
+
   return (
-    <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
-    >
+    <Flex minH={"100vh"} align={"center"} justify={"center"}>
       <Stack
         spacing={4}
         w={"full"}
         maxW={"md"}
-        bg={useColorModeValue("white", "gray.700")}
         rounded={"xl"}
         boxShadow={"lg"}
         p={6}
         my={12}
       >
-        <Heading lineHeight={1.1} textAlign={"center"} fontSize={{ base: "2xl", sm: "3xl" }}>
+        <Heading
+          lineHeight={1.1}
+          textAlign={"center"}
+          fontSize={{ base: "2xl", sm: "3xl" }}
+        >
           {`${name} ${surname}`}
         </Heading>
         <form onSubmit={(e) => UpdateUserProfile(e)}>
@@ -212,7 +238,7 @@ const Profile = () => {
                   size="2xl"
                   src={"data:image/jpeg;base64," + avatar}
                 ></Avatar>
-              </Center>    
+              </Center>
               <Center w="full">
                 <Box mb={3}>
                   <label className="form-label">Nuotraukos keitimas</label>
@@ -329,12 +355,13 @@ const Profile = () => {
                 _hover={{
                   bg: "blue.500",
                 }}
-              >
+              > 
                 Keisti slaptažodį
               </Button>
             </Stack>
           </Stack>
         </form>
+        <Button colorScheme={"red"}>Ištrinti paskyrą</Button>
       </Stack>
     </Flex>
   );

@@ -76,6 +76,8 @@ builder.Services.AddTransient<IShippingInformationRep, ShippingInformationReposi
 builder.Services.AddTransient<IOrderRep, OrderRepository>();
 builder.Services.AddTransient<IOrderItemRep, OrderItemRepository>();
 builder.Services.AddTransient<ISubmissionRep, SubmissionRepository>();
+builder.Services.AddTransient<IProgrammingTaskRep, ProgrammingTaskRepository>();
+
 builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
 var jwtSettings = builder.Services.BuildServiceProvider().GetService<JwtSettings>();

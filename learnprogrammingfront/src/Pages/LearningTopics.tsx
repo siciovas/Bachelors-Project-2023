@@ -1,16 +1,19 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { Box, Image, Badge, Grid, Button, useToast } from "@chakra-ui/react";
+import { Box, Image, Badge, Grid, useToast, Spinner, Flex } from "@chakra-ui/react";
 import { Difficulty, LearningTopicTypes } from "./Types/LearningTopicsTypes";
 import { useNavigate } from "react-router-dom";
 import { GetTopicDifficulty } from "../Helpers/GetTopicDifficulty";
 import { GetDifficultyColor } from "../Helpers/GetDifficultyColor";
 import { AddNewLearningTopic } from "../Components/AddNewLearningTopic";
+import eventBus from "../Helpers/EventBus";
+import { Unauthorized } from "../Constants/Auth";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const LearningTopics = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [topics, setTopics] = useState<LearningTopicTypes[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
   const NavigateToSubTopics = (learningTopicId: number) => {
@@ -21,7 +24,7 @@ const LearningTopics = () => {
     });
   };
 
-  const AddLearningTopic = useCallback(async (e: FormEvent<HTMLFormElement>, title: string, photo:string, difficultyInText:Difficulty): Promise<void> => {
+  const AddLearningTopic = useCallback(async (e: FormEvent<HTMLFormElement>, title: string, photo: string, difficultyInText: Difficulty): Promise<void> => {
     e.preventDefault();
     const response = await fetch("https://localhost:7266/api/learningtopic", {
       headers: {
@@ -30,15 +33,15 @@ const LearningTopics = () => {
       },
       method: "POST",
       body: JSON.stringify({
-       title,
-       photo,
-       difficultyInText,
+        title,
+        photo,
+        difficultyInText,
       }),
     });
-
-    const data = await response.json();
-
-    if (response.status === 201) {
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", "");
+    }
+    else if (response.status === 201) {
       setIsLoading(true);
       toast({
         title: "Tema pridėta",
@@ -47,7 +50,6 @@ const LearningTopics = () => {
         position: "top-right",
         isClosable: true,
       });
-      //onClose();
     } else {
       toast({
         title: "Nepavyko",
@@ -57,7 +59,7 @@ const LearningTopics = () => {
         isClosable: true,
       });
     }
-  },[]);
+  }, []);
 
   const getLearningTopics = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/learningtopic`, {
@@ -67,13 +69,35 @@ const LearningTopics = () => {
       },
       method: "GET",
     });
-    const allTopics = await response.json();
-    setTopics(allTopics);
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    }
+    else if (response.status === 200) {
+      const allTopics = await response.json();
+      setTopics(allTopics);
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Netikėta klaida",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   }, []);
-  
+
   useEffect(() => {
     getLearningTopics();
   }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
+        <Spinner size='xl' />
+      </Flex>
+    )
+  }
 
   return (
     <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={6}>
@@ -106,11 +130,10 @@ const LearningTopics = () => {
                   textTransform="uppercase"
                   ml="2"
                 >
-                  0 potemės/ių &bull;{" "}
-                  0 uždaviniai/ių
+                  {topic.numberOfSubTopics} potemės/ių &bull;{" "}
+                  {topic.numberOfAllTasks} uždaviniai/ių
                 </Box>
               </Box>
-
               <Box
                 mt="1"
                 fontWeight="semibold"
@@ -119,6 +142,9 @@ const LearningTopics = () => {
                 noOfLines={1}
               >
                 {topic.title}
+              <Flex justify="flex-end">
+              <DeleteIcon cursor={"pointer"}/>
+              </Flex>
               </Box>
             </Box>
           </Box>

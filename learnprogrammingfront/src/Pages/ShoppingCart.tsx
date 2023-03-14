@@ -14,10 +14,14 @@ import {
   Input,
   Stack,
   Select,
+  useToast,
+  Spinner,
 } from "@chakra-ui/react";
 import { FiHome, FiShoppingCart } from "react-icons/fi";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { ShoppingCartTypes } from "./Types/ShoppingCartTypes";
+import { CloseIcon } from "@chakra-ui/icons";
+import EmptyCart from "./WebPhotos/emptycart.png";
 
 const steps = [
   {
@@ -31,6 +35,8 @@ const steps = [
 const ShoppingCart = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShoppingCartTypes>();
+  const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
 
   const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
@@ -46,16 +52,60 @@ const ShoppingCart = () => {
     });
     const allItems = await response.json();
     setItems(allItems);
+    setIsLoading(false);
+    console.log(allItems);
   }, []);
 
   useEffect(() => {
     getShoppingCartItems();
-  }, []);
+  }, [isLoading]);
+
+  const deleteShoppingCartItem = async(e: React.MouseEvent<SVGElement, MouseEvent>, id: number) : Promise<void> => {
+    e.preventDefault();
+    setIsLoading(true);
+    const response = await fetch(`https://localhost:7266/api/shoppingcart/${id}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    }
+    );
+
+  if (response.status === 204) {
+    setIsLoading(false);
+    toast({
+      title: "Prekė ištrinta",
+      position: "top-right",
+      status: "success",
+      isClosable: true,
+    });
+  } else {
+    toast({
+      title: "Nepavyko ištrinti",
+      position: "top-right",
+      status: "error",
+      isClosable: true,
+    });
+  }
+  };
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
+        <Spinner size='xl' />
+      </Flex>
+    )
+  }
 
   return (
     <>
-      {items === undefined ? (
-        <Heading>Tuščias krepšelis</Heading>
+      {items?.shoppingCartItems.length ===  0 ? (
+        <>
+        <Heading textAlign={"center"} mt={5}>Tuščias krepšelis</Heading>
+        <Image margin={"auto"} mt={10} src={EmptyCart}/>
+      </>
       ) : (
         <>
           <Steps
@@ -76,7 +126,7 @@ const ShoppingCart = () => {
                   <>
                         <Box py={10} px={10} mx={"auto"}>
                           <Grid
-                            templateColumns="repeat(5, 1fr)"
+                            templateColumns="repeat(6, 1fr)"
                             gap={4}
                             alignItems={"center"}
                             mb={3}
@@ -98,7 +148,7 @@ const ShoppingCart = () => {
                           {items?.shoppingCartItems.map((item) => {
                       return (
                           <Grid
-                            templateColumns="repeat(5, 1fr)"
+                            templateColumns="repeat(6, 1fr)"
                             gap={4}
                             alignItems={"center"}
                             mb={3}
@@ -135,6 +185,11 @@ const ShoppingCart = () => {
                                 {item.product.price} €
                               </Flex>
                             </GridItem>
+                            <GridItem>
+                              <Flex justify="center">
+                              <CloseIcon cursor={"pointer"} onClick={(e) => deleteShoppingCartItem(e, item.id)}/>
+                              </Flex>
+                            </GridItem>
                           </Grid>
                           );
                         })}
@@ -145,18 +200,18 @@ const ShoppingCart = () => {
                         <Flex flexDirection={"row"} gap={5}>
                           <Flex flexDirection={"column"}>
                             Suma
-                            <Heading size={"sm"}>{items?.cartPrice} €</Heading>
+                            <Heading size={"sm"}>{items?.cartPrice.toFixed(2)} €</Heading>
                           </Flex>
                           <Flex flexDirection={"column"}>
                             Pristatymas
-                            <Heading size={"sm"}>{items?.shipping} €</Heading>
+                            <Heading size={"sm"}>{items?.shipping.toFixed(2)} €</Heading>
                           </Flex>
                         </Flex>
                       </Flex>
                       <Flex justifyContent={"end"}>
                         <Flex flexDirection={"column"} mr={7}>
                           Iš viso
-                          <Heading size={"sm"}>{items?.totalPrice} €</Heading>
+                          <Heading size={"sm"}>{items?.totalPrice.toFixed(2)} €</Heading>
                         </Flex>
                       </Flex>
                     </Flex>

@@ -10,5 +10,6 @@ namespace LearnProgramming.Core.Dto
     {
         public int SubTopicId { get; set; }
         public string SubTopicName { get; set; } = string.Empty!;
+        public int NumberOfTasks { get; set; }
     }
 }

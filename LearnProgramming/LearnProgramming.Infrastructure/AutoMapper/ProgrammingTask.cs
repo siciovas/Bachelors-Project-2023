@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Domain.Entities;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,12 @@ using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.AutoMapper
 {
-    public class TasksInfoProfile : Profile
+    public class ProgrammingTask : Profile
     {
-        public TasksInfoProfile()
+        public ProgrammingTask()
         {
-            CreateMap<TaskInfo,TasksInfoDto>();
+            CreateMap<Domain.Entities.ProgrammingTask, ProgrammingTaskDto>();
+            CreateMap<Domain.Entities.ProgrammingTask, ProgrammingTaskPostDto>();
         }
     }
 }

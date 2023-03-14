@@ -15,6 +15,5 @@ namespace LearnProgramming.Core.Dto
         public int NumberOfSubTopics { get; set; }
         public int NumberOfAllTasks { get; set; }
         public Difficulty DifficultyInText { get; set; }
-        public int DifficultyInStars { get; set; }
     }
 }
