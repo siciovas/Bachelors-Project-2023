@@ -3,6 +3,7 @@ using System;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnProgramming.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230314183733_removedPicFromLearningTopics")]
+    partial class removedPicFromLearningTopics
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,7 +36,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("LearningTopics", (string)null);
+                    b.ToTable("LearningTopics");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Order", b =>
@@ -59,7 +61,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Order", (string)null);
+                    b.ToTable("Order");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.OrderItem", b =>
@@ -87,7 +89,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("ProductId");
 
-                    b.ToTable("OrderItem", (string)null);
+                    b.ToTable("OrderItem");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Product", b =>
@@ -131,7 +133,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Product", (string)null);
+                    b.ToTable("Product");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.ProgrammingTask", b =>
@@ -167,7 +169,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("SubTopicId");
 
-                    b.ToTable("ProgrammingTask", (string)null);
+                    b.ToTable("ProgrammingTask");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.ShippingInformation", b =>
@@ -223,7 +225,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShippingInformation", (string)null);
+                    b.ToTable("ShippingInformation");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.ShoppingCartItem", b =>
@@ -247,7 +249,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("ShoppingCartItems", (string)null);
+                    b.ToTable("ShoppingCartItems");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>
@@ -271,7 +273,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Submission", (string)null);
+                    b.ToTable("Submission");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.SubTopic", b =>
@@ -291,7 +293,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasIndex("LearningTopicId");
 
-                    b.ToTable("SubTopics", (string)null);
+                    b.ToTable("SubTopics");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.User", b =>
@@ -341,7 +343,7 @@ namespace LearnProgramming.Infrastructure.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Users", (string)null);
+                    b.ToTable("Users");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Order", b =>

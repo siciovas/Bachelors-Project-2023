@@ -3,6 +3,7 @@ using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using LearnProgramming.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -21,8 +22,8 @@ namespace LearnProgramming.API.Controllers
             _learningTopicsRep = learningTopicsRep;
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<LearningTopicsDto>>> GetAll()
         {
             var topics = await _learningTopicsRep.GetAll();
@@ -42,6 +43,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int id)
         {
             var topics = await _learningTopicsRep.Get(id);
@@ -53,12 +55,13 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<LearningTopicsDto>> Update(LearningTopicsDto learningTopics, int id) 
         {
             var topics = await _learningTopicsRep.Get(id);
             if(topics == null) return NotFound();
 
-            topics.Photo = learningTopics.Photo;
             topics.Title = learningTopics.Title;
             topics.DifficultyInText = learningTopics.DifficultyInText;
 
@@ -68,11 +71,12 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<LearningTopicsPostDto>> Post(LearningTopicsPostDto learningTopics)
         {
             var newTopic = new LearningTopic
             {
-                Photo = learningTopics.Photo,
+
                 Title = learningTopics.Title,
                 DifficultyInText = learningTopics.DifficultyInText
             };

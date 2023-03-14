@@ -361,7 +361,22 @@ const Profile = () => {
             </Stack>
           </Stack>
         </form>
-        <Button colorScheme={"red"}>Ištrinti paskyrą</Button>
+        <Button          
+            bgGradient="linear(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)"
+            textAlign= "center"
+            textTransform= "uppercase"
+            transition="1.5s"
+            backgroundSize= "200% auto"
+            color="white" 
+            boxShadow= "0 0 20px #eee"
+            borderRadius= "10px"
+            display= "block"
+            _hover= {{
+              bgPos: "center",
+              color: "#fff",
+              textDecoration: "none",
+            }}
+         >Ištrinti paskyrą</Button>
       </Stack>
     </Flex>
   );

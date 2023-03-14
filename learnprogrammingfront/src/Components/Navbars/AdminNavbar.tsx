@@ -83,6 +83,7 @@ const AdminNavbar = () => {
           aria-label={"Open Menu"}
           display={{ md: "none" }}
           onClick={isOpen ? onClose : onOpen}
+          textColor={"center"}
         />
         <Button
           color={location.pathname === "/" ? "white" : "black"}
@@ -136,7 +137,7 @@ const AdminNavbar = () => {
               <Avatar size={"md"} src={avatar} />
             </MenuButton>
             <MenuList>
-              <MenuItem>Paskyra</MenuItem>
+              <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuItem>Asmeniniai duomenys</MenuItem>
               <MenuDivider />
               <MenuItem>Mano prašymai</MenuItem>

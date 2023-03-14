@@ -1,5 +1,5 @@
 export interface LearningSubTopicsType {
-  subTopicId: number;
+  id: number;
   learningTopicId: number;
   subTopicName: string;
   numberOfTasks: number;

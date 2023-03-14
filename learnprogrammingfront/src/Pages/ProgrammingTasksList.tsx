@@ -6,6 +6,7 @@ import {
   Grid,
   Heading,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AddNewProgramminTask } from "../Components/AddNewProgrammingTask";
@@ -20,20 +21,21 @@ const ProgrammingTasksList = () => {
   const [subTopic, setSubTopic] = useState<LearningSubTopicsType>();
   const [tasks, setTasks] = useState<ProgrammingTaskTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
 
-  const NavigateToTask = (id: number) => {
+  const NavigateToTask = (taskId: number) => {
     navigate("/uzduotis", {
       state: {
        learningTopicId: state.learningTopicId,
-       subtopicId: state.subtopicId,
-       id: id
+       subTopicId: state.subTopicId,
+       taskId: taskId
       },
     });
   };
 
   const getLearningSubTopicName = useCallback(async () => {
     const response = await fetch(
-      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subtopicId}`,
+      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -52,7 +54,7 @@ const ProgrammingTasksList = () => {
 
 const getProgrammingTasks = useCallback(async () => {
     const response = await fetch(
-      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subtopicId}/task`,
+      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -69,6 +71,36 @@ const getProgrammingTasks = useCallback(async () => {
   useEffect(() => {
     getProgrammingTasks();
   }, [isLoading]);
+
+  const deleteProgrammingTask = async(e: React.MouseEvent<SVGElement, MouseEvent>, taskId: number) : Promise<void> => {
+    e.preventDefault();
+    const response = await fetch(`https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task/${taskId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    }
+    );
+
+  if (response.status === 204) {
+    setIsLoading(true);
+    toast({
+      title: "Uždavinys ištrintas",
+      position: "top-right",
+      status: "success",
+      isClosable: true,
+    });
+  } else {
+    toast({
+      title: "Nepavyko ištrinti",
+      position: "top-right",
+      status: "error",
+      isClosable: true,
+    });
+  }
+  };
 
   if (isLoading) {
     return (
@@ -136,7 +168,7 @@ const getProgrammingTasks = useCallback(async () => {
                     <Button colorScheme={"green"} variant="outline">
                       Pažymėti kaip atliktą
                     </Button>
-                    <DeleteIcon cursor={"pointer"}/>
+                    <DeleteIcon cursor={"pointer"} onClick={(e)=> deleteProgrammingTask(e, task.id)}/>
                   </Flex>
                 </Flex>
               </Flex>

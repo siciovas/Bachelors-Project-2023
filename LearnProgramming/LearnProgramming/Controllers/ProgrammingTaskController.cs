@@ -3,6 +3,7 @@ using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnProgramming.API.Controllers
@@ -25,6 +26,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<ProgrammingTaskDto>>> GetAll(int learningtopicId, int subtopicId)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -41,6 +43,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<LearningTopicsDto>> Get(int learningtopicId, int subtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -57,6 +60,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult> Delete(int learningtopicId, int subtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -74,6 +78,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ProgrammingTaskPostDto>> Update(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -96,6 +101,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<ProgrammingTaskPostDto>> Post(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);

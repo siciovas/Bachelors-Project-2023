@@ -13,12 +13,14 @@ import { useCallback, useEffect, useState } from "react";
 import { SubmissionTypes } from "../Pages/Types/SubmissionTypes";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
+import { useLocation } from "react-router-dom";
 
 const GetMySubmissions = () => {
   const token = localStorage.getItem("accessToken");
   const [submissions, setSubmissions] = useState<SubmissionTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const { state } = useLocation();
 
   const getSubmissions = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/submission`, {

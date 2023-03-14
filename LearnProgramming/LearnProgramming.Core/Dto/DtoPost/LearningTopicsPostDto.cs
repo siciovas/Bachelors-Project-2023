@@ -9,7 +9,6 @@ namespace LearnProgramming.Core.Dto.DtoPost
 {
     public class LearningTopicsPostDto
     {
-        public byte[] Photo { get; set; } 
         public string Title { get; set; } = string.Empty!;
         public Difficulty DifficultyInText { get; set; }
     }

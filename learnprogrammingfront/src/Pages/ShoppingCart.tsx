@@ -22,6 +22,8 @@ import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { ShoppingCartTypes } from "./Types/ShoppingCartTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import EmptyCart from "./WebPhotos/emptycart.png";
+import { BookCover } from "../Pages/Types/ShopTypes";
+import { GetBookCoverType } from "../Helpers/GetBookCover";
 
 const steps = [
   {
@@ -53,16 +55,10 @@ const ShoppingCart = () => {
     const allItems = await response.json();
     setItems(allItems);
     setIsLoading(false);
-    console.log(allItems);
   }, []);
-
-  useEffect(() => {
-    getShoppingCartItems();
-  }, [isLoading]);
 
   const deleteShoppingCartItem = async(e: React.MouseEvent<SVGElement, MouseEvent>, id: number) : Promise<void> => {
     e.preventDefault();
-    setIsLoading(true);
     const response = await fetch(`https://localhost:7266/api/shoppingcart/${id}`,
     {
       headers: {
@@ -74,7 +70,7 @@ const ShoppingCart = () => {
     );
 
   if (response.status === 204) {
-    setIsLoading(false);
+    setIsLoading(true);
     toast({
       title: "Prekė ištrinta",
       position: "top-right",
@@ -90,6 +86,10 @@ const ShoppingCart = () => {
     });
   }
   };
+
+  useEffect(() => {
+    getShoppingCartItems();
+  }, [isLoading]);
 
   if (isLoading) {
     return (
@@ -172,7 +172,7 @@ const ShoppingCart = () => {
                             </GridItem>
                             <GridItem>
                               <Flex justifyContent={"center"}>
-                                {item.product.bookCoverType}
+                              {GetBookCoverType(item?.product.bookCoverType as unknown as BookCover)}
                               </Flex>
                             </GridItem>
                             <GridItem>

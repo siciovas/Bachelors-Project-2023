@@ -6,6 +6,7 @@ import {
   Grid,
   Heading,
   Spinner,
+  useToast,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "./Types/LearningSubTopicsType";
@@ -20,12 +21,13 @@ const LearningSubTopics = () => {
   const { state } = useLocation();
   const [topic, setTopic] = useState<LearningTopicTypes>();
   const [isLoading, setIsLoading] = useState(true);
+  const toast = useToast();
 
-  const NavigateToTask = (subtopicId: number) => {
+  const NavigateToTask = (subTopicId: number) => {
     navigate("/uzduotys", {
       state: {
         learningTopicId: state.learningTopicId,
-        subtopicId: subtopicId,
+        subTopicId: subTopicId,
       },
     });
   };
@@ -67,7 +69,37 @@ const LearningSubTopics = () => {
 
   useEffect(() => {
     getLearningSubTopics();
-  }, []);
+  }, [isLoading]);
+
+  const deleteLearningSubTopic = async(e: React.MouseEvent<SVGElement, MouseEvent>, subTopicId: number) : Promise<void> => {
+    e.preventDefault();
+    const response = await fetch(`https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${subTopicId}`,
+    {
+      headers: {
+        "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    }
+    );
+
+  if (response.status === 204) {
+    setIsLoading(true);
+    toast({
+      title: "Potemė ištrinta",
+      position: "top-right",
+      status: "success",
+      isClosable: true,
+    });
+  } else {
+    toast({
+      title: "Nepavyko ištrinti",
+      position: "top-right",
+      status: "error",
+      isClosable: true,
+    });
+  }
+  };
 
   if (isLoading) {
     return (
@@ -109,7 +141,7 @@ const LearningSubTopics = () => {
                       textTransform="uppercase"
                       size={"sm"}
                       cursor={"pointer"}
-                      onClick={() => NavigateToTask(subtopic.subTopicId)}
+                      onClick={() => NavigateToTask(subtopic.id)}
                       position="relative"
                       _hover={{
                         _after: {
@@ -143,7 +175,7 @@ const LearningSubTopics = () => {
                     <Button colorScheme={"green"} variant="outline">
                       Pažymėti kaip atliktą
                     </Button>
-                    <DeleteIcon cursor={"pointer"}/>
+                    <DeleteIcon cursor={"pointer"} onClick={(e)=> deleteLearningSubTopic(e, subtopic.id)}/>
                   </Flex>
                 </Flex>
               </Flex>
