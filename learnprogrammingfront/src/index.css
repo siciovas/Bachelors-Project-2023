@@ -37,3 +37,15 @@ body::-webkit-scrollbar{
   transform: scaleX(1);
   transform-origin: bottom left;
 }
+
+.suggestion:hover {
+  transform: scale(1.15) translateZ(0);
+}
+
+.suggestions:hover > .suggestion:not(:hover){
+  transform: scale(.9);
+}
+
+.suggestions:hover > .suggestion:not(:hover){
+  filter: brightness(0.5) blur(5px);
+}

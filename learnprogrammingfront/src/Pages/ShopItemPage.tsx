@@ -9,36 +9,83 @@ import {
   Badge,
   Divider,
   useToast,
+  Spinner,
+  Grid,
 } from "@chakra-ui/react";
 import { ShopTypes } from "./Types/ShopTypes";
 import { useLocation } from "react-router-dom";
 import { BookCover } from "../Pages/Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
-
+import eventBus from "../Helpers/EventBus";
+import { Unauthorized } from "../Constants/Auth";
 
 const ShopItemPage = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes>();
+  const [suggestions, setSuggestions] = useState<ShopTypes[]>([]);
   const { state } = useLocation();
   const toast = useToast();
-  
+  const [isLoading, setIsLoading] = useState(true);
+
   const getShopItems = useCallback(async () => {
-    const items = await fetch(`https://localhost:7266/api/shop/${state.id}`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-    });
-    const allItems = await items.json();
-    setItems(allItems);
+    const response = await fetch(
+      `https://localhost:7266/api/shop/${state.id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    } else if (response.status === 200) {
+      const allItems = await response.json();
+      setItems(allItems);
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Netikėta klaida",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   }, []);
 
-  useEffect(() => {
-    getShopItems();
+  const getShopSuggestions = useCallback(async () => {
+    const response = await fetch(
+      `https://localhost:7266/api/shop/suggestions`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    } else if (response.status === 200) {
+      const allItems = await response.json();
+      setSuggestions(allItems);
+      setIsLoading(false);
+    } else {
+      toast({
+        title: "Netikėta klaida",
+        status: "error",
+        duration: 5000,
+        position: "top-right",
+        isClosable: true,
+      });
+    }
   }, []);
 
-  const postToShoppingCart = async (e: React.MouseEvent<HTMLButtonElement>): Promise<void> => {
+  const postToShoppingCart = async (
+    e: React.MouseEvent<HTMLButtonElement>
+  ): Promise<void> => {
     e.preventDefault();
     const response = await fetch("https://localhost:7266/api/shoppingcart", {
       headers: {
@@ -50,7 +97,9 @@ const ShopItemPage = () => {
         productId: items?.id,
       }),
     });
-
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    }
     if (response.status === 201) {
       toast({
         title: "Pridėtą į krepšelį",
@@ -70,21 +119,35 @@ const ShopItemPage = () => {
     }
   };
 
+  useEffect(() => {
+    getShopItems();
+    getShopSuggestions();
+  }, [isLoading]);
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left="50%" position="fixed">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <Box className="container mt-5 mb-5">
       <Box border={"none"} overflow={"hidden"}>
         <Box className="row g-0">
-          <Box className="col-md-6 border-end">
+          <Box className="col-md-6 border-end" height={"515px"}>
             <Box className="d-flex flex-column justify-content-center">
               <Flex
                 justifyContent={"center"}
                 alignItems={"center"}
-                borderBottom={"1px solid #eee"}
-                height={400}
+                height={"100%"}
                 overflow={"hidden"}
               >
-                <Image src={"data:image/jpeg;base64," + items?.photo} width="350" />
+                <Image
+                  src={"data:image/jpeg;base64," + items?.photo}
+                  width="350px"
+                />
               </Flex>
             </Box>
           </Box>
@@ -110,18 +173,52 @@ const ShopItemPage = () => {
                 <Text>Kalba: {items?.language}</Text>
                 <Text>Puslapių skaičius: {items?.pageNumber}</Text>
                 <Text>Leidėjas: {items?.publisher}</Text>
-                <Text>Viršelio tipas: {GetBookCoverType(items?.bookCoverType as BookCover)}</Text>
+                <Text>
+                  Viršelio tipas:{" "}
+                  {GetBookCoverType(items?.bookCoverType as BookCover)}
+                </Text>
                 <Text>Leidinio data: {items?.releaseDate}</Text>
               </Box>
             </Box>
             <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
-              <Button colorScheme={"cyan"} boxShadow="md" onClick={(e) => postToShoppingCart(e)}>
+              <Button
+                colorScheme={"cyan"}
+                boxShadow="md"
+                onClick={(e) => postToShoppingCart(e)}
+              >
                 Į KREPŠELĮ
+              </Button>
+              <Button
+                colorScheme={"red"}
+                boxShadow="md"
+              >
+                IŠTRINTI
               </Button>
             </Flex>
           </Box>
           <Divider mt={3} />
-          <Heading mt={3} size={'lg'} textAlign={"center"}>Rekomenduojame</Heading>
+          <Heading mt={3} size={"lg"} textAlign={"center"}>
+            Rekomenduojame
+          </Heading>
+          <Grid templateColumns="repeat(3, 1fr)" className="suggestions" mt={10} mb={10}>
+            {suggestions.map((suggestion) => {
+              return (
+                <Flex flexDirection='column' className="suggestion">
+                  <Box borderWidth="1px" borderRadius="lg" overflow="hidden" width={"325px"} position="relative">
+                    <Image
+                      cursor={"pointer"}
+                      height="400px"
+                      width="100%"
+                      src={"data:image/jpeg;base64," + suggestion.photo}
+                    />
+                    <Flex width={"100%"} justifyContent={"center"} position={"absolute"} color={"white"} top="50%" fontWeight={"bold"}>
+                      {suggestion.name}
+                    </Flex>
+                  </Box>
+                </Flex>
+              )
+            })}
+          </Grid>
         </Box>
       </Box>
     </Box>

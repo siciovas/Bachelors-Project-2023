@@ -10,10 +10,11 @@ namespace LearnProgramming.Core.Interfaces
 {
     public interface ISubTopicsRep
     {
-        Task<List<SubTopic>> GetAll(int learningTopicId);
-        Task<SubTopic> Get(int id, int topicId);
+        Task<List<SubTopicDto>> GetAll(int learningTopicId);
+        Task<SubTopic> Get(int id);
         Task<SubTopic> Create(SubTopic subTopic);
         Task<SubTopic> Update(SubTopic subTopic);
         Task Delete(SubTopic subTopic);
+
     }
 }

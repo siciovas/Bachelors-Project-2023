@@ -6,7 +6,8 @@ shoppingCartItems: ShoppingCartItem[];
 }
 
 export interface ShoppingCartItem{
-quantity: number,
+id: number;
+quantity: number;
 product: Product;
 }
 

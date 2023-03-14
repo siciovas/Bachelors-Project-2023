@@ -9,4 +9,6 @@ export interface LearningTopicTypes {
   photo: Blob;
   title: string;
   difficultyInText: Difficulty;
+  numberOfSubTopics: number;
+  numberOfAllTasks: number;
 }

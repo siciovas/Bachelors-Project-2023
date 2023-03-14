@@ -15,7 +15,7 @@ namespace LearnProgramming.Infrastructure.Database
         public DbSet<User> Users { get; set; }
         public DbSet<LearningTopic> LearningTopics { get; set; }
         public DbSet<SubTopic> SubTopics { get; set; }
-        public DbSet<TaskInfo> Task { get; set; }
+        public DbSet<ProgrammingTask> ProgrammingTask { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Order { get; set; }

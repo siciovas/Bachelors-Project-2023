@@ -45,6 +45,14 @@ namespace LearnProgramming.Infrastructure.Repositories
             return topics;
         }
 
+        public async Task<List<Product>> GetSuggestions()
+        {
+            Random rand = new Random();
+            int skipper = rand.Next(0, _db.Product.Count() - 3);
+
+            return await _db.Product.Skip(skipper).Take(3).ToListAsync();
+        }
+
         public async Task<Product> Update(Product shopItem)
         {
            _db.Product.Update(shopItem);

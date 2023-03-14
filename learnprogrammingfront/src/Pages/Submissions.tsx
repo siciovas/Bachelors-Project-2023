@@ -15,6 +15,7 @@ import {
   useToast,
   Textarea,
 } from "@chakra-ui/react";
+import { useLocation } from "react-router-dom";
 
 const Submissions = () => {
   const OverlayOne = () => (
@@ -28,6 +29,8 @@ const Submissions = () => {
   const token = localStorage.getItem("accessToken");
   const [topic, setTopic] = useState<string>();
   const [message, setMessage] = useState<string>();
+  const location = useLocation();
+
 
   const onTopicChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setTopic(e.target.value as string);
@@ -82,6 +85,7 @@ const Submissions = () => {
           setOverlay(<OverlayOne />);
           onOpen();
         }}
+        color={location.pathname === "/" ? "white" : "black" }
       >
         Prašymas
       </Button>

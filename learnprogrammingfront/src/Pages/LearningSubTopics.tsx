@@ -5,28 +5,32 @@ import {
   Flex,
   Grid,
   Heading,
+  Spinner,
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "./Types/LearningSubTopicsType";
 import { LearningTopicTypes } from "./Types/LearningTopicsTypes";
 import { AddNewSubTopic } from "../Components/AddNewSubTopic";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const LearningSubTopics = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [subtopics, setSubTopics] = useState<LearningSubTopicsType[]>([]);
   const { state } = useLocation();
-  const [topics, setTopics] = useState<LearningTopicTypes>();
+  const [topic, setTopic] = useState<LearningTopicTypes>();
+  const [isLoading, setIsLoading] = useState(true);
 
   const NavigateToTask = (subtopicId: number) => {
     navigate("/uzduotys", {
       state: {
+        learningTopicId: state.learningTopicId,
         subtopicId: subtopicId,
       },
     });
   };
 
-  const getLearningTopics = useCallback(async () => {
+  const getLearningTopicName = useCallback(async () => {
     const response = await fetch(
       `https://localhost:7266/api/learningtopic/${state.learningTopicId}`,
       {
@@ -38,12 +42,13 @@ const LearningSubTopics = () => {
       }
     );
     const allTopics = await response.json();
-    setTopics(allTopics);
+    setTopic(allTopics);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
-    getLearningTopics();
-  }, []);
+    getLearningTopicName();
+  }, [isLoading]);
 
   const getLearningSubTopics = useCallback(async () => {
     const response = await fetch(
@@ -56,20 +61,28 @@ const LearningSubTopics = () => {
         method: "GET",
       }
     );
-    const allTopics = await response.json();
-    setSubTopics(allTopics);
+    const topic = await response.json();
+    setSubTopics(topic);
   }, []);
 
   useEffect(() => {
     getLearningSubTopics();
   }, []);
 
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
+        <Spinner size='xl' />
+      </Flex>
+    )
+  }
+
   return (
     <Box className="container mt-5">
       <Grid className="col-md-12">
         <Flex justifyContent={"center"}>
           <Box>
-            <Heading size={"lg"}>„{topics?.title}“ potemės</Heading>
+            <Heading size={"lg"}>„{topic?.title}“ potemės</Heading>
           </Box>
         </Flex>
         <AddNewSubTopic/>
@@ -125,11 +138,12 @@ const LearningSubTopics = () => {
                       letterSpacing="wide"
                       textTransform="uppercase"
                     >
-                      uždaviniai/ių:
+                      uždaviniai/ių: {subtopic.numberOfTasks}
                     </Box>
                     <Button colorScheme={"green"} variant="outline">
                       Pažymėti kaip atliktą
                     </Button>
+                    <DeleteIcon cursor={"pointer"}/>
                   </Flex>
                 </Flex>
               </Flex>

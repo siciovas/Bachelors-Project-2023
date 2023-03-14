@@ -9,16 +9,15 @@ import {
   MenuDivider,
   MenuList,
   Link,
-  useColorMode,
   useDisclosure,
-  useColorModeValue,
   Avatar,
   Stack,
   Box,
 } from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import { useLocation, useNavigate } from "react-router-dom";
 import { Submissions } from "../../Pages/Submissions";
+import eventBus from "../../Helpers/EventBus";
 
 interface LinksProps {
   title: string;
@@ -35,10 +34,6 @@ const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
     px={2}
     py={1}
     rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
     href={url}
   >
     {title}
@@ -46,16 +41,14 @@ const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
 );
 
 const TeacherNavbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
+  const location = useLocation();
 
   const Logout = (e: any): void => {
     e.preventDefault();
-    localStorage.removeItem("accessToken");
-    localStorage.removeItem("role");
-    navigate("/");
+    eventBus.dispatch("logOut", "");
   };
 
   const [avatar, setAvatar] = useState<string>();
@@ -77,7 +70,12 @@ const TeacherNavbar = () => {
   }, []);
 
   return (
-    <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+    <Box
+      position={location.pathname === "/" ? "absolute" : "inherit"}
+      zIndex={1}
+      width={"100%"}
+      px={4}
+    >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <IconButton
           size={"md"}
@@ -87,33 +85,49 @@ const TeacherNavbar = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <Button
+          color={location.pathname === "/" ? "white" : "black"}
           background={"none"}
           fontWeight={"normal"}
           onClick={() => navigate("/")}
+          cursor={"pointer"}
+          zIndex={1}
+          _hover={{
+            bg: "none",
+          }}
         >
           Pagrindinis
         </Button>
-        <Flex display={{ base: "none", md: "flex" }}>
+        <Flex
+          display={{ base: "none", md: "flex" }}
+          width={"100%"}
+          justifyContent={"center"}
+          position={"absolute"}
+        >
           {LinksTeachers.map((link) => (
             <Button
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
+              color={location.pathname === "/" ? "white" : "black"}
             >
               {link.title}
             </Button>
           ))}
-          <Submissions/>
+          <Submissions />
         </Flex>
         <Flex alignItems={"center"} gap={2}>
-          <Box> Naudojatės mokytojo prieiga</Box>
-          <Button background={"none"} onClick={() => navigate("/krepselis")}>
+          <Box color={location.pathname === "/" ? "white" : "black"}>
+            {" "}
+            Naudojatės mokytojo prieiga
+          </Box>
+          <Button
+            background={"none"}
+            onClick={() => navigate("/krepselis")}
+            color={location.pathname === "/" ? "white" : "black"}
+          >
             <i className="bi bi-cart-fill"></i>
           </Button>
           <Menu>
-            <Button onClick={toggleColorMode} background={"none"}>
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
             <MenuButton
               as={Button}
               rounded={"full"}
@@ -121,7 +135,7 @@ const TeacherNavbar = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar size={"sm"} src={avatar} />
+              <Avatar size={"md"} src={avatar} />
             </MenuButton>
             <MenuList>
               <MenuItem>Paskyra</MenuItem>

@@ -1,6 +1,5 @@
 import React from "react";
-import { Box, Stack, Heading, Text, Container } from "@chakra-ui/react";
-
+import { Box, Stack, Heading, Text, Container, Textarea, Button, Input } from "@chakra-ui/react";
 import Slider from "react-slick";
 import firstPhoto from "./WebPhotos/WebPhoto1.png";
 import secondPhoto from "./WebPhotos/WebPhoto2.png";
@@ -40,9 +39,9 @@ const HomePage = () => {
   return (
     <Box
       className="sliderBox"   
-      maxH={"100%"}
-      maxW={"100%"}   
+      height={"100vh"}
       overflow={"hidden"}
+      pointerEvents="none"
     >
       {/* Slider */}
       <Slider {...settings}>

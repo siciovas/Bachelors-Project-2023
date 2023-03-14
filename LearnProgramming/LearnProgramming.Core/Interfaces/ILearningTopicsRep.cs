@@ -11,7 +11,7 @@ namespace LearnProgramming.Core.Interfaces
 {
     public interface ILearningTopicsRep
     {
-        Task<List<LearningTopic>> GetAll();
+        Task<List<LearningTopicsDto>> GetAll();
         Task<LearningTopic> Get(int id);
         Task<LearningTopic> Create(LearningTopic learningTopics);
         Task<LearningTopic> Update(LearningTopic learningTopics);

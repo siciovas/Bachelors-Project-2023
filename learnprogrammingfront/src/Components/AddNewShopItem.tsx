@@ -104,7 +104,7 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
 
   return (
     <>
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" width={"325px"}>
         <Button
           cursor={"pointer"}
           width="100%"

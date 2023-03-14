@@ -36,6 +36,7 @@ namespace LearnProgramming.API.Controllers
             {
                 ShoppingCartItems = shoppingCartItems.Select(cart => new ShoppingCartItemDto
                 {
+                    Id = cart.Id,
                     Product = cart.Product,
                     Quantity = cart.Quantity,
                 }).ToList(),

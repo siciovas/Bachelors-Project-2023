@@ -1,6 +1,6 @@
 import { ReactElement } from "react";
 import { HamburgerIcon, CloseIcon, MoonIcon, SunIcon } from "@chakra-ui/icons";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import {
   Box,
   Flex,
@@ -9,7 +9,6 @@ import {
   Button,
   Menu,
   useDisclosure,
-  useColorModeValue,
   useColorMode,
   SimpleGrid,
   Stack,
@@ -25,16 +24,7 @@ const LinksGuest: LinksProps[] = [
 ];
 
 const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    _hover={{
-      textDecoration: "none",
-      bg: useColorModeValue("gray.200", "gray.700"),
-    }}
-    href={url}
-  >
+  <Link px={2} py={1} rounded={"md"} href={url}>
     {title}
   </Link>
 );
@@ -43,9 +33,15 @@ const GuestNavbar = () => {
   const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
+  const location = useLocation();
 
   return (
-    <Box bg={useColorModeValue("gray.100", "gray.900")} px={4}>
+    <Box
+      position={location.pathname === "/" ? "absolute" : "inherit"}
+      zIndex={1}
+      width={"100%"}
+      px={4}
+    >
       <SimpleGrid
         className="navbar-container"
         columns={3}
@@ -62,9 +58,15 @@ const GuestNavbar = () => {
         <Flex>
           <Button
             justifyContent="flex-start"
+            color={location.pathname === "/" ? "white" : "black"}
             background={"none"}
             fontWeight={"normal"}
             onClick={() => navigate("/")}
+            cursor={"pointer"}
+            zIndex={1}
+            _hover={{
+              bg: "none",
+            }}
           >
             Pagrindinis
           </Button>
@@ -75,6 +77,7 @@ const GuestNavbar = () => {
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
+              color={location.pathname === "/" ? "white" : "black"}
             >
               {link.title}
             </Button>
@@ -82,14 +85,14 @@ const GuestNavbar = () => {
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
           <Menu>
-            <Box>Naudojatės svečio prieiga</Box>
-            <Button onClick={toggleColorMode} background={"none"}>
-              {colorMode === "light" ? <MoonIcon /> : <SunIcon />}
-            </Button>
+            <Box color={location.pathname === "/" ? "white" : "black"}>
+              Naudojatės svečio prieiga
+            </Box>
             <Button
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate("/prisijungimas")}
+              color={location.pathname === "/" ? "white" : "black"}
             >
               Prisijungti
             </Button>

@@ -26,15 +26,7 @@ namespace LearnProgramming.API.Controllers
         {
             var subTopics = await _subTopicsRep.GetAll(learningtopicId);
 
-            var subTopicsDto = subTopics
-                .Select(x => new SubTopicDto
-                {
-                    SubTopicId = x.Id,
-                    SubTopicName = x.SubTopicName,
-                })
-                .ToList();
-
-            return Ok(subTopicsDto);
+            return Ok(subTopics);
         }
 
         [HttpGet("{id}")]
@@ -43,7 +35,7 @@ namespace LearnProgramming.API.Controllers
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
 
-            var subTopic = await _subTopicsRep.Get(id, topic.Id);
+            var subTopic = await _subTopicsRep.Get(id);
             if (subTopic == null) return NotFound();
 
             return new SubTopicDto
@@ -80,7 +72,7 @@ namespace LearnProgramming.API.Controllers
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
 
-            var subTopic = await _subTopicsRep.Get(id, topic.Id);
+            var subTopic = await _subTopicsRep.Get(id);
             if (subTopic == null) return NotFound();
 
             subTopic.SubTopicName = subTopicDto.SubTopicName;
@@ -98,7 +90,7 @@ namespace LearnProgramming.API.Controllers
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
 
-            var subTopic = await _subTopicsRep.Get(id, topic.Id);
+            var subTopic = await _subTopicsRep.Get(id);
             if (subTopic == null) return NotFound();
 
             await _subTopicsRep.Delete(subTopic);

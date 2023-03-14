@@ -1,28 +1,29 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { Box, Image, Badge, Grid } from "@chakra-ui/react";
+import { Box, Image, Badge, Grid, Flex, Spinner } from "@chakra-ui/react";
 import { ShopTypes } from "./Types/ShopTypes";
 import { useNavigate } from "react-router-dom";
 import {
   useToast,
 } from "@chakra-ui/react";
 import { AddNewShopItem } from "../Components/AddNewShopItem";
+import { DeleteIcon } from "@chakra-ui/icons";
 
 const Shop = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
 
-  const NavigateToItem = (shopItemId : number) => {
-    navigate('/preke',{
-      state:{
-       id : shopItemId
+  const NavigateToItem = (shopItemId: number) => {
+    navigate('/preke', {
+      state: {
+        id: shopItemId
       }
     })
   }
 
-  const AddShopItem = useCallback(async (e: FormEvent<HTMLFormElement>, photo: string, name:string, price:number,
+  const AddShopItem = useCallback(async (e: FormEvent<HTMLFormElement>, photo: string, name: string, price: number,
     description: string, pageNumber: number, language: string, bookCoverType: string, publisher: string, releaseDate: string): Promise<void> => {
     e.preventDefault();
     const response = await fetch("https://localhost:7266/api/shop", {
@@ -32,20 +33,17 @@ const Shop = () => {
       },
       method: "POST",
       body: JSON.stringify({
-       photo,
-       name,
-       price,
-       description,
-       pageNumber,
-       language,
-       bookCoverType,
-       publisher,
-       releaseDate,
+        photo,
+        name,
+        price,
+        description,
+        pageNumber,
+        language,
+        bookCoverType,
+        publisher,
+        releaseDate,
       }),
     });
-
-    const data = await response.json();
-
     if (response.status === 201) {
       setIsLoading(true);
       toast({
@@ -55,7 +53,6 @@ const Shop = () => {
         position: "top-right",
         isClosable: true,
       });
-      //onClose();
     } else {
       toast({
         title: "Nepavyko",
@@ -65,7 +62,7 @@ const Shop = () => {
         isClosable: true,
       });
     }
-  },[]);
+  }, []);
 
   const getShopItems = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/shop`, {
@@ -77,24 +74,32 @@ const Shop = () => {
     });
     const allItems = await response.json();
     setItems(allItems);
+    setIsLoading(false);
   }, []);
 
   useEffect(() => {
     getShopItems();
   }, [isLoading]);
 
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
+        <Spinner size='xl' />
+      </Flex>
+    )
+  }
 
   return (
-    <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={6}>
-      <AddNewShopItem AddShopItem = {AddShopItem}/>
+    <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={3}>
+      <AddNewShopItem AddShopItem={AddShopItem} />
       {items.map((item) => {
         return (
-          <Box borderWidth="1px" borderRadius="lg" overflow="hidden">
+          <Box borderWidth="1px" borderRadius="lg" overflow="hidden" width={"325px"}>
             <Image
               cursor={"pointer"}
               onClick={() => NavigateToItem(item.id)}
-              maxWidth="100%"
-              maxHeight="100%"
+              height="400px"
+              width="100%"
               src={"data:image/jpeg;base64," + item.photo}
             />
 
@@ -125,6 +130,9 @@ const Shop = () => {
               >
                 {item.name}
               </Box>
+              <Flex justify="flex-end">
+              <DeleteIcon cursor={"pointer"}/>
+              </Flex>
             </Box>
           </Box>
         );

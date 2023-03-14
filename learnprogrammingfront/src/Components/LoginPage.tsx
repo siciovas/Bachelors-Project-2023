@@ -67,12 +67,9 @@ const LoginPage = () => {
 
   return (
     <Flex
-      minH={"100vh"}
-      align={"center"}
-      justify={"center"}
-      bg={useColorModeValue("gray.50", "gray.800")}
+      mt={10}
     >
-      <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
+      <Stack spacing={8} mx={"auto"}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Prisijunk prie paskyros</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
@@ -81,7 +78,6 @@ const LoginPage = () => {
         </Stack>
         <Box
           rounded={"lg"}
-          bg={useColorModeValue("white", "gray.700")}
           boxShadow={"lg"}
           p={8}
         >

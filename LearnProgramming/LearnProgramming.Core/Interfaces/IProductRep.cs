@@ -14,5 +14,6 @@ namespace LearnProgramming.Core.Interfaces
         Task<Product> Create(Product shopItem);
         Task<Product> Update (Product shopItem);
         Task Delete (Product shopItem);
+        Task<List<Product>> GetSuggestions();
     }
 }

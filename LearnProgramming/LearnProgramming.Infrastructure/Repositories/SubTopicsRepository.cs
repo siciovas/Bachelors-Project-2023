@@ -33,14 +33,24 @@ namespace LearnProgramming.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<SubTopic?> Get(int id, int topicId)
+        public async Task<SubTopic?> Get(int id)
         {
-            return await _db.SubTopics.Where(subtopic => subtopic.Id == id && subtopic.LearningTopicId == topicId).FirstOrDefaultAsync();     
+            return await _db.SubTopics.Where(subtopic => subtopic.Id == id).FirstOrDefaultAsync();     
         }
 
-        public async Task<List<SubTopic>> GetAll(int learningTopicId)
+        public async Task<List<SubTopicDto>> GetAll(int learningTopicId)
         {
-            return await _db.SubTopics.Where(subtopic => subtopic.LearningTopicId == learningTopicId).ToListAsync();
+            var subTopics = await _db.SubTopics
+                 .Where(subtopic => subtopic.LearningTopicId == learningTopicId)
+                 .Select(x => new SubTopicDto
+                 {
+                     SubTopicId = x.Id,
+                     SubTopicName = x.SubTopicName,
+                     NumberOfTasks = _db.ProgrammingTask.Count(y => y.SubTopicId == x.Id),
+                 })
+                 .ToListAsync();
+
+            return subTopics;
         }
 
         public async Task<SubTopic> Update(SubTopic subTopic)

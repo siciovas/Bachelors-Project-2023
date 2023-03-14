@@ -3,6 +3,7 @@ using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnProgramming.API.Controllers
@@ -20,14 +21,13 @@ namespace LearnProgramming.API.Controllers
             _learningTopicsRep = learningTopicsRep;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<ActionResult<List<LearningTopicsDto>>> GetAll()
         {
             var topics = await _learningTopicsRep.GetAll();
 
-            var topicsDto = topics.Select(x => _mapper.Map<LearningTopicsDto>(x)).ToList();
-
-            return Ok(topicsDto);
+            return Ok(topics);
         }
 
         [HttpGet("{id}")]
