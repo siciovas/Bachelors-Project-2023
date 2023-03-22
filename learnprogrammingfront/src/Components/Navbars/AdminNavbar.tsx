@@ -14,7 +14,7 @@ import {
   Stack,
   Box,
 } from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import eventBus from "../../Helpers/EventBus";
 
@@ -25,17 +25,11 @@ interface LinksProps {
 
 const LinksAdmin: LinksProps[] = [
   { title: "Kursai", url: "/kursai" },
-  { title: "Pateikti prašymai", url: "/prasymai" },
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
 const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    href={url}
-  >
+  <Link px={2} py={1} rounded={"md"} href={url}>
     {title}
   </Link>
 );
@@ -61,8 +55,12 @@ const AdminNavbar = () => {
       },
       method: "GET",
     });
-    const avatar = await response.json();
-    setAvatar("data:image/jpeg;base64," + avatar.avatar);
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", "");
+    } else if (response.status === 200) {
+      const avatar = await response.json();
+      setAvatar("data:image/jpeg;base64," + avatar.avatar);
+    }
   }, []);
 
   useEffect(() => {
@@ -71,10 +69,11 @@ const AdminNavbar = () => {
 
   return (
     <Box
-      position={location.pathname === "/" ? "absolute" : "inherit"}
-      zIndex={1}
-      width={"100%"}
       px={4}
+      width={"100%"}
+      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      zIndex={1}
+      position={location.pathname === "/" ? "absolute" : "relative"}
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <IconButton
@@ -86,7 +85,7 @@ const AdminNavbar = () => {
           textColor={"center"}
         />
         <Button
-          color={location.pathname === "/" ? "white" : "black"}
+          color={"white"}
           background={"none"}
           fontWeight={"normal"}
           onClick={() => navigate("/")}
@@ -109,20 +108,24 @@ const AdminNavbar = () => {
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
-              color={location.pathname === "/" ? "white" : "black"}
+              color={"white"}
+              _hover={{
+                bg: "none",
+              }}
             >
               {link.title}
             </Button>
           ))}
         </Flex>
         <Flex alignItems={"center"} gap={2}>
-          <Box color={location.pathname === "/" ? "white" : "black"}>
-            Naudojatės administratoriaus prieiga
-          </Box>
+          <Box color={"white"}>Naudojatės administratoriaus prieiga</Box>
           <Button
             background={"none"}
             onClick={() => navigate("/krepselis")}
-            color={location.pathname === "/" ? "white" : "black"}
+            color={"white"}
+            _hover={{
+              bg: "none",
+            }}
           >
             <i className="bi bi-cart-fill"></i>
           </Button>
@@ -136,12 +139,12 @@ const AdminNavbar = () => {
             >
               <Avatar size={"md"} src={avatar} />
             </MenuButton>
-            <MenuList>
-              <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
-              <MenuItem>Asmeniniai duomenys</MenuItem>
+            <MenuList >
+              <MenuItem onClick={() => navigate('/paskyra')}>Paskyra</MenuItem>
+              <MenuItem onClick={() => navigate('/prasymai')}>Gauti prašymai</MenuItem>
               <MenuDivider />
-              <MenuItem>Mano prašymai</MenuItem>
-              <MenuItem>Užsakymų istorija</MenuItem>
+              <MenuItem onClick={() => navigate('/visinariai')} >Visi nariai</MenuItem>
+              <MenuItem onClick={() => navigate('/visiuzsakymai')} >Žmonių užsakymai</MenuItem>
               <MenuDivider />
               <MenuItem onClick={(e) => Logout(e)}>Atsijungti</MenuItem>
             </MenuList>

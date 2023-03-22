@@ -22,5 +22,6 @@ namespace LearnProgramming.Infrastructure.Database
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
         public DbSet<Submission> Submission { get; set; }
+        public DbSet<TeacherAndStudent> TeacherAndStudent { get; set; }
     }
 }

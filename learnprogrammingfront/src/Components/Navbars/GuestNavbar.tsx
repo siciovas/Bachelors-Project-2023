@@ -30,17 +30,17 @@ const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
 );
 
 const GuestNavbar = () => {
-  const { colorMode, toggleColorMode } = useColorMode();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
   const location = useLocation();
 
   return (
     <Box
-      position={location.pathname === "/" ? "absolute" : "inherit"}
-      zIndex={1}
-      width={"100%"}
       px={4}
+      width={"100%"}
+      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      zIndex={1}
+      position={location.pathname === "/" ? "absolute" : "relative"}
     >
       <SimpleGrid
         className="navbar-container"
@@ -58,7 +58,7 @@ const GuestNavbar = () => {
         <Flex>
           <Button
             justifyContent="flex-start"
-            color={location.pathname === "/" ? "white" : "black"}
+            color={"white"}
             background={"none"}
             fontWeight={"normal"}
             onClick={() => navigate("/")}
@@ -77,7 +77,10 @@ const GuestNavbar = () => {
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
-              color={location.pathname === "/" ? "white" : "black"}
+              color={"white"}
+              _hover={{
+                bg: "none",
+              }}
             >
               {link.title}
             </Button>
@@ -85,14 +88,15 @@ const GuestNavbar = () => {
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
           <Menu>
-            <Box color={location.pathname === "/" ? "white" : "black"}>
-              Naudojatės svečio prieiga
-            </Box>
+            <Box color={"white"}>Naudojatės svečio prieiga</Box>
             <Button
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate("/prisijungimas")}
-              color={location.pathname === "/" ? "white" : "black"}
+              color={"white"}
+              _hover={{
+                bg: "none",
+              }}
             >
               Prisijungti
             </Button>

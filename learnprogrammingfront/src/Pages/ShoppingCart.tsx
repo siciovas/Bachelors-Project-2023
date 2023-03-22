@@ -19,10 +19,10 @@ import {
 } from "@chakra-ui/react";
 import { FiHome, FiShoppingCart } from "react-icons/fi";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
-import { ShoppingCartTypes } from "./Types/ShoppingCartTypes";
+import { ShoppingCartTypes } from "../Types/ShoppingCartTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import EmptyCart from "./WebPhotos/emptycart.png";
-import { BookCover } from "../Pages/Types/ShopTypes";
+import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 
 const steps = [
@@ -57,34 +57,38 @@ const ShoppingCart = () => {
     setIsLoading(false);
   }, []);
 
-  const deleteShoppingCartItem = async(e: React.MouseEvent<SVGElement, MouseEvent>, id: number) : Promise<void> => {
+  const deleteShoppingCartItem = async (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    id: number
+  ): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(`https://localhost:7266/api/shoppingcart/${id}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `https://localhost:7266/api/shoppingcart/${id}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-      },
-      method: "DELETE",
-    }
+        },
+        method: "DELETE",
+      }
     );
 
-  if (response.status === 204) {
-    setIsLoading(true);
-    toast({
-      title: "Prekė ištrinta",
-      position: "top-right",
-      status: "success",
-      isClosable: true,
-    });
-  } else {
-    toast({
-      title: "Nepavyko ištrinti",
-      position: "top-right",
-      status: "error",
-      isClosable: true,
-    });
-  }
+    if (response.status === 204) {
+      setIsLoading(true);
+      toast({
+        title: "Prekė ištrinta",
+        position: "top-right",
+        status: "success",
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Nepavyko ištrinti",
+        position: "top-right",
+        status: "error",
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -93,19 +97,21 @@ const ShoppingCart = () => {
 
   if (isLoading) {
     return (
-      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
-        <Spinner size='xl' />
+      <Flex justifyContent="center" top="50%" left="50%" position="fixed">
+        <Spinner size="xl" />
       </Flex>
-    )
+    );
   }
 
   return (
     <>
-      {items?.shoppingCartItems.length ===  0 ? (
+      {items?.shoppingCartItems.length === 0 ? (
         <>
-        <Heading textAlign={"center"} mt={5}>Tuščias krepšelis</Heading>
-        <Image margin={"auto"} mt={10} src={EmptyCart}/>
-      </>
+          <Heading textAlign={"center"} mt={5}>
+            Tuščias krepšelis
+          </Heading>
+          <Image margin={"auto"} mt={10} src={EmptyCart} />
+        </>
       ) : (
         <>
           <Steps
@@ -124,29 +130,29 @@ const ShoppingCart = () => {
               >
                 {index === 0 ? (
                   <>
-                        <Box py={10} px={10} mx={"auto"}>
-                          <Grid
-                            templateColumns="repeat(6, 1fr)"
-                            gap={4}
-                            alignItems={"center"}
-                            mb={3}
-                          >
-                            <GridItem colSpan={2}>
-                              <Heading size={"lg"}>Tavo krepšelis</Heading>
-                            </GridItem>
-                            <GridItem textAlign={"center"}>
-                              <Heading size={"md"}>Viršelio tipas</Heading>
-                            </GridItem>
-                            <GridItem textAlign={"center"}>
-                              <Heading size={"md"}>Kiekis</Heading>
-                            </GridItem>
-                            <GridItem textAlign={"center"}>
-                              <Heading size={"md"}>Kaina</Heading>
-                            </GridItem>
-                          </Grid>
-                          <Divider />
-                          {items?.shoppingCartItems.map((item) => {
-                      return (
+                    <Box py={10} px={10} mx={"auto"}>
+                      <Grid
+                        templateColumns="repeat(6, 1fr)"
+                        gap={4}
+                        alignItems={"center"}
+                        mb={3}
+                      >
+                        <GridItem colSpan={2}>
+                          <Heading size={"lg"}>Tavo krepšelis</Heading>
+                        </GridItem>
+                        <GridItem textAlign={"center"}>
+                          <Heading size={"md"}>Viršelio tipas</Heading>
+                        </GridItem>
+                        <GridItem textAlign={"center"}>
+                          <Heading size={"md"}>Kiekis</Heading>
+                        </GridItem>
+                        <GridItem textAlign={"center"}>
+                          <Heading size={"md"}>Kaina</Heading>
+                        </GridItem>
+                      </Grid>
+                      <Divider />
+                      {items?.shoppingCartItems.map((item) => {
+                        return (
                           <Grid
                             templateColumns="repeat(6, 1fr)"
                             gap={4}
@@ -172,7 +178,10 @@ const ShoppingCart = () => {
                             </GridItem>
                             <GridItem>
                               <Flex justifyContent={"center"}>
-                              {GetBookCoverType(item?.product.bookCoverType as unknown as BookCover)}
+                                {GetBookCoverType(
+                                  item?.product
+                                    .bookCoverType as unknown as BookCover
+                                )}
                               </Flex>
                             </GridItem>
                             <GridItem>
@@ -187,31 +196,42 @@ const ShoppingCart = () => {
                             </GridItem>
                             <GridItem>
                               <Flex justify="center">
-                              <CloseIcon cursor={"pointer"} onClick={(e) => deleteShoppingCartItem(e, item.id)}/>
+                                <CloseIcon
+                                  cursor={"pointer"}
+                                  onClick={(e) =>
+                                    deleteShoppingCartItem(e, item.id)
+                                  }
+                                />
                               </Flex>
                             </GridItem>
                           </Grid>
-                          );
-                        })}
-                          <Divider />
-                        </Box>
+                        );
+                      })}
+                      <Divider />
+                    </Box>
                     <Flex flexDirection={"column"} pr={10}>
                       <Flex justifyContent={"end"} mb={3}>
                         <Flex flexDirection={"row"} gap={5}>
                           <Flex flexDirection={"column"}>
                             Suma
-                            <Heading size={"sm"}>{items?.cartPrice.toFixed(2)} €</Heading>
+                            <Heading size={"sm"}>
+                              {items?.cartPrice.toFixed(2)} €
+                            </Heading>
                           </Flex>
                           <Flex flexDirection={"column"}>
                             Pristatymas
-                            <Heading size={"sm"}>{items?.shipping.toFixed(2)} €</Heading>
+                            <Heading size={"sm"}>
+                              {items?.shipping.toFixed(2)} €
+                            </Heading>
                           </Flex>
                         </Flex>
                       </Flex>
                       <Flex justifyContent={"end"}>
                         <Flex flexDirection={"column"} mr={7}>
                           Iš viso
-                          <Heading size={"sm"}>{items?.totalPrice.toFixed(2)} €</Heading>
+                          <Heading size={"sm"}>
+                            {items?.totalPrice.toFixed(2)} €
+                          </Heading>
                         </Flex>
                       </Flex>
                     </Flex>

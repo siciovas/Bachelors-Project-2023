@@ -1,0 +1,47 @@
+"filename", "language", "TypeScript", "TypeScript JSX", "JavaScript", "CSS", "comment", "blank", "total"
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\App.tsx", "TypeScript JSX", 0, 79, 0, 0, 0, 10, 89
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\AddNewLearningTopic.tsx", "TypeScript JSX", 0, 115, 0, 0, 0, 6, 121
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\AddNewProgrammingTask.tsx", "TypeScript JSX", 0, 95, 0, 0, 0, 5, 100
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\AddNewShopItem.tsx", "TypeScript JSX", 0, 248, 0, 0, 0, 10, 258
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\AddNewSubTopic.tsx", "TypeScript JSX", 0, 95, 0, 0, 0, 5, 100
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\ForgotPassword.tsx", "TypeScript JSX", 0, 50, 0, 0, 0, 2, 52
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\GetMySubmissions.tsx", "TypeScript JSX", 0, 87, 0, 0, 0, 7, 94
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\LoginPage.tsx", "TypeScript JSX", 0, 136, 0, 0, 0, 7, 143
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Navbars\AdminNavbar.tsx", "TypeScript JSX", 0, 152, 0, 0, 0, 11, 163
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Navbars\GuestNavbar.tsx", "TypeScript JSX", 0, 107, 0, 0, 0, 7, 114
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Navbars\Navbar.tsx", "TypeScript JSX", 0, 40, 0, 0, 0, 4, 44
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Navbars\StudentNavbar.tsx", "TypeScript JSX", 0, 163, 0, 0, 0, 12, 175
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Navbars\TeacherNavbar.tsx", "TypeScript JSX", 0, 149, 0, 0, 0, 12, 161
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\Profile.tsx", "TypeScript JSX", 0, 373, 0, 0, 0, 17, 390
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Components\RegisterPage.tsx", "TypeScript JSX", 0, 237, 0, 0, 0, 9, 246
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Constants\Auth.tsx", "TypeScript JSX", 0, 1, 0, 0, 0, 0, 1
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Constants\RolesConstants.tsx", "TypeScript JSX", 0, 5, 0, 0, 0, 0, 5
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Helpers\EventBus.tsx", "TypeScript JSX", 0, 12, 0, 0, 0, 2, 14
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Helpers\GetBookCover.tsx", "TypeScript JSX", 0, 14, 0, 0, 0, 5, 19
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Helpers\GetDifficultyColor.tsx", "TypeScript JSX", 0, 17, 0, 0, 0, 6, 23
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Helpers\GetTopicDifficulty.tsx", "TypeScript JSX", 0, 17, 0, 0, 0, 6, 23
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\HomePage.tsx", "TypeScript JSX", 0, 88, 0, 0, 3, 4, 95
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\LearningSubTopics.tsx", "TypeScript JSX", 0, 187, 0, 0, 0, 12, 199
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\LearningTopics.tsx", "TypeScript JSX", 0, 206, 0, 0, 0, 12, 218
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\ProgrammingTask.tsx", "TypeScript JSX", 0, 52, 0, 0, 0, 9, 61
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\ProgrammingTasksList.tsx", "TypeScript JSX", 0, 180, 0, 0, 0, 12, 192
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Shop.tsx", "TypeScript JSX", 0, 152, 0, 0, 0, 11, 163
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\ShopItemPage.tsx", "TypeScript JSX", 0, 235, 0, 0, 0, 9, 244
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\ShoppingCart.tsx", "TypeScript JSX", 0, 378, 0, 0, 0, 10, 388
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Submissions.tsx", "TypeScript JSX", 0, 127, 0, 0, 0, 9, 136
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\LearningSubTopicsType.tsx", "TypeScript JSX", 0, 6, 0, 0, 0, 1, 7
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\LearningTopicsTypes.tsx", "TypeScript JSX", 0, 13, 0, 0, 0, 2, 15
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\PasswordTypes.tsx", "TypeScript JSX", 0, 5, 0, 0, 0, 0, 5
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\ProgrammingTaskTypes.tsx", "TypeScript JSX", 0, 6, 0, 0, 0, 1, 7
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\ShopTypes.tsx", "TypeScript JSX", 0, 16, 0, 0, 0, 2, 18
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\ShoppingCartTypes.tsx", "TypeScript JSX", 0, 17, 0, 0, 0, 2, 19
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\SubmissionTypes.tsx", "TypeScript JSX", 0, 5, 0, 0, 0, 0, 5
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\Types\UserTypes.tsx", "TypeScript JSX", 0, 10, 0, 0, 0, 0, 10
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\Pages\compiler.js", "JavaScript", 0, 0, 22, 0, 1, 2, 25
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\defineTheme.js", "JavaScript", 0, 0, 16, 0, 1, 4, 21
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\index.css", "CSS", 0, 0, 0, 51, 0, 10, 61
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\index.tsx", "TypeScript JSX", 0, 15, 0, 0, 3, 5, 23
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\react-app-env.d.ts", "TypeScript", 0, 0, 0, 0, 1, 1, 2
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\reportWebVitals.ts", "TypeScript", 13, 0, 0, 0, 0, 3, 16
+"c:\Users\User\Desktop\KTU_BAKALAURAS\BAKALAURAS\learnprogrammingfront\src\setupTests.ts", "TypeScript", 1, 0, 0, 0, 4, 1, 6
+"Total", "-", 14, 3890, 38, 51, 13, 265, 4271

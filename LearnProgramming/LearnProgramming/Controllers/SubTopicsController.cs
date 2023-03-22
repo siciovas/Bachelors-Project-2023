@@ -52,7 +52,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<SubTopicPostDto>> Post(int learningtopicId, SubTopicPostDto subTopicPost)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -72,7 +72,7 @@ namespace LearnProgramming.API.Controllers
 
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<SubTopicUpdateDto>> Update(int learningtopicId, int id, SubTopicUpdateDto subTopicDto)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -91,7 +91,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult> Delete(int learningtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);

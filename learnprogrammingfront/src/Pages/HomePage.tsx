@@ -1,5 +1,14 @@
 import React from "react";
-import { Box, Stack, Heading, Text, Container, Textarea, Button, Input } from "@chakra-ui/react";
+import {
+  Box,
+  Stack,
+  Heading,
+  Text,
+  Container,
+  Textarea,
+  Button,
+  Input,
+} from "@chakra-ui/react";
 import Slider from "react-slick";
 import firstPhoto from "./WebPhotos/WebPhoto1.png";
 import secondPhoto from "./WebPhotos/WebPhoto2.png";
@@ -21,7 +30,7 @@ const HomePage = () => {
   const cards = [
     {
       title: "Neformalus ugdymas",
-      text: "Nesvarbu ar mokinys, ar suaugęs žmogus - pradėti mokytis programavimo niekada nėra per vėlu",
+      text: "Pradėti mokytis programavimo niekada nėra per vėlu",
       image: firstPhoto,
     },
     {
@@ -38,7 +47,7 @@ const HomePage = () => {
 
   return (
     <Box
-      className="sliderBox"   
+      className="sliderBox"
       height={"100vh"}
       overflow={"hidden"}
       pointerEvents="none"

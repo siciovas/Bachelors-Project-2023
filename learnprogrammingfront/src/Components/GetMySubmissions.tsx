@@ -8,12 +8,14 @@ import {
   Flex,
   Spinner,
   useToast,
+  Heading,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
-import { SubmissionTypes } from "../Pages/Types/SubmissionTypes";
+import { SubmissionTypes } from "../Types/SubmissionTypes";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import { useLocation } from "react-router-dom";
+import DOMPurify from "dompurify";
 
 const GetMySubmissions = () => {
   const token = localStorage.getItem("accessToken");
@@ -60,25 +62,37 @@ const GetMySubmissions = () => {
   }
 
   return (
-    <Accordion allowToggle width={"50%"} m={"auto"} mt={3}>
-      {submissions.map((submission) => {
-        return (
-          <AccordionItem>
-            <h2>
-              <AccordionButton>
-                <Box as="span" flex="1" textAlign="center">
-                  {submission.topic}
+    <>
+      <Flex justifyContent={"center"}>
+        <Heading mt={15} size={"xl"}>
+          Mano prašymai
+        </Heading>
+      </Flex>
+      <Accordion allowToggle width={"50%"} m={"auto"} mt={5}>
+        {submissions.map((submission) => {
+          return (
+            <AccordionItem>
+              <h2>
+                <AccordionButton>
+                  <Box as="span" flex="1" textAlign="center">
+                    {submission.topic}
+                  </Box>
+                  <AccordionIcon />
+                </AccordionButton>
+              </h2>
+              <AccordionPanel pb={4} textAlign={"center"}>
+                <Box dangerouslySetInnerHTML={
+                  {
+                    __html: DOMPurify.sanitize(submission.message as unknown as Node)
+                  }
+                }>
                 </Box>
-                <AccordionIcon />
-              </AccordionButton>
-            </h2>
-            <AccordionPanel pb={4} textAlign={"center"}>
-              {submission.message}
-            </AccordionPanel>
-          </AccordionItem>
-        );
-      })}
-    </Accordion>
+              </AccordionPanel>
+            </AccordionItem>
+          );
+        })}
+      </Accordion>
+    </>
   );
 };
 

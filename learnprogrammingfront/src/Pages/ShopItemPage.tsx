@@ -12,9 +12,9 @@ import {
   Spinner,
   Grid,
 } from "@chakra-ui/react";
-import { ShopTypes } from "./Types/ShopTypes";
+import { ShopTypes } from "../Types/ShopTypes";
 import { useLocation } from "react-router-dom";
-import { BookCover } from "../Pages/Types/ShopTypes";
+import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
@@ -188,10 +188,7 @@ const ShopItemPage = () => {
               >
                 Į KREPŠELĮ
               </Button>
-              <Button
-                colorScheme={"red"}
-                boxShadow="md"
-              >
+              <Button colorScheme={"red"} boxShadow="md">
                 IŠTRINTI
               </Button>
             </Flex>
@@ -200,23 +197,41 @@ const ShopItemPage = () => {
           <Heading mt={3} size={"lg"} textAlign={"center"}>
             Rekomenduojame
           </Heading>
-          <Grid templateColumns="repeat(3, 1fr)" className="suggestions" mt={10} mb={10}>
+          <Grid
+            templateColumns="repeat(3, 1fr)"
+            className="suggestions"
+            mt={10}
+            mb={10}
+          >
             {suggestions.map((suggestion) => {
               return (
-                <Flex flexDirection='column' className="suggestion">
-                  <Box borderWidth="1px" borderRadius="lg" overflow="hidden" width={"325px"} position="relative">
+                <Flex flexDirection="column" className="suggestion">
+                  <Box
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    width={"325px"}
+                    position="relative"
+                  >
                     <Image
                       cursor={"pointer"}
                       height="400px"
                       width="100%"
                       src={"data:image/jpeg;base64," + suggestion.photo}
                     />
-                    <Flex width={"100%"} justifyContent={"center"} position={"absolute"} color={"white"} top="50%" fontWeight={"bold"}>
+                    <Flex
+                      width={"100%"}
+                      justifyContent={"center"}
+                      position={"absolute"}
+                      color={"white"}
+                      top="50%"
+                      fontWeight={"bold"}
+                    >
                       {suggestion.name}
                     </Flex>
                   </Box>
                 </Flex>
-              )
+              );
             })}
           </Grid>
         </Box>

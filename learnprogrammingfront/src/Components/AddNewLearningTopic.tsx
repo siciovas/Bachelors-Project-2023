@@ -15,14 +15,18 @@ import {
   Select,
   Box,
 } from "@chakra-ui/react";
-import { Difficulty } from "../Pages/Types/LearningTopicsTypes";
+import { Difficulty } from "../Types/LearningTopicsTypes";
 import { GetTopicDifficulty } from "../Helpers/GetTopicDifficulty";
 
 interface Props {
-  AddLearningTopic:(e:FormEvent<HTMLFormElement>, title:string, difficultyInText:Difficulty) => void;
+  AddLearningTopic: (
+    e: FormEvent<HTMLFormElement>,
+    title: string,
+    difficultyInText: Difficulty
+  ) => void;
 }
 
-const AddNewLearningTopic = ({AddLearningTopic}:Props) => {
+const AddNewLearningTopic = ({ AddLearningTopic }: Props) => {
   const OverlayOne = () => (
     <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
   );
@@ -30,7 +34,6 @@ const AddNewLearningTopic = ({AddLearningTopic}:Props) => {
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const initialRef = React.useRef(null);
   const [title, setTitle] = useState<string>("");
-  const [photo, setPhoto] = useState<string>("");
   const [difficultyInText, setDifficultyInText] = useState<Difficulty>();
 
   const onTitleChange = (e: ChangeEvent<HTMLInputElement>): void => {
@@ -49,6 +52,9 @@ const AddNewLearningTopic = ({AddLearningTopic}:Props) => {
           height="100%"
           fontSize={"200%"}
           color={"grey"}
+          borderWidth="1px"
+          borderRadius="lg"
+          borderColor={"black"}
           onClick={() => {
             setOverlay(<OverlayOne />);
             onOpen();
@@ -57,48 +63,53 @@ const AddNewLearningTopic = ({AddLearningTopic}:Props) => {
           Pridėti naują temą
         </Button>
       </Box>
-      <Modal
-        isOpen={isOpen}
-        initialFocusRef={initialRef}
-        onClose={onClose}
-      >
+      <Modal isOpen={isOpen} initialFocusRef={initialRef} onClose={onClose}>
         {overlay}
         <ModalContent>
-        <form onSubmit={(e) => AddLearningTopic(e, title, difficultyInText as Difficulty)}>
-          <ModalHeader>Naujos temos pridėjimas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl isRequired>
-              <FormLabel>Pavadinimas</FormLabel>
-              <Input type={"text"} onChange={(e) => onTitleChange(e)}></Input>
-            </FormControl>
-            <Select isRequired variant={"flushed"} mt={4} onChange={(e) => onDifficultyChange(e)}>
-              <option disabled selected>
-                Pasirinkite lygį
-              </option>
-              <option value={Difficulty.Easy}>
-                {GetTopicDifficulty(Difficulty.Easy)}
-              </option>
-              <option value={Difficulty.Normal}>
-                {GetTopicDifficulty(Difficulty.Normal)}
-              </option>
-              <option value={Difficulty.Hard}>
-                {GetTopicDifficulty(Difficulty.Hard)}
-              </option>
-            </Select>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="submit"
-              bg={"blue.500"}
-              color={"black"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Pateikti
-            </Button>
-          </ModalFooter>
+          <form
+            onSubmit={(e) =>
+              AddLearningTopic(e, title, difficultyInText as Difficulty)
+            }
+          >
+            <ModalHeader>Naujos temos pridėjimas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl isRequired>
+                <FormLabel>Pavadinimas</FormLabel>
+                <Input type={"text"} onChange={(e) => onTitleChange(e)}></Input>
+              </FormControl>
+              <Select
+                isRequired
+                variant={"flushed"}
+                mt={4}
+                onChange={(e) => onDifficultyChange(e)}
+              >
+                <option disabled selected>
+                  Pasirinkite lygį
+                </option>
+                <option value={Difficulty.Easy}>
+                  {GetTopicDifficulty(Difficulty.Easy)}
+                </option>
+                <option value={Difficulty.Normal}>
+                  {GetTopicDifficulty(Difficulty.Normal)}
+                </option>
+                <option value={Difficulty.Hard}>
+                  {GetTopicDifficulty(Difficulty.Hard)}
+                </option>
+              </Select>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                bg={"blue.500"}
+                color={"black"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Pateikti
+              </Button>
+            </ModalFooter>
           </form>
         </ModalContent>
       </Modal>

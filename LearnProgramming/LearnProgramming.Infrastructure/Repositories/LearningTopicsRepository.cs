@@ -37,6 +37,47 @@ namespace LearnProgramming.Infrastructure.Repositories
 
             return learningTopics;
         }
+        public async Task<List<LearningTopicsDto>> GetAllByTeacher(Guid teacherId)
+        {
+            var learningTopics = await _db.LearningTopics
+                .Where(x => x.UserId == teacherId)
+                .Select(x => new LearningTopicsDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    DifficultyInText = x.DifficultyInText,
+                    NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
+                    NumberOfAllTasks = _db.ProgrammingTask.Count(y => y.LearningTopicId == x.Id),
+                    UserId = teacherId
+                })
+                .ToListAsync();
+
+            return learningTopics;
+        }
+
+        public async Task<List<LearningTopicsDto>> GetAllByStudent(Guid studentId)
+        {
+            var studentTeacherId = _db.TeacherAndStudent.SingleOrDefault(x => x.StudentId == studentId)?.TeacherId;
+
+            if (studentTeacherId == null)
+            {
+                return new List<LearningTopicsDto>();
+            }
+
+            return await _db.LearningTopics
+                .Where(x => x.UserId == studentTeacherId)
+                .Select(x => new LearningTopicsDto
+                {
+                    Id = x.Id,
+                    Title = x.Title,
+                    DifficultyInText = x.DifficultyInText,
+                    NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
+                    NumberOfAllTasks = _db.ProgrammingTask.Count(y => y.LearningTopicId == x.Id),
+                    UserId = (Guid)studentTeacherId
+                })
+                .ToListAsync();
+
+        }
         public async Task<LearningTopic> Create(LearningTopic learningTopics)
         {
             _db.Add(learningTopics);
@@ -64,5 +105,7 @@ namespace LearnProgramming.Infrastructure.Repositories
 
             return learningTopics;
         }
+
+      
     }
 }

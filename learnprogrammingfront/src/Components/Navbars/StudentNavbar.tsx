@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -8,13 +8,12 @@ import {
   MenuItem,
   MenuDivider,
   MenuList,
-  Link,
   useDisclosure,
   Avatar,
   Stack,
   Box,
 } from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Submissions } from "../../Pages/Submissions";
 import eventBus from "../../Helpers/EventBus";
@@ -29,17 +28,6 @@ const LinksStudents: LinksProps[] = [
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
-const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    href={url}
-  >
-    {title}
-  </Link>
-);
-
 const StudentNavbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -49,6 +37,10 @@ const StudentNavbar = () => {
   const Logout = (e: any): void => {
     e.preventDefault();
     eventBus.dispatch("logOut", "");
+  };
+
+  const NavigateToPage = (url: string) => {
+    navigate(url);
   };
 
   const [avatar, setAvatar] = useState<string>();
@@ -72,9 +64,10 @@ const StudentNavbar = () => {
   return (
     <Box
       px={4}
-      position={location.pathname === "/" ? "absolute" : "inherit"}
-      zIndex={1}
       width={"100%"}
+      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      zIndex={1}
+      position={location.pathname === "/" ? "absolute" : "relative"}
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <IconButton
@@ -85,7 +78,7 @@ const StudentNavbar = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <Button
-          color={location.pathname === "/" ? "white" : "black"}
+          color="white"
           background={"none"}
           fontWeight={"normal"}
           onClick={() => navigate("/")}
@@ -108,7 +101,10 @@ const StudentNavbar = () => {
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
-              color={location.pathname === "/" ? "white" : "black"}
+              color="white"
+              _hover={{
+                bg: "none",
+              }}
             >
               {link.title}
             </Button>
@@ -116,14 +112,14 @@ const StudentNavbar = () => {
           <Submissions />
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
-          <Box color={location.pathname === "/" ? "white" : "black"}>
-            {" "}
-            Naudojatės studento prieiga
-          </Box>
+          <Box color="white"> Naudojatės studento prieiga</Box>
           <Button
             background={"none"}
             onClick={() => navigate("/krepselis")}
-            color={location.pathname === "/" ? "white" : "black"}
+            color="white"
+            _hover={{
+              bg: "none",
+            }}
           >
             <i className="bi bi-cart-fill"></i>
           </Button>
@@ -140,12 +136,10 @@ const StudentNavbar = () => {
             <MenuList>
               <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuDivider />
-              <MenuItem>Įverčiai</MenuItem>
+              <MenuItem onClick={() => navigate("/manopazymiai")}>Įverčiai</MenuItem>
               <MenuDivider />
-              <MenuItem onClick={(e) => navigate("/manoprasymai")}>
-                Mano prašymai
-              </MenuItem>
-              <MenuItem>Užsakymų istorija</MenuItem>
+              <MenuItem onClick={(e) => navigate("/manoprasymai")}>Mano prašymai</MenuItem>
+              <MenuItem onClick={(e) => navigate("/manouzsakymai")}>Užsakymų istorija</MenuItem>
               <MenuDivider />
               <MenuItem onClick={(e) => Logout(e)}>Atsijungti</MenuItem>
             </MenuList>
@@ -154,11 +148,22 @@ const StudentNavbar = () => {
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
+        <Box pb={4} display={{ md: "none" }} background={"grey"}>
           <Stack as={"nav"} spacing={4}>
             {LinksStudents.map((link) => (
-              <NavLink title={link.title} url={link.url} />
+              <Button
+                onClick={() => NavigateToPage(link.url)}
+                background={"none"}
+                fontWeight={"none"}
+                color={location.pathname === "/" ? "white" : "black"}
+                _hover={{
+                  bg: "none",
+                }}
+              >
+                {link.title}{" "}
+              </Button>
             ))}
+            <Submissions />
           </Stack>
         </Box>
       ) : null}

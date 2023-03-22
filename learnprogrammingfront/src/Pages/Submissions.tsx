@@ -13,9 +13,11 @@ import {
   FormLabel,
   Input,
   useToast,
-  Textarea,
 } from "@chakra-ui/react";
-import { useLocation } from "react-router-dom";
+import { convertToRaw, EditorState } from "draft-js";
+import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 const Submissions = () => {
   const OverlayOne = () => (
@@ -28,19 +30,15 @@ const Submissions = () => {
   const toast = useToast();
   const token = localStorage.getItem("accessToken");
   const [topic, setTopic] = useState<string>();
-  const [message, setMessage] = useState<string>();
-  const location = useLocation();
-
 
   const onTopicChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setTopic(e.target.value as string);
   };
-  const onMessageChange = (e: ChangeEvent<HTMLTextAreaElement>): void => {
-    setMessage(e.target.value as string);
-  };
+  const [message, setMessage] = React.useState<EditorState>(EditorState.createEmpty());
 
-
-  const SendSubmission = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+  const SendSubmission = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
     e.preventDefault();
     const response = await fetch("https://localhost:7266/api/submission", {
       headers: {
@@ -49,13 +47,10 @@ const Submissions = () => {
       },
       method: "POST",
       body: JSON.stringify({
-       topic,
-       message,
+        topic,
+        message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(/\s+$/,''),
       }),
     });
-
-    const data = await response.json();
-
     if (response.status === 201) {
       toast({
         title: "Pranešimas išsiųstas",
@@ -67,7 +62,7 @@ const Submissions = () => {
       onClose();
     } else {
       toast({
-        title: data.message,
+        title: "Nepavyko",
         status: "error",
         duration: 5000,
         position: "top-right",
@@ -85,7 +80,10 @@ const Submissions = () => {
           setOverlay(<OverlayOne />);
           onOpen();
         }}
-        color={location.pathname === "/" ? "white" : "black" }
+        color="white"
+        _hover={{
+          bg: "none",
+        }}
       >
         Prašymas
       </Button>
@@ -96,32 +94,39 @@ const Submissions = () => {
         onClose={onClose}
       >
         {overlay}
-        <ModalContent>
+        <ModalContent maxW={"50%"}>
           <form onSubmit={(e) => SendSubmission(e)}>
-          <ModalHeader>Prašymas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl isRequired>
-              <FormLabel>Pavadinimas</FormLabel>
-              <Input type={"text"} onChange={(e) => onTopicChange(e)}></Input>
-            </FormControl>
-            <FormControl mt={4} isRequired>
-              <FormLabel>Žinutė</FormLabel>
-              <Textarea onChange={(e) => onMessageChange(e)}></Textarea>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="submit"
-              bg={"blue.500"}
-              color={"black"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Pateikti
-            </Button>
-          </ModalFooter>
+            <ModalHeader>Prašymas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6} >
+              <FormControl isRequired>
+                <FormLabel>Pavadinimas</FormLabel>
+                <Input type={"text"} onChange={(e) => onTopicChange(e)}></Input>
+              </FormControl>
+              <FormControl mt={4} isRequired>
+                <FormLabel>Žinutė</FormLabel>
+                <Editor
+                  editorStyle={{border: "1px solid black", height: "300px"}}
+                  editorState={message}
+                  onEditorStateChange={(editorState) => setMessage(editorState)}
+                  wrapperClassName={"rte-wrapper"}
+                  toolbarClassName={"rte-wrapper"}
+                  editorClassName={"rte-wrapper"}
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                bg={"blue.500"}
+                color={"black"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Pateikti
+              </Button>
+            </ModalFooter>
           </form>
         </ModalContent>
       </Modal>

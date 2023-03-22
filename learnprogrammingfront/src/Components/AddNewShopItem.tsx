@@ -16,8 +16,10 @@ import {
   Box,
   HStack,
   Textarea,
+  Flex,
+  Heading,
 } from "@chakra-ui/react";
-import { BookCover } from "../Pages/Types/ShopTypes";
+import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 
 interface Props {
@@ -104,26 +106,42 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
 
   return (
     <>
-      <Box borderWidth="1px" borderRadius="lg" overflow="hidden" width={"325px"}>
-        <Button
+      <Flex justifyContent={"center"}>
+        <Heading
+          size={"sm"}
+          background={"none"}
+          fontWeight={"none"}
+          mt={5}
           cursor={"pointer"}
-          width="100%"
-          height="100%"
-          fontSize={"200%"}
-          color={"grey"}
+          color={"black"}
+          position="relative"
           onClick={() => {
             setOverlay(<OverlayOne />);
             onOpen();
           }}
+          _hover={{
+            _after: {
+              transform: "scaleX(1)",
+              transformOrigin: "bottom left",
+            },
+          }}
+          _after={{
+            content: '" "',
+            position: "absolute",
+            width: "100%",
+            height: "2px",
+            bottom: 0,
+            left: 0,
+            backgroundColor: "black",
+            transform: "scaleX(0)",
+            transformOrigin: "bottom right",
+            transition: "transform 0.25s ease-out",
+          }}
         >
           Pridėti naują prekę
-        </Button>
-      </Box>
-      <Modal
-        isOpen={isOpen}
-        initialFocusRef={initialRef}
-        onClose={onClose}
-      >
+        </Heading>
+      </Flex>
+      <Modal isOpen={isOpen} initialFocusRef={initialRef} onClose={onClose}>
         {overlay}
         <ModalContent>
           <form
@@ -146,14 +164,18 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
             <ModalCloseButton />
             <ModalBody pb={6}>
               <HStack>
-              <FormControl isRequired >
-                <FormLabel>Pavadinimas</FormLabel>
-                <Input type={"text"} onChange={(e) => onNameChange(e)} />
-              </FormControl>
-              <FormControl isRequired >
-                <FormLabel>Kaina</FormLabel>
-                <Input type={"number"} step={"0.01"} onChange={(e) => onPriceChange(e)} />
-              </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Pavadinimas</FormLabel>
+                  <Input type={"text"} onChange={(e) => onNameChange(e)} />
+                </FormControl>
+                <FormControl isRequired>
+                  <FormLabel>Kaina</FormLabel>
+                  <Input
+                    type={"number"}
+                    step={"0.01"}
+                    onChange={(e) => onPriceChange(e)}
+                  />
+                </FormControl>
               </HStack>
               <FormControl isRequired mt={4}>
                 <Box>
@@ -203,7 +225,7 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
                 onChange={(e) => onBookCoverTypeChange(e)}
               >
                 <option disabled selected>
-                Pasirinkite lygį
+                  Pasirinkite lygį
                 </option>
                 <option value={BookCover.Soft}>
                   {GetBookCoverType(BookCover.Soft)}

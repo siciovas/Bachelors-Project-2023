@@ -10,9 +10,10 @@ import {
 } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { AddNewProgramminTask } from "../Components/AddNewProgrammingTask";
-import { LearningSubTopicsType } from "./Types/LearningSubTopicsType";
-import { ProgrammingTaskTypes } from "./Types/ProgrammingTaskTypes";
+import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
+import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import { DeleteIcon } from "@chakra-ui/icons";
+import { UserRole } from "../Constants/RolesConstants";
 
 const ProgrammingTasksList = () => {
   const navigate = useNavigate();
@@ -22,13 +23,14 @@ const ProgrammingTasksList = () => {
   const [tasks, setTasks] = useState<ProgrammingTaskTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+  const role = localStorage.getItem("role");
 
   const NavigateToTask = (taskId: number) => {
     navigate("/uzduotis", {
       state: {
-       learningTopicId: state.learningTopicId,
-       subTopicId: state.subTopicId,
-       taskId: taskId
+        learningTopicId: state.learningTopicId,
+        subTopicId: state.subTopicId,
+        taskId: taskId,
       },
     });
   };
@@ -52,7 +54,7 @@ const ProgrammingTasksList = () => {
     getLearningSubTopicName();
   }, []);
 
-const getProgrammingTasks = useCallback(async () => {
+  const getProgrammingTasks = useCallback(async () => {
     const response = await fetch(
       `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task`,
       {
@@ -72,60 +74,99 @@ const getProgrammingTasks = useCallback(async () => {
     getProgrammingTasks();
   }, [isLoading]);
 
-  const deleteProgrammingTask = async(e: React.MouseEvent<SVGElement, MouseEvent>, taskId: number) : Promise<void> => {
+  const deleteProgrammingTask = async (
+    e: React.MouseEvent<SVGElement, MouseEvent>,
+    taskId: number
+  ): Promise<void> => {
     e.preventDefault();
-    const response = await fetch(`https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task/${taskId}`,
-    {
-      headers: {
-        "Content-Type": "application/json",
+    const response = await fetch(
+      `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task/${taskId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
-      },
-      method: "DELETE",
-    }
+        },
+        method: "DELETE",
+      }
     );
 
-  if (response.status === 204) {
-    setIsLoading(true);
-    toast({
-      title: "Uždavinys ištrintas",
-      position: "top-right",
-      status: "success",
-      isClosable: true,
-    });
-  } else {
-    toast({
-      title: "Nepavyko ištrinti",
-      position: "top-right",
-      status: "error",
-      isClosable: true,
-    });
-  }
+    if (response.status === 204) {
+      setIsLoading(true);
+      toast({
+        title: "Uždavinys ištrintas",
+        position: "top-right",
+        status: "success",
+        isClosable: true,
+      });
+    } else {
+      toast({
+        title: "Nepavyko ištrinti",
+        position: "top-right",
+        status: "error",
+        isClosable: true,
+      });
+    }
   };
 
   if (isLoading) {
     return (
-      <Flex justifyContent="center" top="50%" left='50%' position='fixed'>
-        <Spinner size='xl' />
+      <Flex justifyContent="center" top="50%" left="50%" position="fixed">
+        <Spinner size="xl" />
       </Flex>
-    )
+    );
   }
 
   return (
-    <Box className="container mt-5">
+    <Box className="container" mt={10}>
       <Grid className="col-md-12">
         <Flex justifyContent={"center"}>
           <Box>
             <Heading size={"lg"}>„{subTopic?.subTopicName}“ užduotys</Heading>
           </Box>
         </Flex>
-        <AddNewProgramminTask/>
+        {role === UserRole.Teacher && (
+          <>
+            <Flex justifyContent={"center"}>
+              <Heading
+                size={"sm"}
+                background={"none"}
+                fontWeight={"none"}
+                mt={5}
+                cursor={"pointer"}
+                color={"black"}
+                position="relative"
+                onClick={() => navigate("/kurtiuzduoti")}
+                _hover={{
+                  _after: {
+                    transform: "scaleX(1)",
+                    transformOrigin: "bottom left",
+                  },
+                }}
+                _after={{
+                  content: '" "',
+                  position: "absolute",
+                  width: "100%",
+                  height: "2px",
+                  bottom: 0,
+                  left: 0,
+                  backgroundColor: "black",
+                  transform: "scaleX(0)",
+                  transformOrigin: "bottom right",
+                  transition: "transform 0.25s ease-out",
+                }}
+              >
+                Sukurti užduotį
+              </Heading>
+            </Flex>
+          </>
+        )}
         {tasks.map((task) => {
           return (
             <Box mt={3}>
               <Flex flexDir={"column"}>
                 <Flex
                   justifyContent={"space-between"}
-                  border={"1px solid #e3dada"}
+                  border={"1px solid black"}
                   padding={"10px"}
                   borderRadius={"5px"}
                   marginTop={"12px"}
@@ -136,7 +177,7 @@ const getProgrammingTasks = useCallback(async () => {
                     width={"100%"}
                   >
                     <Heading
-                      color="gray.500"
+                      color="black"
                       fontWeight="semibold"
                       letterSpacing="wide"
                       onClick={() => NavigateToTask(task.id)}
@@ -157,7 +198,7 @@ const getProgrammingTasks = useCallback(async () => {
                         height: "2px",
                         bottom: 0,
                         left: 0,
-                        backgroundColor: "grey",
+                        backgroundColor: "black",
                         transform: "scaleX(0)",
                         transformOrigin: "bottom right",
                         transition: "transform 0.25s ease-out",
@@ -168,7 +209,11 @@ const getProgrammingTasks = useCallback(async () => {
                     <Button colorScheme={"green"} variant="outline">
                       Pažymėti kaip atliktą
                     </Button>
-                    <DeleteIcon cursor={"pointer"} onClick={(e)=> deleteProgrammingTask(e, task.id)}/>
+                    <DeleteIcon
+                      cursor={"pointer"}
+                      onClick={(e) => deleteProgrammingTask(e, task.id)}
+                      color={"red.500"}
+                    />
                   </Flex>
                 </Flex>
               </Flex>

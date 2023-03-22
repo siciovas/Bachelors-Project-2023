@@ -213,172 +213,176 @@ const Profile = () => {
   }
 
   return (
-    <Flex minH={"100vh"} align={"center"} justify={"center"}>
-      <Stack
-        spacing={4}
-        w={"full"}
-        maxW={"md"}
-        rounded={"xl"}
-        boxShadow={"lg"}
-        p={6}
-        my={12}
-      >
-        <Heading
-          lineHeight={1.1}
-          textAlign={"center"}
-          fontSize={{ base: "2xl", sm: "3xl" }}
+    <Box width={"100%"}>
+      <Flex minH={"100vh"} align={"center"} justify={"center"}>
+        <Stack
+          spacing={4}
+          w={"full"}
+          maxW={"md"}
+          rounded={"xl"}
+          boxShadow={"lg"}
+          p={6}
+          my={12}
         >
-          {`${name} ${surname}`}
-        </Heading>
-        <form onSubmit={(e) => UpdateUserProfile(e)}>
-          <FormControl id="userName">
-            <Stack direction={["column", "row"]} spacing={6}>
-              <Center>
-                <Avatar
-                  size="2xl"
-                  src={"data:image/jpeg;base64," + avatar}
-                ></Avatar>
-              </Center>
-              <Center w="full">
-                <Box mb={3}>
-                  <label className="form-label">Nuotraukos keitimas</label>
-                  <input
-                    onChange={(e) => {
-                      onAvatarChange(e);
-                    }}
-                    className="form-control"
-                    type="file"
-                    id="formFile"
-                  />
-                </Box>
-              </Center>
-            </Stack>
-          </FormControl>
-          <FormControl id="userName">
-            <FormLabel>Slapyvardis</FormLabel>
-            <Input
-              onChange={(e) => {
-                onUsernameChange(e);
-              }}
-              placeholder={username}
-              _placeholder={{ color: "gray.500" }}
-              type="text"
-            />
-          </FormControl>
-          <FormControl id="email">
-            <FormLabel>El. Paštas</FormLabel>
-            <Input
-              onChange={(e) => {
-                onEmailChange(e);
-              }}
-              placeholder={email}
-              _placeholder={{ color: "gray.500" }}
-              type="email"
-            />
-          </FormControl>
-          <FormControl id="city">
-            <FormLabel>Miestas</FormLabel>
-            <Input
-              onChange={(e) => {
-                onCityChange(e);
-              }}
-              placeholder={city}
-              type="text"
-            />
-          </FormControl>
-          <FormControl id="school">
-            <FormLabel>Mokykla</FormLabel>
-            <Input
-              onChange={(e) => {
-                onSchoolChange(e);
-              }}
-              placeholder={school}
-              type="text"
-            />
-          </FormControl>
-          <Stack spacing={10} pt={5}>
-            <Button
-              type="submit"
-              size="lg"
-              bg={"blue.400"}
-              color={"white"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Atnaujinti profilį
-            </Button>
-          </Stack>
-        </form>
-        <form onSubmit={(e) => UpdatePassword(e)}>
-          <Stack>
-            <FormControl id="password">
-              <FormLabel>Senas slaptažodis</FormLabel>
+          <Heading
+            lineHeight={1.1}
+            textAlign={"center"}
+            fontSize={{ base: "2xl", sm: "3xl" }}
+          >
+            {`${name} ${surname}`}
+          </Heading>
+          <form onSubmit={(e) => UpdateUserProfile(e)}>
+            <FormControl id="userName">
+              <Stack direction={["column", "row"]} spacing={6}>
+                <Center>
+                  <Avatar
+                    size="2xl"
+                    src={"data:image/jpeg;base64," + avatar}
+                  ></Avatar>
+                </Center>
+                <Center w="full">
+                  <Box mb={3}>
+                    <label className="form-label">Nuotraukos keitimas</label>
+                    <input
+                      onChange={(e) => {
+                        onAvatarChange(e);
+                      }}
+                      className="form-control"
+                      type="file"
+                      id="formFile"
+                    />
+                  </Box>
+                </Center>
+              </Stack>
+            </FormControl>
+            <FormControl id="userName">
+              <FormLabel>Slapyvardis</FormLabel>
               <Input
-                placeholder="Slaptažodis"
-                _placeholder={{ color: "gray.500" }}
-                type="password"
                 onChange={(e) => {
-                  onOldPasswordChange(e);
+                  onUsernameChange(e);
                 }}
+                placeholder={username}
+                _placeholder={{ color: "gray.500" }}
+                type="text"
               />
             </FormControl>
-            <FormControl id="password">
-              <FormLabel>Naujas slaptažodis</FormLabel>
+            <FormControl id="email">
+              <FormLabel>El. Paštas</FormLabel>
               <Input
-                placeholder="Slaptažodis"
-                _placeholder={{ color: "gray.500" }}
-                type="password"
                 onChange={(e) => {
-                  onNewPasswordChange(e);
+                  onEmailChange(e);
                 }}
+                placeholder={email}
+                _placeholder={{ color: "gray.500" }}
+                type="email"
               />
             </FormControl>
-            <FormControl id="password">
-              <FormLabel>Pakartoti slaptažodį</FormLabel>
+            <FormControl id="city">
+              <FormLabel>Miestas</FormLabel>
               <Input
-                placeholder="Slaptažodis"
-                _placeholder={{ color: "gray.500" }}
-                type="password"
                 onChange={(e) => {
-                  onRepeatPasswordChange(e);
+                  onCityChange(e);
                 }}
+                placeholder={city}
+                type="text"
+              />
+            </FormControl>
+            <FormControl id="school">
+              <FormLabel>Mokykla</FormLabel>
+              <Input
+                onChange={(e) => {
+                  onSchoolChange(e);
+                }}
+                placeholder={school}
+                type="text"
               />
             </FormControl>
             <Stack spacing={10} pt={5}>
               <Button
                 type="submit"
-                loadingText="Submitting"
                 size="lg"
                 bg={"blue.400"}
                 color={"white"}
                 _hover={{
                   bg: "blue.500",
                 }}
-              > 
-                Keisti slaptažodį
+              >
+                Atnaujinti profilį
               </Button>
             </Stack>
-          </Stack>
-        </form>
-        <Button          
+          </form>
+          <form onSubmit={(e) => UpdatePassword(e)}>
+            <Stack>
+              <FormControl id="password">
+                <FormLabel>Senas slaptažodis</FormLabel>
+                <Input
+                  placeholder="Slaptažodis"
+                  _placeholder={{ color: "gray.500" }}
+                  type="password"
+                  onChange={(e) => {
+                    onOldPasswordChange(e);
+                  }}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Naujas slaptažodis</FormLabel>
+                <Input
+                  placeholder="Slaptažodis"
+                  _placeholder={{ color: "gray.500" }}
+                  type="password"
+                  onChange={(e) => {
+                    onNewPasswordChange(e);
+                  }}
+                />
+              </FormControl>
+              <FormControl id="password">
+                <FormLabel>Pakartoti slaptažodį</FormLabel>
+                <Input
+                  placeholder="Slaptažodis"
+                  _placeholder={{ color: "gray.500" }}
+                  type="password"
+                  onChange={(e) => {
+                    onRepeatPasswordChange(e);
+                  }}
+                />
+              </FormControl>
+              <Stack spacing={10} pt={5}>
+                <Button
+                  type="submit"
+                  loadingText="Submitting"
+                  size="lg"
+                  bg={"blue.400"}
+                  color={"white"}
+                  _hover={{
+                    bg: "blue.500",
+                  }}
+                >
+                  Keisti slaptažodį
+                </Button>
+              </Stack>
+            </Stack>
+          </form>
+          <Button
             bgGradient="linear(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)"
-            textAlign= "center"
-            textTransform= "uppercase"
+            textAlign="center"
+            textTransform="uppercase"
             transition="1.5s"
-            backgroundSize= "200% auto"
-            color="white" 
-            boxShadow= "0 0 20px #eee"
-            borderRadius= "10px"
-            display= "block"
-            _hover= {{
+            backgroundSize="200% auto"
+            color="white"
+            boxShadow="0 0 20px #eee"
+            borderRadius="10px"
+            display="block"
+            _hover={{
               bgPos: "center",
               color: "#fff",
               textDecoration: "none",
             }}
-         >Ištrinti paskyrą</Button>
-      </Stack>
-    </Flex>
+          >
+            Ištrinti paskyrą
+          </Button>
+        </Stack>
+      </Flex>
+    </Box>
   );
 };
 
