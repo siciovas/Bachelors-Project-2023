@@ -44,7 +44,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                  .Where(subtopic => subtopic.LearningTopicId == learningTopicId)
                  .Select(x => new SubTopicDto
                  {
-                     SubTopicId = x.Id,
+                     Id = x.Id,
                      SubTopicName = x.SubTopicName,
                      NumberOfTasks = _db.ProgrammingTask.Count(y => y.SubTopicId == x.Id),
                  })

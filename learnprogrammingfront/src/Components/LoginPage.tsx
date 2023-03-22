@@ -66,9 +66,7 @@ const LoginPage = () => {
   };
 
   return (
-    <Flex
-      mt={10}
-    >
+    <Flex mt={10}>
       <Stack spacing={8} mx={"auto"}>
         <Stack align={"center"}>
           <Heading fontSize={"4xl"}>Prisijunk prie paskyros</Heading>
@@ -76,11 +74,7 @@ const LoginPage = () => {
             ir nerk į programavimo pasaulį ✌️
           </Text>
         </Stack>
-        <Box
-          rounded={"lg"}
-          boxShadow={"lg"}
-          p={8}
-        >
+        <Box rounded={"lg"} boxShadow={"lg"} p={8}>
           <Stack spacing={4}>
             <form onSubmit={(e) => Login(e)}>
               <FormControl id="usernameOrEmail">

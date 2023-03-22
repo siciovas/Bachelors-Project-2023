@@ -2,6 +2,7 @@
 using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnProgramming.API.Controllers
@@ -43,6 +44,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin")]
         public async Task<ActionResult<Product>> Delete(int id)
         {
             var item = await _shopItemRep.Get(id);
@@ -54,6 +56,8 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ProductDto>> Update(ProductDto itemsDto, int id)
         {
             var item = await _shopItemRep.Get(id);
@@ -75,6 +79,8 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Admin")]
+
         public async Task<ActionResult<ProductDto>> Post(ProductDto itemDto)
         {
             var newItem = new Product

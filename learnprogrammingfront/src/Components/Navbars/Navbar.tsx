@@ -10,7 +10,7 @@ const NavBar = () => {
   useNavigate();
   const token = localStorage.getItem("accessToken");
   const role = localStorage.getItem("role");
-  
+
   return (
     <>
       {!token ? (

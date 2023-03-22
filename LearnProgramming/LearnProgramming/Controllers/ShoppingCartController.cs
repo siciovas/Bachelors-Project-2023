@@ -26,6 +26,7 @@ namespace LearnProgramming.API.Controllers
         }
         
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<ShoppingCartDto>> Get()
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
@@ -46,6 +47,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> Delete(int id)
         {
             var cart = await _shoppingCartItem.GetById(id);
@@ -57,6 +59,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<ShoppingCartItemPostDto>> Post(ShoppingCartItemPostDto shoppingCart)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));

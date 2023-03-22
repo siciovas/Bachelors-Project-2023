@@ -6,15 +6,11 @@ import {
   Input,
   Stack,
   Text,
-  useColorModeValue,
 } from "@chakra-ui/react";
 
 const ForgotPassword = () => {
   return (
-    <Flex
-      justify={"center"}
-      mt={10}
-    >
+    <Flex justify={"center"} mt={10}>
       <Stack
         spacing={4}
         w={"full"}
@@ -27,9 +23,7 @@ const ForgotPassword = () => {
         <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
           Pamiršai slaptažodį?
         </Heading>
-        <Text
-          fontSize={{ base: "sm", sm: "md" }}
-        >
+        <Text fontSize={{ base: "sm", sm: "md" }}>
           Suvesk ir patikrink savo pašto dėžutę!
         </Text>
         <FormControl id="email">

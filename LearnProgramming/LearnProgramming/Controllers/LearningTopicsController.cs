@@ -3,8 +3,10 @@ using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using LearnProgramming.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using System.Security.Claims;
 
 namespace LearnProgramming.API.Controllers
 {
@@ -21,16 +23,34 @@ namespace LearnProgramming.API.Controllers
             _learningTopicsRep = learningTopicsRep;
         }
 
-        [Authorize]
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<LearningTopicsDto>>> GetAll()
         {
-            var topics = await _learningTopicsRep.GetAll();
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+            List<LearningTopicsDto>? learningTopics;
 
-            return Ok(topics);
+            if (User.IsInRole("Admin"))
+            {
+                learningTopics = await _learningTopicsRep.GetAll();
+            }
+
+            else if (User.IsInRole("Teacher"))
+            {
+                learningTopics = await _learningTopicsRep.GetAllByTeacher(userId);
+            }
+
+            else
+            {
+                learningTopics = await _learningTopicsRep.GetAllByStudent(userId);
+            }
+
+
+            return Ok(learningTopics);
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<LearningTopicsDto>> Get(int id)
         {
             var topics = await _learningTopicsRep.Get(id);
@@ -42,6 +62,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Roles = "Admin,Teacher")]
         public async Task<ActionResult> Delete(int id)
         {
             var topics = await _learningTopicsRep.Get(id);
@@ -53,12 +74,13 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut]
+        [Authorize(Roles = "Teacher")]
+
         public async Task<ActionResult<LearningTopicsDto>> Update(LearningTopicsDto learningTopics, int id) 
         {
             var topics = await _learningTopicsRep.Get(id);
             if(topics == null) return NotFound();
 
-            topics.Photo = learningTopics.Photo;
             topics.Title = learningTopics.Title;
             topics.DifficultyInText = learningTopics.DifficultyInText;
 
@@ -68,13 +90,17 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<LearningTopicsPostDto>> Post(LearningTopicsPostDto learningTopics)
         {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+
             var newTopic = new LearningTopic
             {
-                Photo = learningTopics.Photo,
+
                 Title = learningTopics.Title,
-                DifficultyInText = learningTopics.DifficultyInText
+                DifficultyInText = learningTopics.DifficultyInText,
+                UserId = userId
             };
 
             await _learningTopicsRep.Create(newTopic);

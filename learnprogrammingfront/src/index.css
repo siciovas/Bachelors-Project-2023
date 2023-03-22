@@ -5,6 +5,12 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-image: linear-gradient(#93A5CF, #E4EfE9) !important;
+}
+
+html, body {
+  margin: 0;
+  min-height: 100%;
 }
 
 code {
@@ -49,3 +55,38 @@ body::-webkit-scrollbar{
 .suggestions:hover > .suggestion:not(:hover){
   filter: brightness(0.5) blur(5px);
 }
+
+.minimap.slider-mouseover {
+  display: none;
+}
+
+.DraftEditor-editorContainer .public-DraftEditor-content h1{
+  font-size: 2em!important;
+  font-weight: bolder!important;
+  }
+  
+  .DraftEditor-editorContainer .public-DraftEditor-content h2{
+  font-weight: bolder!important;
+  font-size: 1.5em!important;
+  }
+  
+  .DraftEditor-editorContainer .public-DraftEditor-content h3{
+  font-weight: bolder!important;
+  font-size: 1.7em!important;
+  
+  }
+  
+  .DraftEditor-editorContainer .public-DraftEditor-content h4{
+  font-size: 1em!important;
+  font-weight: bolder!important;
+  }
+  
+  .DraftEditor-editorContainer .public-DraftEditor-content h5{
+  font-size: .83em!important;
+  font-weight: bolder!important;
+  }
+  
+  .DraftEditor-editorContainer .public-DraftEditor-content h6{
+  font-size: .67em!important;
+  font-weight: bolder!important;
+  }

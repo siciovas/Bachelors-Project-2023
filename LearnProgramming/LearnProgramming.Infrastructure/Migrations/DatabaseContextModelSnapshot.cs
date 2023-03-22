@@ -28,15 +28,16 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.Property<int>("DifficultyInText")
                         .HasColumnType("int");
 
-                    b.Property<byte[]>("Photo")
-                        .IsRequired()
-                        .HasColumnType("longblob");
-
                     b.Property<string>("Title")
                         .IsRequired()
                         .HasColumnType("longtext");
 
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("char(36)");
+
                     b.HasKey("Id");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("LearningTopics");
                 });
@@ -298,6 +299,23 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.ToTable("SubTopics");
                 });
 
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.TeacherAndStudent", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    b.Property<Guid>("StudentId")
+                        .HasColumnType("char(36)");
+
+                    b.Property<Guid>("TeacherId")
+                        .HasColumnType("char(36)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("TeacherAndStudent");
+                });
+
             modelBuilder.Entity("LearnProgramming.Domain.Entities.User", b =>
                 {
                     b.Property<Guid>("Id")
@@ -346,6 +364,17 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Users");
+                });
+
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.LearningTopic", b =>
+                {
+                    b.HasOne("LearnProgramming.Domain.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Order", b =>

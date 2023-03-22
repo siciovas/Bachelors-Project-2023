@@ -1,46 +1,147 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Button,
-  ModalOverlay,
-  useDisclosure,
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  ModalFooter,
   FormControl,
   FormLabel,
   Input,
   Flex,
   Heading,
+  Stack,
+  HStack,
 } from "@chakra-ui/react";
+import { DeleteIcon } from "@chakra-ui/icons";
+import { convertToRaw, EditorState } from "draft-js";
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
+import { Editor } from "react-draft-wysiwyg";
+import draftToHtml from "draftjs-to-html";
 
 const AddNewProgramminTask = () => {
-  const OverlayOne = () => (
-    <ModalOverlay bg="blackAlpha.300" backdropFilter="blur(10px)" />
+  const [fields, setFields] = useState([{ field1: "", field2: "" }]);
+  const [inputCount, setInputCount] = useState<number>(1);
+  const addField = () => {
+    setFields([...fields, { field1: "", field2: "" }]);
+  };
+  const [name, setName] = useState<string>("");
+  const [description, setDescription] = React.useState<EditorState>(
+    EditorState.createEmpty()
   );
-
-  const { isOpen, onOpen, onClose } = useDisclosure();
-  const [overlay, setOverlay] = React.useState(<OverlayOne />);
-  const initialRef = React.useRef(null);
+  const [inputOutput, setInputOutput] = React.useState<EditorState>(
+    EditorState.createEmpty()
+  );
+  const handleFieldChange = (
+    index: number,
+    field: keyof typeof fields[0],
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const newFields = [...fields];
+    newFields[index][field] = event.target.value;
+    setFields(newFields);
+  };
+  const deleteField = (index: number) => {
+    if (fields.length > 1) {
+      const newFields = [...fields];
+      newFields.splice(index, 1);
+      setFields(newFields);
+    }
+  };
 
   return (
     <>
-    <Flex justifyContent={"center"}>
-      <Heading
-        size={"sm"}
-        background={"none"}
-        fontWeight={"none"}
-        mt={5}
-        cursor={"pointer"}
-        color={"grey"}
-        position="relative"
-        onClick={() => {
-          setOverlay(<OverlayOne />);
-          onOpen();
-        }}
-        _hover={{
+      <Flex justify={"center"}>
+        <Heading mt={4} size={"lg"}>
+          Naujos užduoties kūrimas
+        </Heading>
+      </Flex>
+      <Flex justify={"center"}>
+        <FormControl mt={4} isRequired width={"50%"}>
+          <FormLabel>Pavadinimas</FormLabel>
+          <Input type={"text"} backgroundColor={"white"} />
+        </FormControl>
+      </Flex>
+      <Flex justify={"center"}>
+        <FormControl mt={4} isRequired width={"50%"}>
+          <FormLabel>Užduoties aprašymas</FormLabel>
+          <Editor
+            editorStyle={{
+              border: "1px solid black",
+              height: "300px",
+              backgroundColor: "white",
+            }}
+            editorState={description}
+            onEditorStateChange={(editorState) => setDescription(editorState)}
+            wrapperClassName={"rte-wrapper"}
+            toolbarClassName={"rte-wrapper"}
+            editorClassName={"rte-wrapper"}
+          />
+        </FormControl>
+      </Flex>
+      <Flex justify={"center"}>
+        <FormControl mt={4} isRequired width={"50%"}>
+          <FormLabel>Įvesties, išvesties pavyzdžiai</FormLabel>
+          <Editor
+            editorStyle={{
+              border: "1px solid black",
+              height: "300px",
+              backgroundColor: "white",
+            }}
+            editorState={inputOutput}
+            onEditorStateChange={(editorState) => setInputOutput(editorState)}
+            wrapperClassName={"rte-wrapper"}
+            toolbarClassName={"rte-wrapper"}
+            editorClassName={"rte-wrapper"}
+          />
+        </FormControl>
+      </Flex>
+      <Flex justify={"start"} width={"50%"} margin={"auto"}>
+        <FormLabel mt={4}>Testai</FormLabel>
+      </Flex>
+      <Flex width={"50%"} margin={"auto"}>
+        <Flex width={"50%"}>
+          <FormLabel>Įvestis</FormLabel>
+        </Flex>
+        <Flex width={"50%"}>
+          <FormLabel>Išvestis</FormLabel>
+        </Flex>
+      </Flex>
+      {fields.map((field, index) => (
+        <Flex justify={"center"} width={"50%"} margin={"auto"}>
+          <FormControl>
+            <Input
+              type={"text"}
+              value={field.field1}
+              backgroundColor={"white"}
+              onChange={(e) => handleFieldChange(index, "field1", e)}
+            />
+          </FormControl>
+          <FormControl>
+            <Input
+              type={"text"}
+              value={field.field2}
+              backgroundColor={"white"}
+              onChange={(e) => handleFieldChange(index, "field2", e)}
+            />
+          </FormControl>
+          {fields.length > 1 && (
+            <Flex alignItems={"center"} ml={4}>
+              <DeleteIcon
+                onClick={() => deleteField(index)}
+                cursor={"pointer"}
+              />
+            </Flex>
+          )}
+        </Flex>
+      ))}
+      <Flex justify={"center"}>
+          <Heading
+          size={"sm"}
+          background={"none"}
+          fontWeight={"none"}
+          mt={4}
+          onClick={addField}
+          cursor={"pointer"}
+          color={"black"}
+          position="relative"
+          _hover={{
             _after: {
               transform: "scaleX(1)",
               transformOrigin: "bottom left",
@@ -53,46 +154,28 @@ const AddNewProgramminTask = () => {
             height: "2px",
             bottom: 0,
             left: 0,
-            backgroundColor: "grey",
+            backgroundColor: "black",
             transform: "scaleX(0)",
             transformOrigin: "bottom right",
             transition: "transform 0.25s ease-out",
           }}
-      >
-        Sukurti užduotį
-      </Heading>
-      </Flex>
-      <Modal
-        isCentered
-        isOpen={isOpen}
-        initialFocusRef={initialRef}
-        onClose={onClose}
-      >
-        {overlay}
-        <ModalContent>
-          <ModalHeader>Naujos užduoties kūrimas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl isRequired>
-              <FormLabel>Pavadinimas</FormLabel>
-              <Input type={"text"} />
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="submit"
-              bg={"blue.500"}
-              color={"black"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Pateikti
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
-    </>
+        >
+            Pridėti testą
+        </Heading>
+        </Flex>
+        <Flex mt={5} justify={"center"}>
+          <Button
+            type="submit"
+            bg={"red.500"}
+            color={"black"}
+            _hover={{
+              bg: "red.500",
+            }}
+          >
+            Sukurti
+          </Button>
+          </Flex>
+          </>
   );
 };
 

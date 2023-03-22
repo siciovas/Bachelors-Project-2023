@@ -111,11 +111,7 @@ const RegisterPage = () => {
             ir įgyk programavimo patirties! ✌️
           </Text>
         </Stack>
-        <Box
-          rounded={"lg"}
-          boxShadow={"lg"}
-          p={8}
-        >
+        <Box rounded={"lg"} boxShadow={"lg"} p={8}>
           <Stack spacing={4}>
             <form onSubmit={(e) => Registration(e)}>
               <FormControl id="userName" isRequired>

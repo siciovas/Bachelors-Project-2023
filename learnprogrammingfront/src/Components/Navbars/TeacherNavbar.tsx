@@ -14,7 +14,7 @@ import {
   Stack,
   Box,
 } from "@chakra-ui/react";
-import { CloseIcon, HamburgerIcon} from "@chakra-ui/icons";
+import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useLocation, useNavigate } from "react-router-dom";
 import { Submissions } from "../../Pages/Submissions";
 import eventBus from "../../Helpers/EventBus";
@@ -30,12 +30,7 @@ const LinksTeachers: LinksProps[] = [
 ];
 
 const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link
-    px={2}
-    py={1}
-    rounded={"md"}
-    href={url}
-  >
+  <Link px={2} py={1} rounded={"md"} href={url}>
     {title}
   </Link>
 );
@@ -71,10 +66,11 @@ const TeacherNavbar = () => {
 
   return (
     <Box
-      position={location.pathname === "/" ? "absolute" : "inherit"}
-      zIndex={1}
-      width={"100%"}
       px={4}
+      width={"100%"}
+      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      zIndex={1}
+      position={location.pathname === "/" ? "absolute" : "relative"}
     >
       <Flex h={16} alignItems={"center"} justifyContent={"space-between"}>
         <IconButton
@@ -85,7 +81,7 @@ const TeacherNavbar = () => {
           onClick={isOpen ? onClose : onOpen}
         />
         <Button
-          color={location.pathname === "/" ? "white" : "black"}
+          color={"white"}
           background={"none"}
           fontWeight={"normal"}
           onClick={() => navigate("/")}
@@ -108,7 +104,10 @@ const TeacherNavbar = () => {
               background={"none"}
               fontWeight={"normal"}
               onClick={() => navigate(link.url)}
-              color={location.pathname === "/" ? "white" : "black"}
+              color={"white"}
+              _hover={{
+                bg: "none",
+              }}
             >
               {link.title}
             </Button>
@@ -116,14 +115,14 @@ const TeacherNavbar = () => {
           <Submissions />
         </Flex>
         <Flex alignItems={"center"} gap={2}>
-          <Box color={location.pathname === "/" ? "white" : "black"}>
-            {" "}
-            Naudojatės mokytojo prieiga
-          </Box>
+          <Box color={"white"}> Naudojatės mokytojo prieiga</Box>
           <Button
             background={"none"}
             onClick={() => navigate("/krepselis")}
-            color={location.pathname === "/" ? "white" : "black"}
+            color={"white"}
+            _hover={{
+              bg: "none",
+            }}
           >
             <i className="bi bi-cart-fill"></i>
           </Button>
@@ -138,12 +137,13 @@ const TeacherNavbar = () => {
               <Avatar size={"md"} src={avatar} />
             </MenuButton>
             <MenuList>
-              <MenuItem>Paskyra</MenuItem>
+              <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuDivider />
-              <MenuItem>Įverčiai</MenuItem>
+              <MenuItem onClick={() => navigate("/studentuivertinimai")}>Studentų įverčiai</MenuItem>
+              <MenuItem onClick={() => navigate("/studentusarasas")}>Priskirti studentą</MenuItem>
               <MenuDivider />
-              <MenuItem>Mano prašymai</MenuItem>
-              <MenuItem>Užsakymų istorija</MenuItem>
+              <MenuItem onClick={(e) => navigate("/manoprasymai")}>Mano prašymai</MenuItem>
+              <MenuItem onClick={(e) => navigate("/manouzsakymai")}>Užsakymų istorija</MenuItem>
               <MenuDivider />
               <MenuItem onClick={(e) => Logout(e)}>Atsijungti</MenuItem>
             </MenuList>

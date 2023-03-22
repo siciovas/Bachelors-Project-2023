@@ -22,29 +22,34 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin,Student,Teacher")]
         public async Task<ActionResult<List<SubmissionUserDto>>> GetAll()
         {
-            var submissions = await _submissionRep.GetAll();
-
-            return Ok(submissions.Select(submission => new SubmissionUserDto
+            if (User.IsInRole("Admin"))
             {
-                Topic = submission.Topic,
-                Message = submission.Message,
-                Name = submission.User.Name,
-                Surname = submission.User.Surname,
-            }).ToList());
-        }
+                var submissions = await _submissionRep.GetAll();
 
-        [HttpGet]
-        [Authorize]
-        [Route("{id}")]
-        public async Task<ActionResult<List<SubmissionDto>>> GetById()
-        {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+                return Ok(submissions.Select(submission => new SubmissionUserDto
+                {
+                    Topic = submission.Topic,
+                    Message = submission.Message,
+                    Name = submission.User.Name,
+                    Surname = submission.User.Surname,
+                }).ToList());
+            }
+            else
+            {
+                var submissions = await _submissionRep.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
 
-            var submissions = await _submissionRep.GetById(userId);
+                return Ok(submissions.Select(submission => new SubmissionUserDto
+                {
+                    Topic = submission.Topic,
+                    Message = submission.Message,
+                    Name = submission.User.Name,
+                    Surname = submission.User.Surname,
+                }).ToList());
+            }
 
-            return Ok(submissions.Select(submission => _mapper.Map<SubmissionDto>(submission)).ToList());
         }
 
         [HttpPost]

@@ -2,6 +2,8 @@
 using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
+using LearnProgramming.Domain.Enums;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace LearnProgramming.API.Controllers
@@ -22,6 +24,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<ActionResult<List<SubTopicDto>>> GetAll(int learningtopicId)
         {
             var subTopics = await _subTopicsRep.GetAll(learningtopicId);
@@ -30,6 +33,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpGet("{id}")]
+        [Authorize]
         public async Task<ActionResult<SubTopicDto>> Get(int id, int learningtopicId)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -40,7 +44,7 @@ namespace LearnProgramming.API.Controllers
 
             return new SubTopicDto
             {
-                SubTopicId = subTopic.Id,
+                Id = subTopic.Id,
                 SubTopicName = subTopic.SubTopicName,
 
             };
@@ -48,6 +52,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<SubTopicPostDto>> Post(int learningtopicId, SubTopicPostDto subTopicPost)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -67,6 +72,7 @@ namespace LearnProgramming.API.Controllers
 
 
         [HttpPut("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<SubTopicUpdateDto>> Update(int learningtopicId, int id, SubTopicUpdateDto subTopicDto)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -84,7 +90,8 @@ namespace LearnProgramming.API.Controllers
 
         }
 
-        [HttpDelete]
+        [HttpDelete("{id}")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult> Delete(int learningtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
