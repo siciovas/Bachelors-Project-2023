@@ -2,7 +2,6 @@
 using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
-using LearnProgramming.Domain.Enums;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

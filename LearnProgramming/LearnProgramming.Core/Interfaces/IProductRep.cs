@@ -1,9 +1,4 @@
 ﻿using LearnProgramming.Domain.Entities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnProgramming.Core.Interfaces
 {
@@ -14,6 +9,6 @@ namespace LearnProgramming.Core.Interfaces
         Task<Product> Create(Product shopItem);
         Task<Product> Update (Product shopItem);
         Task Delete (Product shopItem);
-        Task<List<Product>> GetSuggestions();
+        Task<List<Product>> GetSuggestions(int id);
     }
 }

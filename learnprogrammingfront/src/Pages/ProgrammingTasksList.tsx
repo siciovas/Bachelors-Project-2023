@@ -1,19 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import {
-  Box,
-  Button,
-  Flex,
-  Grid,
-  Heading,
-  Spinner,
-  useToast,
-} from "@chakra-ui/react";
+import { Box, Button, Flex, Grid, Heading, Spinner } from "@chakra-ui/react";
 import { useLocation, useNavigate } from "react-router-dom";
-import { AddNewProgramminTask } from "../Components/AddNewProgrammingTask";
+import { AddNewProgrammingTask } from "../Components/AddNewProgrammingTask";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
+import toast from "react-hot-toast";
 
 const ProgrammingTasksList = () => {
   const navigate = useNavigate();
@@ -22,7 +15,6 @@ const ProgrammingTasksList = () => {
   const [subTopic, setSubTopic] = useState<LearningSubTopicsType>();
   const [tasks, setTasks] = useState<ProgrammingTaskTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
   const role = localStorage.getItem("role");
 
   const NavigateToTask = (taskId: number) => {
@@ -92,19 +84,9 @@ const ProgrammingTasksList = () => {
 
     if (response.status === 204) {
       setIsLoading(true);
-      toast({
-        title: "Uždavinys ištrintas",
-        position: "top-right",
-        status: "success",
-        isClosable: true,
-      });
+      toast.success("Uždavinys ištrintas!");
     } else {
-      toast({
-        title: "Nepavyko ištrinti",
-        position: "top-right",
-        status: "error",
-        isClosable: true,
-      });
+      toast.error("Nepavyko ištrinti!");
     }
   };
 
@@ -206,7 +188,8 @@ const ProgrammingTasksList = () => {
                     >
                       {task.name}
                     </Heading>
-                    <Button colorScheme={"green"} variant="outline">
+                    <Button colorScheme={"green"} variant="outline" borderRadius={"50px 50px 50px 50px"}
+>
                       Pažymėti kaip atliktą
                     </Button>
                     <DeleteIcon

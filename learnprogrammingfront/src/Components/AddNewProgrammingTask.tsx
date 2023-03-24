@@ -6,8 +6,6 @@ import {
   Input,
   Flex,
   Heading,
-  Stack,
-  HStack,
 } from "@chakra-ui/react";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { convertToRaw, EditorState } from "draft-js";
@@ -15,7 +13,7 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 
-const AddNewProgramminTask = () => {
+const AddNewProgrammingTask = () => {
   const [fields, setFields] = useState([{ field1: "", field2: "" }]);
   const [inputCount, setInputCount] = useState<number>(1);
   const addField = () => {
@@ -132,7 +130,7 @@ const AddNewProgramminTask = () => {
         </Flex>
       ))}
       <Flex justify={"center"}>
-          <Heading
+        <Heading
           size={"sm"}
           background={"none"}
           fontWeight={"none"}
@@ -160,23 +158,24 @@ const AddNewProgramminTask = () => {
             transition: "transform 0.25s ease-out",
           }}
         >
-            Pridėti testą
+          Pridėti testą
         </Heading>
-        </Flex>
-        <Flex mt={5} justify={"center"}>
-          <Button
-            type="submit"
-            bg={"red.500"}
-            color={"black"}
-            _hover={{
-              bg: "red.500",
-            }}
-          >
-            Sukurti
-          </Button>
-          </Flex>
-          </>
+      </Flex>
+      <Flex mt={5} justify={"center"}>
+        <Button
+          type="submit"
+          bg={"red.500"}
+          borderRadius={"50px 50px 50px 50px"}
+          color={"black"}
+          _hover={{
+            bg: "red.500",
+          }}
+        >
+          Sukurti
+        </Button>
+      </Flex>
+    </>
   );
 };
 
-export { AddNewProgramminTask };
+export { AddNewProgrammingTask };

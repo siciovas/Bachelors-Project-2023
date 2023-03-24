@@ -3,14 +3,11 @@ using LearnProgramming.Core.Commands;
 using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
-using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Cryptography;
-using System.Text;
 using System.Security.Claims;
-using System.IdentityModel.Tokens.Jwt;
 using Microsoft.AspNetCore.Authorization;
 using LearnProgramming.Core.Dto.DtoUpdate;
+using LearnProgramming.Core.Dto.DtoPost;
 
 namespace LearnProgramming.API.Controllers
 {
@@ -67,7 +64,7 @@ namespace LearnProgramming.API.Controllers
 
             await _userRepository.Register(newUser);
 
-            var userDto = _mapper.Map<UserDto>(newUser);
+            var userDto = _mapper.Map<StudentDto>(newUser);
 
             return CreatedAtAction(nameof(Register), userDto);
         }
@@ -98,6 +95,23 @@ namespace LearnProgramming.API.Controllers
             return Ok(new AuthDto(jwt, user.Role));
         }
 
+        [HttpDelete]
+        [Authorize]
+        [Route("deleteProfile")]
+        public async Task<ActionResult> DeleteProfile()
+        {
+            var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            await _userRepository.DeleteProfile(user);
+
+            return NoContent();
+        }
+
         [Authorize]
         [HttpGet]
         [Route("me")]
@@ -105,7 +119,7 @@ namespace LearnProgramming.API.Controllers
         {
             var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
 
-            var userDto = _mapper.Map<UserDto>(user);
+            var userDto = _mapper.Map<MeDto>(user);
 
             return Ok(userDto);
         }
@@ -165,6 +179,77 @@ namespace LearnProgramming.API.Controllers
             await _userRepository.Update(user);
 
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("getUsers")]
+        [Authorize(Roles = "Admin,Teacher")]
+        public async Task<ActionResult<List<UserDto>>> GetUsers()
+        {
+            var users = new List<UserDto>();
+
+            if(User.IsInRole("Admin"))
+            {
+                 users = await _userRepository.GetAll();
+            }
+
+            else if(User.IsInRole("Teacher"))
+            {
+                 users = await _userRepository.GetAllStudents();
+            }
+
+            return Ok(users);
+        }
+
+        [HttpGet]
+        [Route("getMyStudents")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<List<TeachersAllStudentsDto>>> GetMyStudents()
+        {
+            var users = await _userRepository.GetTeacherAllStudents(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
+
+            return Ok(users);
+        }
+
+        [HttpDelete]
+        [Route("deleteStudent/{id}")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> DeleteStudent(string id)
+        {
+            var student = await _userRepository.GetByIdStudent(Guid.Parse(id));
+
+            if(student == null)
+            {
+                return NotFound();
+            }
+
+            await _userRepository.DeleteStudent(student);
+
+            return NoContent();
+        }
+
+
+        [HttpPost]
+        [Route("postStudent")]
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult> PostStudent(StudentPostDto studenDto)
+        {
+            var student = await _userRepository.GetByIdStudent(Guid.Parse(studenDto.StudentId));
+
+            if (student != null)
+            {
+                return Conflict();
+            }
+
+            var relation = new TeacherAndStudent
+            {
+                StudentId = Guid.Parse(studenDto.StudentId),
+                TeacherId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid))
+            };
+
+            await _userRepository.PostStudent(relation);
+
+            return Ok(relation);
         }
     }
 }

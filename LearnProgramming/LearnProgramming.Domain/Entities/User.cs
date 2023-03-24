@@ -1,10 +1,5 @@
 ﻿using LearnProgramming.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace LearnProgramming.Domain.Entities
 {
@@ -22,6 +17,12 @@ namespace LearnProgramming.Domain.Entities
         public string City { get; set; }
         public string School { get; set; }
         public AllRoles Role { get; set; } = AllRoles.Student;
+
+        [InverseProperty(nameof(TeacherAndStudent.Student))]
+        public TeacherAndStudent? Teacher { get; set; }
+
+        [InverseProperty(nameof(TeacherAndStudent.Teacher))]
+        public ICollection<TeacherAndStudent> Students { get; set; }
 
     }
 }

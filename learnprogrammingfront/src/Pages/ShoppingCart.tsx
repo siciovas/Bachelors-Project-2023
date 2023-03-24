@@ -14,7 +14,6 @@ import {
   Input,
   Stack,
   Select,
-  useToast,
   Spinner,
 } from "@chakra-ui/react";
 import { FiHome, FiShoppingCart } from "react-icons/fi";
@@ -24,6 +23,7 @@ import { CloseIcon } from "@chakra-ui/icons";
 import EmptyCart from "./WebPhotos/emptycart.png";
 import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
+import toast from "react-hot-toast";
 
 const steps = [
   {
@@ -38,7 +38,6 @@ const ShoppingCart = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShoppingCartTypes>();
   const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
 
   const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
@@ -75,19 +74,9 @@ const ShoppingCart = () => {
 
     if (response.status === 204) {
       setIsLoading(true);
-      toast({
-        title: "Prekė ištrinta",
-        position: "top-right",
-        status: "success",
-        isClosable: true,
-      });
+      toast.success("Prekė ištrinta!");
     } else {
-      toast({
-        title: "Nepavyko ištrinti",
-        position: "top-right",
-        status: "error",
-        isClosable: true,
-      });
+      toast.error("Nepavyko ištrinti!");
     }
   };
 
@@ -365,16 +354,19 @@ const ShoppingCart = () => {
           </Steps>
           <Flex width="100%" justify="flex-end" mt={4}>
             {activeStep !== 0 && (
-              <Button justifyContent={"end"} mr={3} onClick={prevStep}>
+              <Button justifyContent={"end"} mr={3} onClick={prevStep} borderRadius={"50px 50px 50px 50px"}
+              >
                 Atgal
               </Button>
             )}
             {activeStep === steps.length - 1 ? (
-              <Button type="submit" justifyContent={"end"} mr={5}>
+              <Button type="submit" justifyContent={"end"} mr={5} borderRadius={"50px 50px 50px 50px"}
+              >
                 Apmokėti
               </Button>
             ) : (
-              <Button justifyContent={"end"} onClick={nextStep} mr={10}>
+              <Button justifyContent={"end"} onClick={nextStep} mr={10} borderRadius={"50px 50px 50px 50px"}
+              >
                 Toliau
               </Button>
             )}

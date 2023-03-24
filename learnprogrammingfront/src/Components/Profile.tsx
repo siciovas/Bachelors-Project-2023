@@ -8,9 +8,17 @@ import {
   Stack,
   Avatar,
   Center,
-  useToast,
   Box,
   Spinner,
+  Modal,
+  ModalBody,
+  ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  Text,
+  useDisclosure,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -22,12 +30,17 @@ import {
 import { useNavigate } from "react-router-dom";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
+import toast from "react-hot-toast";
 
 const Profile = () => {
-  useNavigate();
+  const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
-  const toast = useToast();
   const [isLoading, setIsLoading] = useState(true);
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const openModal = () => {
+    onOpen();
+  };
 
   const [avatar, setAvatar] = useState<string>();
   const [username, setUsername] = useState<string>();
@@ -110,13 +123,7 @@ const Profile = () => {
       setSchool(user.school);
       setIsLoading(false);
     } else {
-      toast({
-        title: "Netikėta klaida",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Netikėta klaida!");
     }
   }, []);
 
@@ -147,21 +154,9 @@ const Profile = () => {
     }
     if (response.status === 200) {
       setIsLoading(true);
-      toast({
-        title: "Atnaujinta",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Atnaujinta!");
     } else {
-      toast({
-        title: "Atnaujinti nepavyko",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Atnaujinti nepavyko!");
     }
   };
 
@@ -186,21 +181,32 @@ const Profile = () => {
     }
     if (response.status === 200) {
       setIsLoading(true);
-      toast({
-        title: "Slaptažodis pakeistas",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Slaptažodis pakeistas!");
     } else {
-      toast({
-        title: "Atnaujinti nepavyko",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Atnaujinti nepavyko!");
+    }
+  };
+
+  const deleteProfile = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>
+  ): Promise<void> => {
+    e.preventDefault();
+    const response = await fetch(`https://localhost:7266/api/deleteProfile`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "DELETE",
+    });
+
+    if (response.status === 204) {
+      setIsLoading(true);
+      toast.success("Paskyra ištrinta!");
+      onClose();
+      localStorage.removeItem("accessToken");
+      navigate("/");
+    } else {
+      toast.error("Nepavyko ištrinti!");
     }
   };
 
@@ -213,176 +219,201 @@ const Profile = () => {
   }
 
   return (
-    <Box width={"100%"}>
-      <Flex minH={"100vh"} align={"center"} justify={"center"}>
-        <Stack
-          spacing={4}
-          w={"full"}
-          maxW={"md"}
-          rounded={"xl"}
-          boxShadow={"lg"}
-          p={6}
-          my={12}
-        >
-          <Heading
-            lineHeight={1.1}
-            textAlign={"center"}
-            fontSize={{ base: "2xl", sm: "3xl" }}
+    <>
+      <Box width={"100%"}>
+        <Flex minH={"100vh"} align={"center"} justify={"center"}>
+          <Stack
+            spacing={4}
+            w={"full"}
+            maxW={"md"}
+            rounded={"xl"}
+            boxShadow={"lg"}
+            p={6}
+            my={12}
           >
-            {`${name} ${surname}`}
-          </Heading>
-          <form onSubmit={(e) => UpdateUserProfile(e)}>
-            <FormControl id="userName">
-              <Stack direction={["column", "row"]} spacing={6}>
-                <Center>
-                  <Avatar
-                    size="2xl"
-                    src={"data:image/jpeg;base64," + avatar}
-                  ></Avatar>
-                </Center>
-                <Center w="full">
-                  <Box mb={3}>
-                    <label className="form-label">Nuotraukos keitimas</label>
-                    <input
-                      onChange={(e) => {
-                        onAvatarChange(e);
-                      }}
-                      className="form-control"
-                      type="file"
-                      id="formFile"
+            <Heading
+              lineHeight={1.1}
+              textAlign={"center"}
+              fontSize={{ base: "2xl", sm: "3xl" }}
+            >
+              {`${name} ${surname}`}
+            </Heading>
+            <form onSubmit={(e) => UpdateUserProfile(e)}>
+              <FormControl id="userName">
+                <Stack direction={["column", "row"]} spacing={6}>
+                  <Center>
+                    <Avatar
+                      size="2xl"
+                      src={"data:image/jpeg;base64," + avatar}
                     />
-                  </Box>
-                </Center>
-              </Stack>
-            </FormControl>
-            <FormControl id="userName">
-              <FormLabel>Slapyvardis</FormLabel>
-              <Input
-                onChange={(e) => {
-                  onUsernameChange(e);
-                }}
-                placeholder={username}
-                _placeholder={{ color: "gray.500" }}
-                type="text"
-              />
-            </FormControl>
-            <FormControl id="email">
-              <FormLabel>El. Paštas</FormLabel>
-              <Input
-                onChange={(e) => {
-                  onEmailChange(e);
-                }}
-                placeholder={email}
-                _placeholder={{ color: "gray.500" }}
-                type="email"
-              />
-            </FormControl>
-            <FormControl id="city">
-              <FormLabel>Miestas</FormLabel>
-              <Input
-                onChange={(e) => {
-                  onCityChange(e);
-                }}
-                placeholder={city}
-                type="text"
-              />
-            </FormControl>
-            <FormControl id="school">
-              <FormLabel>Mokykla</FormLabel>
-              <Input
-                onChange={(e) => {
-                  onSchoolChange(e);
-                }}
-                placeholder={school}
-                type="text"
-              />
-            </FormControl>
-            <Stack spacing={10} pt={5}>
-              <Button
-                type="submit"
-                size="lg"
-                bg={"blue.400"}
-                color={"white"}
-                _hover={{
-                  bg: "blue.500",
-                }}
-              >
-                Atnaujinti profilį
-              </Button>
-            </Stack>
-          </form>
-          <form onSubmit={(e) => UpdatePassword(e)}>
-            <Stack>
-              <FormControl id="password">
-                <FormLabel>Senas slaptažodis</FormLabel>
+                  </Center>
+                  <Center w="full">
+                    <Box mb={3}>
+                      <label className="form-label">Nuotraukos keitimas</label>
+                      <input
+                        onChange={(e) => {
+                          onAvatarChange(e);
+                        }}
+                        className="form-control"
+                        type="file"
+                        id="formFile"
+                      />
+                    </Box>
+                  </Center>
+                </Stack>
+              </FormControl>
+              <FormControl id="userName">
+                <FormLabel>Slapyvardis</FormLabel>
                 <Input
-                  placeholder="Slaptažodis"
-                  _placeholder={{ color: "gray.500" }}
-                  type="password"
                   onChange={(e) => {
-                    onOldPasswordChange(e);
+                    onUsernameChange(e);
                   }}
+                  placeholder={username}
+                  _placeholder={{ color: "gray.500" }}
+                  type="text"
                 />
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Naujas slaptažodis</FormLabel>
+              <FormControl id="email">
+                <FormLabel>El. Paštas</FormLabel>
                 <Input
-                  placeholder="Slaptažodis"
-                  _placeholder={{ color: "gray.500" }}
-                  type="password"
                   onChange={(e) => {
-                    onNewPasswordChange(e);
+                    onEmailChange(e);
                   }}
+                  placeholder={email}
+                  _placeholder={{ color: "gray.500" }}
+                  type="email"
                 />
               </FormControl>
-              <FormControl id="password">
-                <FormLabel>Pakartoti slaptažodį</FormLabel>
+              <FormControl id="city">
+                <FormLabel>Miestas</FormLabel>
                 <Input
-                  placeholder="Slaptažodis"
-                  _placeholder={{ color: "gray.500" }}
-                  type="password"
                   onChange={(e) => {
-                    onRepeatPasswordChange(e);
+                    onCityChange(e);
                   }}
+                  placeholder={city}
+                  type="text"
+                />
+              </FormControl>
+              <FormControl id="school">
+                <FormLabel>Mokykla</FormLabel>
+                <Input
+                  onChange={(e) => {
+                    onSchoolChange(e);
+                  }}
+                  placeholder={school}
+                  type="text"
                 />
               </FormControl>
               <Stack spacing={10} pt={5}>
                 <Button
                   type="submit"
-                  loadingText="Submitting"
-                  size="lg"
                   bg={"blue.400"}
                   color={"white"}
+                  borderRadius={"50px 50px 50px 50px"}
                   _hover={{
                     bg: "blue.500",
                   }}
                 >
-                  Keisti slaptažodį
+                  Atnaujinti profilį
                 </Button>
               </Stack>
-            </Stack>
-          </form>
-          <Button
-            bgGradient="linear(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)"
-            textAlign="center"
-            textTransform="uppercase"
-            transition="1.5s"
-            backgroundSize="200% auto"
-            color="white"
-            boxShadow="0 0 20px #eee"
-            borderRadius="10px"
-            display="block"
-            _hover={{
-              bgPos: "center",
-              color: "#fff",
-              textDecoration: "none",
-            }}
-          >
-            Ištrinti paskyrą
-          </Button>
-        </Stack>
-      </Flex>
-    </Box>
+            </form>
+            <form onSubmit={(e) => UpdatePassword(e)}>
+              <Stack>
+                <FormControl id="password">
+                  <FormLabel>Senas slaptažodis</FormLabel>
+                  <Input
+                    placeholder="Slaptažodis"
+                    _placeholder={{ color: "gray.500" }}
+                    type="password"
+                    onChange={(e) => {
+                      onOldPasswordChange(e);
+                    }}
+                  />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>Naujas slaptažodis</FormLabel>
+                  <Input
+                    placeholder="Slaptažodis"
+                    _placeholder={{ color: "gray.500" }}
+                    type="password"
+                    onChange={(e) => {
+                      onNewPasswordChange(e);
+                    }}
+                  />
+                </FormControl>
+                <FormControl id="password">
+                  <FormLabel>Pakartoti slaptažodį</FormLabel>
+                  <Input
+                    placeholder="Slaptažodis"
+                    _placeholder={{ color: "gray.500" }}
+                    type="password"
+                    onChange={(e) => {
+                      onRepeatPasswordChange(e);
+                    }}
+                  />
+                </FormControl>
+                <Stack spacing={10} pt={5}>
+                  <Button
+                    type="submit"
+                    loadingText="Submitting"
+                    borderRadius={"50px 50px 50px 50px"}
+                    bg={"blue.400"}
+                    color={"white"}
+                    _hover={{
+                      bg: "blue.500",
+                    }}
+                  >
+                    Keisti slaptažodį
+                  </Button>
+                </Stack>
+              </Stack>
+            </form>
+            <Button
+              onClick={openModal}
+              borderRadius={"50px 50px 50px 50px"}
+              bgGradient="linear(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)"
+              textAlign="center"
+              textTransform="uppercase"
+              transition="1.5s"
+              backgroundSize="200% auto"
+              color="white"
+              boxShadow="0 0 20px #eee"
+              _hover={{
+                bgPos: "center",
+                color: "#fff",
+                textDecoration: "none",
+              }}
+            >
+              Ištrinti paskyrą
+            </Button>
+          </Stack>
+        </Flex>
+      </Box>
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Paskyros trynimas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Ar tikrai norite ištrinti savo paskyrą?</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                background="red.500"
+                mr={3}
+                borderRadius={"50px 50px 50px 50px"}
+                onClick={(e) => deleteProfile(e)}
+              >
+                Ištrinti
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    </>
   );
 };
 

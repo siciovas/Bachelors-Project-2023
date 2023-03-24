@@ -2,11 +2,6 @@
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace LearnProgramming.Infrastructure.Repositories
 {
@@ -45,12 +40,19 @@ namespace LearnProgramming.Infrastructure.Repositories
             return topics;
         }
 
-        public async Task<List<Product>> GetSuggestions()
+        public async Task<List<Product>> GetSuggestions(int id)
         {
             Random rand = new Random();
-            int skipper = rand.Next(0, _db.Product.Count() - 3);
+            int count = await _db.Product.CountAsync();
 
-            return await _db.Product.Skip(skipper).Take(3).ToListAsync();
+            if(count < 4)
+            {
+                return await _db.Product.Where(x => x.Id != id).ToListAsync();
+            }
+
+            int skipper = rand.Next(0, count - 3);
+
+            return await _db.Product.Where(x => x.Id != id).Skip(skipper).Take(3).ToListAsync();
         }
 
         public async Task<Product> Update(Product shopItem)

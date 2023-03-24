@@ -1,6 +1,4 @@
-using LearnProgramming.API;
 using LearnProgramming.Core.Interfaces;
-using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using LearnProgramming.Infrastructure.Repositories;
 using LearnProgramming.Infrastructure.Services;
@@ -9,13 +7,17 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using Newtonsoft.Json;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddRazorPages();
-builder.Services.AddControllers().AddNewtonsoftJson();
+builder.Services.AddControllers().AddNewtonsoftJson(options =>
+{
+    options.SerializerSettings.ReferenceLoopHandling = ReferenceLoopHandling.Ignore;
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(option =>
 {

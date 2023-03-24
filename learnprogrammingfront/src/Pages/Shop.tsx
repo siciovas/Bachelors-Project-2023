@@ -1,27 +1,50 @@
 import React, { FormEvent, useCallback, useEffect, useState } from "react";
-import { Box, Image, Badge, Grid, Flex, Spinner } from "@chakra-ui/react";
+import {
+  Box,
+  Image,
+  Badge,
+  Grid,
+  Flex,
+  Spinner,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Text,
+  Button,
+  Heading,
+} from "@chakra-ui/react";
 import { ShopTypes } from "../Types/ShopTypes";
 import { useNavigate } from "react-router-dom";
-import { useToast } from "@chakra-ui/react";
 import { AddNewShopItem } from "../Components/AddNewShopItem";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
+import toast from "react-hot-toast";
 
 const Shop = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
   const role = localStorage.getItem("role");
-
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deletingId, setDeletingId] = useState<number>();
 
   const NavigateToItem = (shopItemId: number) => {
     navigate("/preke", {
       state: {
-        id: shopItemId,
+        shopItemId: shopItemId,
       },
     });
+  };
+
+  const openModal = (id: number) => {
+    setDeletingId(id);
+    onOpen();
   };
 
   const AddShopItem = useCallback(
@@ -58,21 +81,10 @@ const Shop = () => {
       });
       if (response.status === 201) {
         setIsLoading(true);
-        toast({
-          title: "Prekė pridėta",
-          status: "success",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
+        toast.success("Prekė pridėta!");
+        onClose();
       } else {
-        toast({
-          title: "Nepavyko",
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
+        toast.error("Nepavyko!");
       }
     },
     []
@@ -87,13 +99,39 @@ const Shop = () => {
       method: "GET",
     });
     const allItems = await response.json();
-    setItems(allItems);
+    const reversedItems = [...allItems].reverse();
+    setItems(reversedItems);
     setIsLoading(false);
   }, []);
 
   useEffect(() => {
     getShopItems();
   }, [isLoading]);
+
+  const deleteShopItem = async (
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+    shopItemId: number
+  ): Promise<void> => {
+    e.preventDefault();
+    const response = await fetch(
+      `https://localhost:7266/api/shop/${shopItemId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "DELETE",
+      }
+    );
+
+    if (response.status === 204) {
+      setIsLoading(true);
+      toast.success("Tema ištrinta!");
+      onClose();
+    } else {
+      toast.error("Nepavyko ištrinti!");
+    }
+  };
 
   if (isLoading) {
     return (
@@ -105,9 +143,10 @@ const Shop = () => {
 
   return (
     <>
-     {role === UserRole.Admin && (
-      <AddNewShopItem AddShopItem={AddShopItem} />
-     )}
+      <Flex mt={5} justify="center">
+        <Heading size="lg">Knygos</Heading>
+      </Flex>
+      {role === UserRole.Admin && <AddNewShopItem AddShopItem={AddShopItem} />}
       <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={3} mt={10}>
         {items.map((item) => {
           return (
@@ -115,6 +154,7 @@ const Shop = () => {
               borderWidth="1px"
               borderRadius="lg"
               overflow="hidden"
+              borderColor={"black"}
               width={"325px"}
             >
               <Image
@@ -152,14 +192,45 @@ const Shop = () => {
                 >
                   {item.name}
                 </Box>
-                <Flex justify="flex-end">
-                  <DeleteIcon cursor={"pointer"} />
-                </Flex>
+                {role === UserRole.Admin && (
+                  <>
+                    <Flex justify="flex-end">
+                      <DeleteIcon
+                        cursor={"pointer"}
+                        color={"red.500"}
+                        onClick={() => openModal(item.id)}
+                      />
+                    </Flex>
+                  </>
+                )}
               </Box>
             </Box>
           );
         })}
       </Grid>
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Prekės trynimas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Ar tikrai norite ištrinti prekę?</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                background="red.500"
+                mr={3}
+                borderRadius={"50px 50px 50px 50px"}
+                onClick={(e) => deleteShopItem(e, deletingId as number)}
+              >
+                Ištrinti
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
     </>
   );
 };

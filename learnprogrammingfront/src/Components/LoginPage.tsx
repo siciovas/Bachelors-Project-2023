@@ -10,17 +10,15 @@ import {
   Button,
   Heading,
   Text,
-  useColorModeValue,
-  useToast,
 } from "@chakra-ui/react";
-import { ChangeEvent, FormEvent, useEffect, useState } from "react";
+import { ChangeEvent, FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const LoginPage = () => {
   const navigate = useNavigate();
   const [usernameOrEmail, setUsernameOrEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
-  const toast = useToast();
 
   const onUsernameOrEmailChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setUsernameOrEmail(e.target.value as string);
@@ -43,25 +41,13 @@ const LoginPage = () => {
     });
 
     if (response.status === 200) {
-      toast({
-        title: "Prisijungta",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Prisijungta!");
       const data = await response.json();
       localStorage.setItem("accessToken", data.accessToken);
       localStorage.setItem("role", data.role);
       navigate("/");
     } else {
-      toast({
-        title: "Prisijungimas nepavyko",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Prisijungimas nepavyko!");
     }
   };
 
@@ -113,6 +99,7 @@ const LoginPage = () => {
                   type="submit"
                   bg={"blue.500"}
                   color={"black"}
+                  borderRadius={"50px 50px 50px 50px"}
                   _hover={{
                     bg: "blue.500",
                   }}

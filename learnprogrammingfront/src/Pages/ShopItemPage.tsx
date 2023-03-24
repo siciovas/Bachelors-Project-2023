@@ -8,7 +8,6 @@ import {
   Flex,
   Badge,
   Divider,
-  useToast,
   Spinner,
   Grid,
 } from "@chakra-ui/react";
@@ -18,18 +17,18 @@ import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
+import toast from "react-hot-toast";
 
 const ShopItemPage = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes>();
   const [suggestions, setSuggestions] = useState<ShopTypes[]>([]);
   const { state } = useLocation();
-  const toast = useToast();
   const [isLoading, setIsLoading] = useState(true);
 
   const getShopItems = useCallback(async () => {
     const response = await fetch(
-      `https://localhost:7266/api/shop/${state.id}`,
+      `https://localhost:7266/api/shop/${state.shopItemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -45,19 +44,13 @@ const ShopItemPage = () => {
       setItems(allItems);
       setIsLoading(false);
     } else {
-      toast({
-        title: "Netikėta klaida",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Netikėta klaida!");
     }
   }, []);
 
   const getShopSuggestions = useCallback(async () => {
     const response = await fetch(
-      `https://localhost:7266/api/shop/suggestions`,
+      `https://localhost:7266/api/shop/suggestions/${state.shopItemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -73,13 +66,7 @@ const ShopItemPage = () => {
       setSuggestions(allItems);
       setIsLoading(false);
     } else {
-      toast({
-        title: "Netikėta klaida",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Netikėta klaida!");
     }
   }, []);
 
@@ -101,21 +88,9 @@ const ShopItemPage = () => {
       eventBus.dispatch("logOut", Unauthorized);
     }
     if (response.status === 201) {
-      toast({
-        title: "Pridėtą į krepšelį",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Pridėta į krepšelį!");
     } else {
-      toast({
-        title: "Nepavyko",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Nepavyko!");
     }
   };
 
@@ -183,13 +158,10 @@ const ShopItemPage = () => {
             <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
               <Button
                 colorScheme={"cyan"}
-                boxShadow="md"
+                borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => postToShoppingCart(e)}
               >
                 Į KREPŠELĮ
-              </Button>
-              <Button colorScheme={"red"} boxShadow="md">
-                IŠTRINTI
               </Button>
             </Flex>
           </Box>

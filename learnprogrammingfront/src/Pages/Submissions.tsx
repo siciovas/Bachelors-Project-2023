@@ -12,12 +12,12 @@ import {
   FormControl,
   FormLabel,
   Input,
-  useToast,
 } from "@chakra-ui/react";
 import { convertToRaw, EditorState } from "draft-js";
-import 'react-draft-wysiwyg/dist/react-draft-wysiwyg.css';
+import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
+import toast from "react-hot-toast";
 
 const Submissions = () => {
   const OverlayOne = () => (
@@ -27,14 +27,15 @@ const Submissions = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [overlay, setOverlay] = React.useState(<OverlayOne />);
   const initialRef = React.useRef(null);
-  const toast = useToast();
   const token = localStorage.getItem("accessToken");
   const [topic, setTopic] = useState<string>();
 
   const onTopicChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setTopic(e.target.value as string);
   };
-  const [message, setMessage] = React.useState<EditorState>(EditorState.createEmpty());
+  const [message, setMessage] = React.useState<EditorState>(
+    EditorState.createEmpty()
+  );
 
   const SendSubmission = async (
     e: FormEvent<HTMLFormElement>
@@ -48,26 +49,17 @@ const Submissions = () => {
       method: "POST",
       body: JSON.stringify({
         topic,
-        message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(/\s+$/,''),
+        message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(
+          /\s+$/,
+          ""
+        ),
       }),
     });
     if (response.status === 201) {
-      toast({
-        title: "Pranešimas išsiųstas",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Pranešimas išsiųstas!");
       onClose();
     } else {
-      toast({
-        title: "Nepavyko",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Nepavyko!");
     }
   };
 
@@ -98,7 +90,7 @@ const Submissions = () => {
           <form onSubmit={(e) => SendSubmission(e)}>
             <ModalHeader>Prašymas</ModalHeader>
             <ModalCloseButton />
-            <ModalBody pb={6} >
+            <ModalBody pb={6}>
               <FormControl isRequired>
                 <FormLabel>Pavadinimas</FormLabel>
                 <Input type={"text"} onChange={(e) => onTopicChange(e)}></Input>
@@ -106,7 +98,7 @@ const Submissions = () => {
               <FormControl mt={4} isRequired>
                 <FormLabel>Žinutė</FormLabel>
                 <Editor
-                  editorStyle={{border: "1px solid black", height: "300px"}}
+                  editorStyle={{ border: "1px solid black", height: "300px" }}
                   editorState={message}
                   onEditorStateChange={(editorState) => setMessage(editorState)}
                   wrapperClassName={"rte-wrapper"}
@@ -120,6 +112,7 @@ const Submissions = () => {
                 type="submit"
                 bg={"blue.500"}
                 color={"black"}
+                borderRadius={"50px 50px 50px 50px"}
                 _hover={{
                   bg: "blue.500",
                 }}

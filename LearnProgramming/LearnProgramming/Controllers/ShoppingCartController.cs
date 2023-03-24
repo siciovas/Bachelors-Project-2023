@@ -5,7 +5,6 @@ using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using System.Linq;
 using System.Security.Claims;
 
 namespace LearnProgramming.API.Controllers

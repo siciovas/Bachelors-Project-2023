@@ -37,6 +37,7 @@ const ForgotPassword = () => {
           <Button
             bg={"blue.400"}
             color={"white"}
+            borderRadius={"50px 50px 50px 50px"}
             _hover={{
               bg: "blue.500",
             }}
