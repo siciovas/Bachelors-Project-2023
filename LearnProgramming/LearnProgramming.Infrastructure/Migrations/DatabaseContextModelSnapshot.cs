@@ -306,12 +306,19 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .HasColumnType("int");
 
                     b.Property<Guid>("StudentId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasColumnOrder(1);
 
                     b.Property<Guid>("TeacherId")
-                        .HasColumnType("char(36)");
+                        .HasColumnType("char(36)")
+                        .HasColumnOrder(0);
 
                     b.HasKey("Id");
+
+                    b.HasIndex("StudentId")
+                        .IsUnique();
+
+                    b.HasIndex("TeacherId");
 
                     b.ToTable("TeacherAndStudent");
                 });
@@ -476,6 +483,32 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("LearningTopic");
+                });
+
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.TeacherAndStudent", b =>
+                {
+                    b.HasOne("LearnProgramming.Domain.Entities.User", "Student")
+                        .WithOne("Teacher")
+                        .HasForeignKey("LearnProgramming.Domain.Entities.TeacherAndStudent", "StudentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("LearnProgramming.Domain.Entities.User", "Teacher")
+                        .WithMany("Students")
+                        .HasForeignKey("TeacherId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Student");
+
+                    b.Navigation("Teacher");
+                });
+
+            modelBuilder.Entity("LearnProgramming.Domain.Entities.User", b =>
+                {
+                    b.Navigation("Students");
+
+                    b.Navigation("Teacher");
                 });
 #pragma warning restore 612, 618
         }

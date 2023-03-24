@@ -3,10 +3,19 @@ import {
   Box,
   Badge,
   Grid,
-  useToast,
   Spinner,
   Flex,
   Text,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  useDisclosure,
+  Button,
+  Heading,
 } from "@chakra-ui/react";
 import { Difficulty, LearningTopicTypes } from "../Types/LearningTopicsTypes";
 import { useNavigate } from "react-router-dom";
@@ -17,14 +26,16 @@ import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
+import toast from "react-hot-toast";
 
 const LearningTopics = () => {
   const navigate = useNavigate();
   const token = localStorage.getItem("accessToken");
   const [topics, setTopics] = useState<LearningTopicTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
   const role = localStorage.getItem("role");
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deletingId, setDeletingId] = useState<number>();
 
   const NavigateToSubTopics = (learningTopicId: number) => {
     navigate("/potemes", {
@@ -32,6 +43,11 @@ const LearningTopics = () => {
         learningTopicId: learningTopicId,
       },
     });
+  };
+
+  const openModal = (id: number) => {
+    setDeletingId(id);
+    onOpen();
   };
 
   const AddLearningTopic = useCallback(
@@ -56,21 +72,9 @@ const LearningTopics = () => {
         eventBus.dispatch("logOut", "");
       } else if (response.status === 201) {
         setIsLoading(true);
-        toast({
-          title: "Tema pridėta",
-          status: "success",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
+        toast.success("Tema pridėta!");
       } else {
-        toast({
-          title: "Nepavyko",
-          status: "error",
-          duration: 5000,
-          position: "top-right",
-          isClosable: true,
-        });
+        toast.error("Nepavyko!");
       }
     },
     []
@@ -91,13 +95,7 @@ const LearningTopics = () => {
       setTopics(allTopics);
       setIsLoading(false);
     } else {
-      toast({
-        title: "Netikėta klaida",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Netikėta klaida!");
     }
   }, []);
 
@@ -106,7 +104,7 @@ const LearningTopics = () => {
   }, [isLoading]);
 
   const deleteLearningTopic = async (
-    e: React.MouseEvent<SVGElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     learningTopicId: number
   ): Promise<void> => {
     e.preventDefault();
@@ -123,19 +121,10 @@ const LearningTopics = () => {
 
     if (response.status === 204) {
       setIsLoading(true);
-      toast({
-        title: "Tema ištrinta",
-        position: "top-right",
-        status: "success",
-        isClosable: true,
-      });
+      toast.success("Tema ištrinta!");
+      onClose();
     } else {
-      toast({
-        title: "Nepavyko ištrinti",
-        position: "top-right",
-        status: "error",
-        isClosable: true,
-      });
+      toast.error("Nepavyko ištrinti!");
     }
   };
 
@@ -149,7 +138,10 @@ const LearningTopics = () => {
 
   return (
     <>
-      <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={6}>
+      <Flex mt={5} justify="center">
+        <Heading size="lg">Temos</Heading>
+      </Flex>
+      <Grid margin={18} templateColumns="repeat(4, 1fr)" gap={6}>
         {role === UserRole.Teacher && (
           <>
             <AddNewLearningTopic AddLearningTopic={AddLearningTopic} />
@@ -206,13 +198,13 @@ const LearningTopics = () => {
                     {topic.numberOfAllTasks} uždaviniai/ių
                   </Box>
                 </Box>
-                {role === UserRole.Teacher && (
+                {(role === UserRole.Teacher || role === UserRole.Admin) && (
                   <>
                     <Flex justify="flex-end" mt={4}>
                       <DeleteIcon
                         cursor={"pointer"}
                         color={"red.500"}
-                        onClick={(e) => deleteLearningTopic(e, topic.id)}
+                        onClick={() => openModal(topic.id)}
                       />
                     </Flex>
                   </>
@@ -222,6 +214,29 @@ const LearningTopics = () => {
           );
         })}
       </Grid>
+      <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Temos trynimas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Ar tikrai norite ištrinti temą?</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                background="red.500"
+                mr={3}
+                borderRadius={"50px 50px 50px 50px"}
+                onClick={(e) => deleteLearningTopic(e, deletingId as number)}
+              >
+                Ištrinti
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
     </>
   );
 };

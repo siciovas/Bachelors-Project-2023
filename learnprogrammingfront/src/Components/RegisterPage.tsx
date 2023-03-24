@@ -11,19 +11,18 @@ import {
   Button,
   Heading,
   Text,
-  useColorModeValue,
   Link,
   Accordion,
   AccordionItem,
   AccordionButton,
   AccordionPanel,
   AccordionIcon,
-  useToast,
 } from "@chakra-ui/react";
 import { ChangeEvent, FormEvent, useState } from "react";
 import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import toast from "react-hot-toast";
 
 const RegisterPage = () => {
   const [username, setUsername] = useState<string>();
@@ -36,7 +35,6 @@ const RegisterPage = () => {
 
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
-  const toast = useToast();
 
   const onUsernameChange = (e: ChangeEvent<HTMLInputElement>): void => {
     setUsername(e.target.value as string);
@@ -77,26 +75,12 @@ const RegisterPage = () => {
         school,
       }),
     });
-
     const data = await response.json();
-
     if (response.status === 201) {
-      toast({
-        title: "Registracija sėkminga",
-        status: "success",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.success("Registracija sėkminga!");
       navigate("/prisijungimas");
     } else {
-      toast({
-        title: data.message,
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error(data.message);
     }
   };
 
@@ -211,9 +195,10 @@ const RegisterPage = () => {
               </Accordion>
               <Stack spacing={10} pt={2}>
                 <Button
+                 mt={4}
                   loadingText="Submitting"
                   type="submit"
-                  size="lg"
+                  borderRadius={"50px 50px 50px 50px"}
                   bg={"blue.400"}
                   color={"white"}
                   _hover={{

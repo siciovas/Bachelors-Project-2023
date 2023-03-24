@@ -1,5 +1,5 @@
-export interface PasswordTypes{
-    oldPassword: string,
-    newPassword: string,
-    repeatPassword: string
+export interface PasswordTypes {
+  oldPassword: string;
+  newPassword: string;
+  repeatPassword: string;
 }

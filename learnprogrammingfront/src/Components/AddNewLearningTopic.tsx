@@ -102,6 +102,7 @@ const AddNewLearningTopic = ({ AddLearningTopic }: Props) => {
               <Button
                 type="submit"
                 bg={"blue.500"}
+                borderRadius={"50px 50px 50px 50px"}
                 color={"black"}
                 _hover={{
                   bg: "blue.500",

@@ -5,9 +5,6 @@ import {
   Heading,
   Text,
   Container,
-  Textarea,
-  Button,
-  Input,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
 import firstPhoto from "./WebPhotos/WebPhoto1.png";

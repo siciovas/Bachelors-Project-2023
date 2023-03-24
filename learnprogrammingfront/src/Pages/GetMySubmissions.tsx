@@ -7,22 +7,19 @@ import {
   Box,
   Flex,
   Spinner,
-  useToast,
   Heading,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import { SubmissionTypes } from "../Types/SubmissionTypes";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
-import { useLocation } from "react-router-dom";
 import DOMPurify from "dompurify";
+import toast from "react-hot-toast";
 
 const GetMySubmissions = () => {
   const token = localStorage.getItem("accessToken");
   const [submissions, setSubmissions] = useState<SubmissionTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const toast = useToast();
-  const { state } = useLocation();
 
   const getSubmissions = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/submission`, {
@@ -39,13 +36,7 @@ const GetMySubmissions = () => {
       setSubmissions(submission);
       setIsLoading(false);
     } else {
-      toast({
-        title: "Netikėta klaida",
-        status: "error",
-        duration: 5000,
-        position: "top-right",
-        isClosable: true,
-      });
+      toast.error("Netikėta klaida!");
     }
   }, []);
 
@@ -81,12 +72,13 @@ const GetMySubmissions = () => {
                 </AccordionButton>
               </h2>
               <AccordionPanel pb={4} textAlign={"center"}>
-                <Box dangerouslySetInnerHTML={
-                  {
-                    __html: DOMPurify.sanitize(submission.message as unknown as Node)
-                  }
-                }>
-                </Box>
+                <Box
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      submission.message as unknown as Node
+                    ),
+                  }}
+                ></Box>
               </AccordionPanel>
             </AccordionItem>
           );

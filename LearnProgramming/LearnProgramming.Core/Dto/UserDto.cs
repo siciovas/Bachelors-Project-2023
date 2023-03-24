@@ -1,15 +1,8 @@
-﻿using LearnProgramming.Domain.Enums;
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace LearnProgramming.Core.Dto
+﻿namespace LearnProgramming.Core.Dto
 {
-    public class UserDto
+    public abstract class UserDto
     {
+        public Guid Id { get; set; }
         public byte[] Avatar { get; set; }
         public string Name { get; set; } = string.Empty!;
         public string Surname { get; set; } = string.Empty!;
@@ -17,6 +10,5 @@ namespace LearnProgramming.Core.Dto
         public string Email { get; set; } = string.Empty!;
         public string City { get; set; } = string.Empty!;
         public string School { get; set; } = string.Empty!;
-
     }
 }

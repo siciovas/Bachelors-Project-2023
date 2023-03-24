@@ -101,10 +101,10 @@ namespace LearnProgramming.API.Controllers
             return Created($"api/shop{newItem.Id}", _mapper.Map<ProductDto>(newItem));
         }
 
-        [HttpGet("suggestions")]
-        public async Task<ActionResult<List<Product>>> GetSuggestions()
+        [HttpGet("suggestions/{id}")]
+        public async Task<ActionResult<List<Product>>> GetSuggestions(int id)
         {
-            var item = await _shopItemRep.GetSuggestions();
+            var item = await _shopItemRep.GetSuggestions(id);
 
             var itemDto = item.Select(x => _mapper.Map<Product>(x)).ToList();
 

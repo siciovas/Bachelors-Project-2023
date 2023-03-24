@@ -225,7 +225,7 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
                 onChange={(e) => onBookCoverTypeChange(e)}
               >
                 <option disabled selected>
-                  Pasirinkite lygį
+                  Pasirinkite viršelį
                 </option>
                 <option value={BookCover.Soft}>
                   {GetBookCoverType(BookCover.Soft)}
@@ -240,6 +240,7 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
                 type="submit"
                 bg={"blue.500"}
                 color={"black"}
+                borderRadius={"50px 50px 50px 50px"}
                 _hover={{
                   bg: "blue.500",
                 }}

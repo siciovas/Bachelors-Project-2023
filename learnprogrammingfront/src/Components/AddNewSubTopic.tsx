@@ -19,7 +19,7 @@ import {
 interface Props {
   AddLearningSubTopic: (
     e: FormEvent<HTMLFormElement>,
-    subTopicName: string,
+    subTopicName: string
   ) => void;
 }
 
@@ -82,31 +82,31 @@ const AddNewSubTopic = ({ AddLearningSubTopic }: Props) => {
       >
         {overlay}
         <ModalContent>
-        <form
-            onSubmit={(e) =>
-              AddLearningSubTopic(e, subTopicName)
-            }
-          >
-          <ModalHeader>Naujos potemės pridėjimas</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody pb={6}>
-            <FormControl isRequired>
-              <FormLabel>Pavadinimas</FormLabel>
-              <Input type={"text"} onChange={(e) => onSubTopicNameChange(e)}/>
-            </FormControl>
-          </ModalBody>
-          <ModalFooter>
-            <Button
-              type="submit"
-              bg={"blue.500"}
-              color={"black"}
-              _hover={{
-                bg: "blue.500",
-              }}
-            >
-              Pateikti
-            </Button>
-          </ModalFooter>
+          <form onSubmit={(e) => AddLearningSubTopic(e, subTopicName)}>
+            <ModalHeader>Naujos potemės pridėjimas</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody pb={6}>
+              <FormControl isRequired>
+                <FormLabel>Pavadinimas</FormLabel>
+                <Input
+                  type={"text"}
+                  onChange={(e) => onSubTopicNameChange(e)}
+                />
+              </FormControl>
+            </ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                bg={"blue.500"}
+                color={"black"}
+                borderRadius={"50px 50px 50px 50px"}
+                _hover={{
+                  bg: "blue.500",
+                }}
+              >
+                Pateikti
+              </Button>
+            </ModalFooter>
           </form>
         </ModalContent>
       </Modal>

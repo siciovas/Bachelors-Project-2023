@@ -139,6 +139,7 @@ const TeacherNavbar = () => {
             <MenuList>
               <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuDivider />
+              <MenuItem onClick={() => navigate("/manostudentai")}>Mano studentai</MenuItem>
               <MenuItem onClick={() => navigate("/studentuivertinimai")}>Studentų įverčiai</MenuItem>
               <MenuItem onClick={() => navigate("/studentusarasas")}>Priskirti studentą</MenuItem>
               <MenuDivider />

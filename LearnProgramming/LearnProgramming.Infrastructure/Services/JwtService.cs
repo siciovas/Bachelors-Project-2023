@@ -1,5 +1,4 @@
-﻿using LearnProgramming.Core.Dto;
-using LearnProgramming.Core.Interfaces;
+﻿using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Settings;
 using Microsoft.IdentityModel.Tokens;
