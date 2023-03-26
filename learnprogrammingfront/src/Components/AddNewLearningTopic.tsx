@@ -17,6 +17,7 @@ import {
 } from "@chakra-ui/react";
 import { Difficulty } from "../Types/LearningTopicsTypes";
 import { GetTopicDifficulty } from "../Helpers/GetTopicDifficulty";
+import { isMobile } from "react-device-detect";
 
 interface Props {
   AddLearningTopic: (
@@ -60,7 +61,7 @@ const AddNewLearningTopic = ({ AddLearningTopic }: Props) => {
             onOpen();
           }}
         >
-          Pridėti naują temą
+          {isMobile ? "+" : "Pridėti naują temą"}
         </Button>
       </Box>
       <Modal isOpen={isOpen} initialFocusRef={initialRef} onClose={onClose}>
@@ -101,11 +102,11 @@ const AddNewLearningTopic = ({ AddLearningTopic }: Props) => {
             <ModalFooter>
               <Button
                 type="submit"
-                bg={"blue.500"}
+                bg={"green.500"}
                 borderRadius={"50px 50px 50px 50px"}
-                color={"black"}
+                color={"white"}
                 _hover={{
-                  bg: "blue.500",
+                  bg: "green",
                 }}
               >
                 Pateikti

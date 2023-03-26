@@ -128,6 +128,9 @@ const TeacherStudents = () => {
             />
           </InputGroup>
         </Flex>
+        </Box>
+        <>
+        <Box overflowX= "auto" maxWidth= "100%">
         <Table variant="striped">
           <Thead>
             <Tr>
@@ -156,6 +159,10 @@ const TeacherStudents = () => {
                     background="red.500"
                     borderRadius={"50px 50px 50px 50px"}
                     onClick={() => openModal(user.id)}
+                    color={"white"}
+                    _hover={{
+                      bg: "red.700",
+                    }}
                   >
                     Atsisakyti
                   </Button>
@@ -165,6 +172,7 @@ const TeacherStudents = () => {
           </Tbody>
         </Table>
       </Box>
+      </>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
@@ -178,9 +186,13 @@ const TeacherStudents = () => {
             <ModalFooter>
               <Button
                 background="red.500"
+                color={"white"}
                 mr={3}
                 borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => deleteStudent(e, deletingId as string)}
+                _hover={{
+                  bg: "red.700",
+                }}
               >
                 Ištrinti
               </Button>

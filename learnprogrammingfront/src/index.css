@@ -90,3 +90,7 @@ body::-webkit-scrollbar{
   font-size: .67em!important;
   font-weight: bolder!important;
   }
+
+  .cui-steps__vertical-step{
+    width: 100% !important;
+  }

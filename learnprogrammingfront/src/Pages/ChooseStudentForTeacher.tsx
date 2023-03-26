@@ -128,6 +128,7 @@ const ChooseStudentForTeacher = () => {
             />
           </InputGroup>
         </Flex>
+        <Box overflowX= "auto" maxWidth= "100%">
         <Table variant="striped">
           <Thead>
             <Tr>
@@ -165,6 +166,9 @@ const ChooseStudentForTeacher = () => {
                       colorScheme={"green"}
                       borderRadius={"50px 50px 50px 50px"}
                       onClick={() => openModal(user.id)}
+                      _hover={{
+                        bg: "green",
+                      }}
                     >
                       Priskirti studentą
                     </Button>
@@ -176,6 +180,7 @@ const ChooseStudentForTeacher = () => {
             ))}
           </Tbody>
         </Table>
+        </Box>
       </Box>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
@@ -189,10 +194,14 @@ const ChooseStudentForTeacher = () => {
 
             <ModalFooter>
               <Button
-                background="green"
+                background="green.500"
+                color={"white"}
                 mr={3}
                 borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => assignStudent(e)}
+                _hover={{
+                  bg: "green",
+                }}
               >
                 Priskirti
               </Button>

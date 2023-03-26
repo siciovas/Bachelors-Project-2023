@@ -147,7 +147,7 @@ const Shop = () => {
         <Heading size="lg">Knygos</Heading>
       </Flex>
       {role === UserRole.Admin && <AddNewShopItem AddShopItem={AddShopItem} />}
-      <Grid margin={20} templateColumns="repeat(4, 1fr)" gap={3} mt={10}>
+      <Grid margin={20} templateColumns={{base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg:"repeat(3, 1fr)", xl: "repeat(3, 1fr)", "2xl": "repeat(4, 1fr)"}} justifyContent={"center"} gap={3} mt={10}>
         {items.map((item) => {
           return (
             <Box
@@ -156,6 +156,7 @@ const Shop = () => {
               overflow="hidden"
               borderColor={"black"}
               width={"325px"}
+              bg={"whitesmoke"}
             >
               <Image
                 cursor={"pointer"}

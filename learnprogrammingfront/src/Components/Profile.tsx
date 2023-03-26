@@ -307,11 +307,11 @@ const Profile = () => {
               <Stack spacing={10} pt={5}>
                 <Button
                   type="submit"
-                  bg={"blue.400"}
+                  bg={"green.500"}
                   color={"white"}
                   borderRadius={"50px 50px 50px 50px"}
                   _hover={{
-                    bg: "blue.500",
+                    bg: "green",
                   }}
                 >
                   Atnaujinti profilį
@@ -358,10 +358,10 @@ const Profile = () => {
                     type="submit"
                     loadingText="Submitting"
                     borderRadius={"50px 50px 50px 50px"}
-                    bg={"blue.400"}
+                    bg={"green.500"}
                     color={"white"}
                     _hover={{
-                      bg: "blue.500",
+                      bg: "green",
                     }}
                   >
                     Keisti slaptažodį
@@ -371,18 +371,11 @@ const Profile = () => {
             </form>
             <Button
               onClick={openModal}
+              background="red.500"
               borderRadius={"50px 50px 50px 50px"}
-              bgGradient="linear(to right, #ff6e7f 0%, #bfe9ff  51%, #ff6e7f  100%)"
-              textAlign="center"
-              textTransform="uppercase"
-              transition="1.5s"
-              backgroundSize="200% auto"
-              color="white"
-              boxShadow="0 0 20px #eee"
+              color={"white"}
               _hover={{
-                bgPos: "center",
-                color: "#fff",
-                textDecoration: "none",
+                bg: "red.700",
               }}
             >
               Ištrinti paskyrą
@@ -406,6 +399,10 @@ const Profile = () => {
                 mr={3}
                 borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => deleteProfile(e)}
+                color={"white"}
+                _hover={{
+                  bg: "red.700",
+                }}
               >
                 Ištrinti
               </Button>

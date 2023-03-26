@@ -141,7 +141,7 @@ const LearningTopics = () => {
       <Flex mt={5} justify="center">
         <Heading size="lg">Temos</Heading>
       </Flex>
-      <Grid margin={18} templateColumns="repeat(4, 1fr)" gap={6}>
+      <Grid margin={18} templateColumns={{base: "repeat(2, 1fr)", md: "repeat(4, 1fr)"}} gap={6}>
         {role === UserRole.Teacher && (
           <>
             <AddNewLearningTopic AddLearningTopic={AddLearningTopic} />
@@ -154,11 +154,11 @@ const LearningTopics = () => {
               borderRadius="lg"
               borderColor={"black"}
               overflow="hidden"
+              bg={"whitesmoke"}
             >
               <Flex
                 cursor={"pointer"}
                 onClick={() => NavigateToSubTopics(topic.id)}
-                width=""
                 height="100px"
                 align={"center"}
                 justify={"center"}
@@ -167,6 +167,8 @@ const LearningTopics = () => {
                   color={"black"}
                   textTransform="uppercase"
                   fontWeight={"bold"}
+                  fontSize={{base: "x-small", sm: "md"}}
+                  textAlign={"center"}
                 >
                   {topic.title}
                 </Text>
@@ -193,6 +195,7 @@ const LearningTopics = () => {
                     fontSize="xs"
                     textTransform="uppercase"
                     ml="2"
+                    display={{base: "none", xl:"block"}}
                   >
                     {topic.numberOfSubTopics} potemės/ių &bull;{" "}
                     {topic.numberOfAllTasks} uždaviniai/ių

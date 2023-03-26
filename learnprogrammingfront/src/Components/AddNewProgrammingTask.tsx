@@ -12,6 +12,7 @@ import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
+import { isMobile } from "react-device-detect";
 
 const AddNewProgrammingTask = () => {
   const [fields, setFields] = useState([{ field1: "", field2: "" }]);
@@ -60,15 +61,12 @@ const AddNewProgrammingTask = () => {
         <FormControl mt={4} isRequired width={"50%"}>
           <FormLabel>Užduoties aprašymas</FormLabel>
           <Editor
-            editorStyle={{
-              border: "1px solid black",
-              height: "300px",
-              backgroundColor: "white",
-            }}
+            editorStyle={ isMobile ? { border: "1px solid black", height:"150px", background:"white" } : { border: "1px solid black", height:"300px",  background:"white" }}
             editorState={description}
             onEditorStateChange={(editorState) => setDescription(editorState)}
             wrapperClassName={"rte-wrapper"}
             toolbarClassName={"rte-wrapper"}
+            toolbarHidden={isMobile ? true : false}
             editorClassName={"rte-wrapper"}
           />
         </FormControl>
@@ -77,15 +75,12 @@ const AddNewProgrammingTask = () => {
         <FormControl mt={4} isRequired width={"50%"}>
           <FormLabel>Įvesties, išvesties pavyzdžiai</FormLabel>
           <Editor
-            editorStyle={{
-              border: "1px solid black",
-              height: "300px",
-              backgroundColor: "white",
-            }}
+            editorStyle={ isMobile ? { border: "1px solid black", height:"150px", background:"white" } : { border: "1px solid black", height:"300px",  background:"white" }}
             editorState={inputOutput}
             onEditorStateChange={(editorState) => setInputOutput(editorState)}
             wrapperClassName={"rte-wrapper"}
             toolbarClassName={"rte-wrapper"}
+            toolbarHidden={isMobile ? true : false}
             editorClassName={"rte-wrapper"}
           />
         </FormControl>
@@ -164,11 +159,11 @@ const AddNewProgrammingTask = () => {
       <Flex mt={5} justify={"center"}>
         <Button
           type="submit"
-          bg={"red.500"}
+          bg={"green.500"}
           borderRadius={"50px 50px 50px 50px"}
-          color={"black"}
+          color={"white"}
           _hover={{
-            bg: "red.500",
+            bg: "green",
           }}
         >
           Sukurti

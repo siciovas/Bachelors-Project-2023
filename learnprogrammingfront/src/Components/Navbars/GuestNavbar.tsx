@@ -23,16 +23,15 @@ const LinksGuest: LinksProps[] = [
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
-const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link px={2} py={1} rounded={"md"} href={url}>
-    {title}
-  </Link>
-);
 
 const GuestNavbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const navigate = useNavigate();
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const NavigateToPage = (url: string) => {
+    navigate(url);
+  };
 
   return (
     <Box
@@ -67,6 +66,7 @@ const GuestNavbar = () => {
             _hover={{
               bg: "none",
             }}
+            display={{base: 'none', sm: 'block'}}
           >
             Pagrindinis
           </Button>
@@ -88,7 +88,7 @@ const GuestNavbar = () => {
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
           <Menu>
-            <Box color={"white"}>Naudojatės svečio prieiga</Box>
+            <Box display={{base: 'none', md: 'block'}} color={"white"}>Naudojatės svečio prieiga</Box>
             <Button
               background={"none"}
               fontWeight={"normal"}
@@ -104,11 +104,33 @@ const GuestNavbar = () => {
         </Flex>
       </SimpleGrid>
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
+        <Box pb={4} display={{ md: "none" }}  background={location.pathname === "/" ? "black" : "none"}>
           <Stack as={"nav"} spacing={4}>
+          <Button
+            onClick={() => navigate("/")}
+            background={"none"}
+            fontWeight={"none"}
+            color={"white"}
+            _hover={{
+              bg: "none",
+            }}
+          >
+            Pagrindinis
+          </Button>
             {LinksGuest.map((link) => (
-              <NavLink title={link.title} url={link.url} />
+              <Button
+                onClick={() => NavigateToPage(link.url)}
+                background={"none"}
+                fontWeight={"none"}
+                color={"white"}
+                _hover={{
+                  bg: "none",
+                }}
+              >
+                {link.title}{" "}
+              </Button>
             ))}
+
           </Stack>
         </Box>
       ) : null}

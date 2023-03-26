@@ -84,6 +84,7 @@ const StudentNavbar = () => {
           onClick={() => navigate("/")}
           cursor={"pointer"}
           zIndex={1}
+          display={{base: 'none', sm: 'block'}}
           _hover={{
             bg: "none",
           }}
@@ -112,7 +113,7 @@ const StudentNavbar = () => {
           <Submissions />
         </Flex>
         <Flex justifyContent="flex-end" alignItems={"center"} gap={2}>
-          <Box color="white"> Naudojatės studento prieiga</Box>
+          <Box color="white" display={{base: 'none', xl: 'block'}}> Naudojatės studento prieiga</Box>
           <Button
             background={"none"}
             onClick={() => navigate("/krepselis")}
@@ -148,14 +149,25 @@ const StudentNavbar = () => {
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }} background={"grey"}>
+        <Box pb={4} display={{ md: "none" }} background={location.pathname === "/" ? "black" : "none"}>
           <Stack as={"nav"} spacing={4}>
+          <Button
+            onClick={() => navigate("/")}
+            background={"none"}
+            fontWeight={"none"}
+            color={"white"}
+            _hover={{
+              bg: "none",
+            }}
+          >
+            Pagrindinis
+          </Button>
             {LinksStudents.map((link) => (
               <Button
                 onClick={() => NavigateToPage(link.url)}
                 background={"none"}
                 fontWeight={"none"}
-                color={location.pathname === "/" ? "white" : "black"}
+                color={"white"}
                 _hover={{
                   bg: "none",
                 }}

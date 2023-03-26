@@ -12,12 +12,14 @@ import {
   FormControl,
   FormLabel,
   Input,
+  Textarea,
 } from "@chakra-ui/react";
 import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import toast from "react-hot-toast";
+import { isMobile } from "react-device-detect";
 
 const Submissions = () => {
   const OverlayOne = () => (
@@ -103,15 +105,18 @@ const Submissions = () => {
                 <Input type={"text"} onChange={(e) => onTopicChange(e)}></Input>
               </FormControl>
               <FormControl mt={4} isRequired>
+                <>
                 <FormLabel>Žinutė</FormLabel>
                 <Editor
-                  editorStyle={{ border: "1px solid black", height: "300px" }}
+                  editorStyle={ isMobile ? { border: "1px solid black", height:"150px" } : { border: "1px solid black", height:"300px" }}
+                  toolbarHidden={isMobile ? true : false}
                   editorState={message}
                   onEditorStateChange={(editorState) => setMessage(editorState)}
                   wrapperClassName={"rte-wrapper"}
                   toolbarClassName={"rte-wrapper"}
                   editorClassName={"rte-wrapper"}
                 />
+                </>
               </FormControl>
             </ModalBody>
             <ModalFooter>
