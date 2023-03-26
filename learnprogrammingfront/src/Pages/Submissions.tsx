@@ -41,25 +41,32 @@ const Submissions = () => {
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    const response = await fetch("https://localhost:7266/api/submission", {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "POST",
-      body: JSON.stringify({
-        topic,
-        message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(
-          /\s+$/,
-          ""
-        ),
-      }),
-    });
-    if (response.status === 201) {
-      toast.success("Pranešimas išsiųstas!");
-      onClose();
-    } else {
-      toast.error("Nepavyko!");
+    const messageLength =  convertToRaw(message.getCurrentContent()).blocks[0].text.trim().length;
+    if (messageLength > 0)
+    {
+      const response = await fetch("https://localhost:7266/api/submission", {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          topic,
+          message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(
+            /\s+$/,
+            ""
+          ),
+        }),
+      });
+      if (response.status === 201) {
+        toast.success("Pranešimas išsiųstas!");
+        onClose();
+      } else {
+        toast.error("Nepavyko!");
+      }
+    }
+    else{
+      toast.error("Tuščios žinutės išsiųsti neįmanoma!"); 
     }
   };
 

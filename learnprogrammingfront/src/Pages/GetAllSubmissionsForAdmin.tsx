@@ -15,12 +15,23 @@ import { SubmissionTypes } from "../Types/SubmissionTypes";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import DOMPurify from "dompurify";
+import { FaChevronDown } from "react-icons/fa";
 
 const GetAllSubmissionsForAdmin = () => {
   const token = localStorage.getItem("accessToken");
   const [submissions, setSubmissions] = useState<SubmissionTypes[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const toast = useToast();
+
+  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+
+  const handleAccordionClick = (index: number) => {
+    if (index === expandedIndex) {
+      setExpandedIndex(null);
+    } else {
+      setExpandedIndex(index);
+    }
+  };
 
   const getSubmissions = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/submission`, {
@@ -67,31 +78,53 @@ const GetAllSubmissionsForAdmin = () => {
           Vartotojų prašymai
         </Heading>
       </Flex>
-      <Accordion allowToggle width={"50%"} m={"auto"} mt={5}>
-        {submissions.map((submission) => {
-          return (
+          <Accordion allowToggle width={"50%"} m={"auto"} mt={5} border={"transparent"} mb={7}>
+          {submissions.map((submission, index) => (
             <AccordionItem>
-              <h2>
-                <AccordionButton>
-                  <Box as="span" flex="1" textAlign="center">
-                   {submission.name} {submission.surname} :  {submission.topic}
-                  </Box>
-                  <AccordionIcon />
-                </AccordionButton>
-              </h2>
-              <AccordionPanel pb={4} textAlign={"center"}>
-                <Box dangerouslySetInnerHTML={
-                  {
-                    __html: DOMPurify.sanitize(submission.message as unknown as Node)
-                  }
-                }>
-                </Box>
+              <AccordionButton
+                onClick={() => handleAccordionClick(index)}
+                _focus={{ boxShadow: "none" }}
+                _hover={{ backgroundColor: "transparent" }}
+                _active={{ backgroundColor: "transparent" }}
+                backgroundColor={expandedIndex === index ? "gray.200" : "white"}
+                borderRadius="full"
+                border="1px"
+                borderColor="gray.400"
+                display="flex"
+                justifyContent="flex-start"
+                alignItems="center"
+                px={4}
+                py={2}
+                transition="background-color 0.2s ease-out"
+                _expanded={{ backgroundColor: "gray.200" }}
+                _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
+                mt={2}
+              >
+                <Box
+                  as={FaChevronDown}
+                  mr={3}
+                  w={4}
+                  h={4}
+                  borderRadius="full"
+                  backgroundColor="gray.400"
+                />
+                {submission.name} {submission.surname} : {submission.topic}
+              </AccordionButton>
+              <AccordionPanel
+                display={expandedIndex === index ? "block" : "none"}
+              >
+                <Box
+                  dangerouslySetInnerHTML={{
+                    __html: DOMPurify.sanitize(
+                      submission.message as unknown as Node
+                    ),
+                  }}
+                ></Box>
               </AccordionPanel>
             </AccordionItem>
-          );
-        })}
-      </Accordion>
-    </>
+        ))}
+          </Accordion>
+      </>
   );
 };
 
