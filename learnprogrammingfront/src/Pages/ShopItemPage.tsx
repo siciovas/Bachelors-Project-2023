@@ -18,6 +18,7 @@ import { GetBookCoverType } from "../Helpers/GetBookCover";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import toast from "react-hot-toast";
+import { UserRole } from "../Constants/RolesConstants";
 
 const ShopItemPage = () => {
   const token = localStorage.getItem("accessToken");
@@ -25,6 +26,7 @@ const ShopItemPage = () => {
   const [suggestions, setSuggestions] = useState<ShopTypes[]>([]);
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(true);
+  const role = localStorage.getItem("role");
 
   const getShopItems = useCallback(async () => {
     const response = await fetch(
@@ -59,9 +61,7 @@ const ShopItemPage = () => {
         method: "GET",
       }
     );
-    if (response.status === 401) {
-      eventBus.dispatch("logOut", Unauthorized);
-    } else if (response.status === 200) {
+    if (response.status === 200) {
       const allItems = await response.json();
       setSuggestions(allItems);
       setIsLoading(false);
@@ -155,6 +155,8 @@ const ShopItemPage = () => {
                 <Text>Leidinio data: {items?.releaseDate}</Text>
               </Box>
             </Box>
+            {(role === UserRole.Admin || role === UserRole.Teacher || role === UserRole.Student) && (
+                  <>
             <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
               <Button
                 colorScheme={"cyan"}
@@ -164,6 +166,8 @@ const ShopItemPage = () => {
                 Į KREPŠELĮ
               </Button>
             </Flex>
+            </>
+            )}
           </Box>
           <Divider mt={3} />
           <Heading mt={3} size={"lg"} textAlign={"center"}>
