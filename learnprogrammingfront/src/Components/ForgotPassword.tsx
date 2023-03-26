@@ -35,11 +35,11 @@ const ForgotPassword = () => {
         </FormControl>
         <Stack spacing={6}>
           <Button
-            bg={"blue.400"}
+            bg={"green.500"}
             color={"white"}
             borderRadius={"50px 50px 50px 50px"}
             _hover={{
-              bg: "blue.500",
+              bg: "green",
             }}
           >
             Request Reset

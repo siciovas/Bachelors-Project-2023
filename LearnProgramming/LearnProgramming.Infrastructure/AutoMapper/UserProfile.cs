@@ -13,6 +13,8 @@ namespace LearnProgramming.Infrastructure.AutoMapper
             CreateMap<User, UserAvatarDto>();
             CreateMap<User, UserPasswordDto>();
             CreateMap<User, MeDto>();
+            CreateMap<User, StudentDto>();
+            CreateMap<User, UserStatusDto>();
         }
     }
 }

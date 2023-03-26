@@ -62,7 +62,7 @@ const HomePage = () => {
             backgroundImage={`url(${card.image})`}
           >
             {/* This is the block you need to change, to customize the caption */}
-            <Container size="container.lg" height="600px" position="relative">
+            <Container height="600px" position="relative">
               <Stack
                 spacing={6}
                 w={"full"}
@@ -77,7 +77,7 @@ const HomePage = () => {
                 >
                   {card.title}
                 </Heading>
-                <Text textColor={"white"} fontSize={{ base: "md", lg: "lg" }}>
+                <Text textColor={"white"} fontSize={{ base: "md", lg: "lg" }} width={{base: "200px", md: "500px", }}>
                   {card.text}
                 </Text>
               </Stack>

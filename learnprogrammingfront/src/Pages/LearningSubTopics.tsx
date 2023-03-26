@@ -170,75 +170,54 @@ const LearningSubTopics = () => {
           {subtopics.map((subtopic) => {
             return (
               <Box mt={3}>
-                <Flex flexDir={"column"}>
-                  <Flex
-                    justifyContent={"space-between"}
-                    border={"1px solid black"}
-                    padding={"10px"}
-                    borderRadius={"5px"}
-                    marginTop={"12px"}
-                  >
-                    <Flex
-                      alignItems={"center"}
-                      justifyContent={"space-between"}
-                      width={"100%"}
+                <Flex
+                  border="1px solid black"
+                  padding="10px"
+                  borderRadius="5px"
+                  marginTop="12px"
+                  wordBreak="break-word"
+                >
+                  <Flex width="50%" align={"center"}>
+                    <Heading
+                      color="black"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      textTransform="uppercase"
+                      size="sm"
+                      cursor="pointer"
+                      display={{ base: "none", xs:"block" }}
+                      onClick={() => NavigateToTask(subtopic.id)}
                     >
-                      <Heading
-                        color="black"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        textTransform="uppercase"
-                        size={"sm"}
-                        cursor={"pointer"}
-                        onClick={() => NavigateToTask(subtopic.id)}
-                        position="relative"
-                        _hover={{
-                          _after: {
-                            transform: "scaleX(1)",
-                            transformOrigin: "bottom left",
-                          },
-                        }}
-                        _after={{
-                          content: '" "',
-                          position: "absolute",
-                          width: "100%",
-                          height: "2px",
-                          bottom: 0,
-                          left: 0,
-                          backgroundColor: "black",
-                          transform: "scaleX(0)",
-                          transformOrigin: "bottom right",
-                          transition: "transform 0.25s ease-out",
-                        }}
-                      >
-                        {subtopic.subTopicName}
-                      </Heading>
-                      <Box
-                        color="black"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        textTransform="uppercase"
-                      >
-                        uždaviniai/ių: {subtopic.numberOfTasks}
-                      </Box>
-                      <Button
-                        colorScheme={"green"}
-                        variant="outline"
-                        borderRadius={"50px 50px 50px 50px"}
-                      >
-                        Pažymėti kaip atliktą
-                      </Button>
-                      {(role === UserRole.Teacher ||
-                        role === UserRole.Admin) && (
-                        <>
-                          <DeleteIcon
-                            cursor={"pointer"}
-                            onClick={() => openModal(subtopic.id)}
-                            color={"red.500"}
-                          />
-                        </>
-                      )}
-                    </Flex>
+                      {subtopic.subTopicName}
+                    </Heading>
+                  </Flex>
+                  <Flex width="16.6%" align={"center"}>
+                    <Box
+                      color="black"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      textTransform="uppercase"
+                      display={{ base: "none", md:"block" }}
+                    >
+                      uždaviniai/ių: {subtopic.numberOfTasks}
+                    </Box>
+                  </Flex>
+                  <Flex width="33.3%" justifyContent={"flex-end"} align={"center"} gap={5}>
+                    <Button
+                      colorScheme="green"
+                      variant="outline"
+                      borderRadius="50px 50px 50px 50px"
+                      display={{ base: "none", md:"block" }}
+                    >
+                      Pažymėti kaip atliktą
+                    </Button>
+                    {(role === UserRole.Teacher || role === UserRole.Admin) && (
+                      <DeleteIcon
+                        cursor="pointer"
+                        onClick={() => openModal(subtopic.id)}
+                        color="red.500"
+                      />
+                    )}
                   </Flex>
                 </Flex>
               </Box>

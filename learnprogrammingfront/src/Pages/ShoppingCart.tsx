@@ -15,6 +15,12 @@ import {
   Stack,
   Select,
   Spinner,
+  Table,
+  Thead,
+  Th,
+  Tr,
+  Tbody,
+  Td,
 } from "@chakra-ui/react";
 import { FiHome, FiShoppingCart } from "react-icons/fi";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
@@ -24,6 +30,7 @@ import EmptyCart from "./WebPhotos/emptycart.png";
 import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 import toast from "react-hot-toast";
+import { isMobile } from "react-device-detect";
 
 const steps = [
   {
@@ -106,9 +113,10 @@ const ShoppingCart = () => {
           <Steps
             activeStep={activeStep}
             mt={3}
-            w={"50%"}
-            ml={"25%"}
-            colorScheme={"telegram"}
+            maxW={{base: '100%', md: '50%'}}
+            m={{base: "0", md: "auto"}}
+            ml={isMobile ? "none" : "25%"}
+            colorScheme={"green"}
           >
             {steps.map(({ label, description, icon }, index) => (
               <Step
@@ -119,84 +127,85 @@ const ShoppingCart = () => {
               >
                 {index === 0 ? (
                   <>
-                    <Box py={10} px={10} mx={"auto"}>
-                      <Grid
-                        templateColumns="repeat(6, 1fr)"
-                        gap={4}
+                    <Box py={10} px={10} overflowX="auto">
+                      <Table
                         alignItems={"center"}
-                        mb={3}
                       >
-                        <GridItem colSpan={2}>
-                          <Heading size={"lg"}>Tavo krepšelis</Heading>
-                        </GridItem>
-                        <GridItem textAlign={"center"}>
-                          <Heading size={"md"}>Viršelio tipas</Heading>
-                        </GridItem>
-                        <GridItem textAlign={"center"}>
-                          <Heading size={"md"}>Kiekis</Heading>
-                        </GridItem>
-                        <GridItem textAlign={"center"}>
-                          <Heading size={"md"}>Kaina</Heading>
-                        </GridItem>
-                      </Grid>
-                      <Divider />
-                      {items?.shoppingCartItems.map((item) => {
-                        return (
-                          <Grid
-                            templateColumns="repeat(6, 1fr)"
-                            gap={4}
-                            alignItems={"center"}
-                            mb={3}
-                          >
-                            <GridItem colSpan={2}>
-                              <Flex alignItems={"center"}>
-                                <Box m={"20px 15px 5px 15px"}>
-                                  <Image
-                                    src={
-                                      "data:image/jpeg;base64," +
-                                      item.product.photo
-                                    }
-                                    width={120}
-                                    borderRadius={5}
-                                  />
-                                </Box>
-                                <Heading size={"md"} fontWeight="normal">
-                                  {item.product.name}
-                                </Heading>
-                              </Flex>
-                            </GridItem>
-                            <GridItem>
-                              <Flex justifyContent={"center"}>
-                                {GetBookCoverType(
-                                  item?.product
-                                    .bookCoverType as unknown as BookCover
-                                )}
-                              </Flex>
-                            </GridItem>
-                            <GridItem>
-                              <Flex justifyContent={"center"}>
-                                {item.quantity}
-                              </Flex>
-                            </GridItem>
-                            <GridItem>
-                              <Flex justifyContent={"center"}>
-                                {item.product.price} €
-                              </Flex>
-                            </GridItem>
-                            <GridItem>
-                              <Flex justify="center">
-                                <CloseIcon
-                                  cursor={"pointer"}
-                                  onClick={(e) =>
-                                    deleteShoppingCartItem(e, item.id)
-                                  }
-                                />
-                              </Flex>
-                            </GridItem>
-                          </Grid>
-                        );
-                      })}
-                      <Divider />
+                        <Thead>
+                          <Tr>
+                            <Th>
+                              Knyga
+                            </Th>
+                            <Th textAlign={"center"}>
+                              Viršelio tipas
+                            </Th>
+                            <Th textAlign={"center"}>
+                              Kiekis
+                            </Th>
+                            <Th textAlign={"center"}>
+                              Kaina
+                            </Th>
+                            <Th></Th>
+                          </Tr>
+                        </Thead>
+                        <Tbody>
+                          {items?.shoppingCartItems.map((item) => {
+                            return (
+                              <Tr
+                                gap={4}
+                                alignItems={"center"}
+                                mb={3}
+                              >
+                                <Td>
+                                  <Flex alignItems={"center"}>
+                                    <Box m={"20px 15px 5px 15px"} display={{base: 'none', md:'block'}}>
+                                      <Image
+                                        src={
+                                          "data:image/jpeg;base64," +
+                                          item.product.photo
+                                        }
+                                        width={120}
+                                        borderRadius={5}
+                                      />
+                                    </Box>
+                                    <Heading size={"md"} fontWeight="normal">
+                                      {item.product.name}
+                                    </Heading>
+                                  </Flex>
+                                </Td>
+                                <Td>
+                                  <Flex justifyContent={"center"}>
+                                    {GetBookCoverType(
+                                      item?.product
+                                        .bookCoverType as unknown as BookCover
+                                    )}
+                                  </Flex>
+                                </Td>
+                                <Td>
+                                  <Flex justifyContent={"center"}>
+                                    {item.quantity}
+                                  </Flex>
+                                </Td>
+                                <Td>
+                                  <Flex justifyContent={"center"}>
+                                    {item.product.price} €
+                                  </Flex>
+                                </Td>
+                                <Td>
+                                  <Flex justify="center">
+                                    <CloseIcon
+                                      cursor={"pointer"}
+                                      onClick={(e) =>
+                                        deleteShoppingCartItem(e, item.id)
+                                      }
+                                    />
+                                  </Flex>
+                                </Td>
+                              </Tr>
+                            );
+                          })}
+                        </Tbody>
+                      </Table>
                     </Box>
                     <Flex flexDirection={"column"} pr={10}>
                       <Flex justifyContent={"end"} mb={3}>
@@ -225,10 +234,11 @@ const ShoppingCart = () => {
                       </Flex>
                     </Flex>
                   </>
-                ) : (
+                ) 
+                : (
                   <>
-                    <Flex mt={50} justifyContent={"center"} height={"325px"}>
-                      <Grid>
+                    <Flex mt={10} justifyContent={"center"} flexDir={{base: "column", md: "row"}}>
+                      <Grid justifyContent={"center"}>
                         <Stack maxW={"lg"} px={6}>
                           <Stack align={"center"}>
                             <Heading fontSize={"4xl"} textAlign={"center"}>
@@ -290,7 +300,7 @@ const ShoppingCart = () => {
                           </Box>
                         </Stack>
                       </Grid>
-                      <Grid>
+                      <Grid justifyContent={"center"} mt={{base: 10, md: 0}}>
                         <Stack maxW={"lg"} px={6}>
                           <Stack align={"center"}>
                             <Heading fontSize={"4xl"} textAlign={"center"}>
@@ -352,20 +362,29 @@ const ShoppingCart = () => {
               </Step>
             ))}
           </Steps>
-          <Flex width="100%" justify="flex-end" mt={4}>
-            {activeStep !== 0 && (
-              <Button justifyContent={"end"} mr={3} onClick={prevStep} borderRadius={"50px 50px 50px 50px"}
+          <Flex width="100%" justify="flex-end" mt={4} mb={{base: 5, md: 0}}>
+             {activeStep !== 0 && (
+              <Button justifyContent={"end"} mr={3} onClick={prevStep} borderRadius={"50px 50px 50px 50px"} bg={"red.500"} color={"white"}
+                _hover={{
+                  bg: "red.700",
+                }}
               >
                 Atgal
               </Button>
             )}
             {activeStep === steps.length - 1 ? (
-              <Button type="submit" justifyContent={"end"} mr={5} borderRadius={"50px 50px 50px 50px"}
+              <Button type="submit" justifyContent={"end"} mr={5} borderRadius={"50px 50px 50px 50px"} bg={"green.500"} color={"white"}
+                _hover={{
+                  bg: "green",
+                }}
               >
                 Apmokėti
               </Button>
             ) : (
-              <Button justifyContent={"end"} onClick={nextStep} mr={10} borderRadius={"50px 50px 50px 50px"}
+              <Button justifyContent={"end"} onClick={nextStep} mr={10} borderRadius={"50px 50px 50px 50px"} bg={"green.500"} color={"white"}
+                _hover={{
+                  bg: "green",
+                }}
               >
                 Toliau
               </Button>

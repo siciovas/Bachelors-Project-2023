@@ -29,12 +29,6 @@ const LinksTeachers: LinksProps[] = [
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
-const NavLink = ({ title, url }: LinksProps): ReactElement<LinksProps> => (
-  <Link px={2} py={1} rounded={"md"} href={url}>
-    {title}
-  </Link>
-);
-
 const TeacherNavbar = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const navigate = useNavigate();
@@ -46,6 +40,9 @@ const TeacherNavbar = () => {
     eventBus.dispatch("logOut", "");
   };
 
+  const NavigateToPage = (url: string) => {
+    navigate(url);
+  };
   const [avatar, setAvatar] = useState<string>();
 
   const getUserAvatar = useCallback(async () => {
@@ -87,6 +84,7 @@ const TeacherNavbar = () => {
           onClick={() => navigate("/")}
           cursor={"pointer"}
           zIndex={1}
+          display={{ base: "none", sm: "block" }}
           _hover={{
             bg: "none",
           }}
@@ -115,7 +113,10 @@ const TeacherNavbar = () => {
           <Submissions />
         </Flex>
         <Flex alignItems={"center"} gap={2}>
-          <Box color={"white"}> Naudojatės mokytojo prieiga</Box>
+          <Box color={"white"} display={{ base: "none", xl: "block" }}>
+            {" "}
+            Naudojatės mokytojo prieiga
+          </Box>
           <Button
             background={"none"}
             onClick={() => navigate("/krepselis")}
@@ -139,12 +140,22 @@ const TeacherNavbar = () => {
             <MenuList>
               <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuDivider />
-              <MenuItem onClick={() => navigate("/manostudentai")}>Mano studentai</MenuItem>
-              <MenuItem onClick={() => navigate("/studentuivertinimai")}>Studentų įverčiai</MenuItem>
-              <MenuItem onClick={() => navigate("/studentusarasas")}>Priskirti studentą</MenuItem>
+              <MenuItem onClick={() => navigate("/manostudentai")}>
+                Mano studentai
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/studentuivertinimai")}>
+                Studentų įverčiai
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/studentusarasas")}>
+                Priskirti studentą
+              </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={(e) => navigate("/manoprasymai")}>Mano prašymai</MenuItem>
-              <MenuItem onClick={(e) => navigate("/manouzsakymai")}>Užsakymų istorija</MenuItem>
+              <MenuItem onClick={(e) => navigate("/manoprasymai")}>
+                Mano prašymai
+              </MenuItem>
+              <MenuItem onClick={(e) => navigate("/manouzsakymai")}>
+                Užsakymų istorija
+              </MenuItem>
               <MenuDivider />
               <MenuItem onClick={(e) => Logout(e)}>Atsijungti</MenuItem>
             </MenuList>
@@ -153,11 +164,33 @@ const TeacherNavbar = () => {
       </Flex>
 
       {isOpen ? (
-        <Box pb={4} display={{ md: "none" }}>
+        <Box pb={4} display={{ md: "none" }} background={location.pathname === "/" ? "black" : "none"}>
           <Stack as={"nav"} spacing={4}>
+            <Button
+              onClick={() => navigate("/")}
+              background={"none"}
+              fontWeight={"none"}
+              color={"white"}
+              _hover={{
+                bg: "none",
+              }}
+            >
+              Pagrindinis
+            </Button>
             {LinksTeachers.map((link) => (
-              <NavLink title={link.title} url={link.url} />
+              <Button
+                onClick={() => NavigateToPage(link.url)}
+                background={"none"}
+                fontWeight={"none"}
+                color={"white"}
+                _hover={{
+                  bg: "none",
+                }}
+              >
+                {link.title}{" "}
+              </Button>
             ))}
+            <Submissions />
           </Stack>
         </Box>
       ) : null}

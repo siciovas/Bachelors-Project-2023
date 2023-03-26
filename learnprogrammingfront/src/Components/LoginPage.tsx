@@ -97,11 +97,11 @@ const LoginPage = () => {
                 </Stack>
                 <Button
                   type="submit"
-                  bg={"blue.500"}
-                  color={"black"}
+                  bg={"green.500"}
+                  color={"white"}
                   borderRadius={"50px 50px 50px 50px"}
                   _hover={{
-                    bg: "blue.500",
+                    bg: "green",
                   }}
                 >
                   Sign in
