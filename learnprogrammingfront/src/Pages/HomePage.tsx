@@ -7,11 +7,7 @@ import {
   Container,
 } from "@chakra-ui/react";
 import Slider from "react-slick";
-import firstPhoto from "./WebPhotos/WebPhoto1.png";
-import secondPhoto from "./WebPhotos/WebPhoto2.png";
-import thirdPhoto from "./WebPhotos/WebElShopPhoto.png";
 
-// Settings for the slider
 const settings = {
   dots: false,
   arrows: false,
@@ -28,17 +24,17 @@ const HomePage = () => {
     {
       title: "Neformalus ugdymas",
       text: "Pradėti mokytis programavimo niekada nėra per vėlu",
-      image: firstPhoto,
+      image: "/photos/WebPhotos/WebPhoto1.png",
     },
     {
       title: "Pasiruošimas egzaminui",
       text: "Programavimo uždaviniai skirti pasiruošti valstybiniui informacinių technologijų brandos egzaminui (VBE)",
-      image: secondPhoto,
+      image: "/photos/WebPhotos/WebPhoto2.png",
     },
     {
       title: "El. Parduotuvė",
       text: "Elektroninėje parduotuvėje rasite visas knygas, kurios padės įsisavinti programavimo žinias",
-      image: thirdPhoto,
+      image: "/photos/WebPhotos/WebElShopPhoto.png",
     },
   ];
 

@@ -14,11 +14,19 @@ const builtinRead = (x) => {
 };
 
 export const run = (code) => {
-  var prog = document.getElementById("yourcode");
   console.log(code);
   Sk.pre = "output";
-  Sk.configure({ output: outf, read: builtinRead });
-  var myPromise = Sk.misceval.asyncToPromise(function () {
-    return Sk.importMainWithBody("<stdin>", false, code, true);
+  Sk.configure({ output: outf });
+  var compiledCode = Sk.importMainWithBody("<stdin>", false, code);
+  Sk.misceval.asyncToPromise(function() {
+    return Sk.misceval.callsim(compiledCode.$d.run, Sk.ffi.remapToPy([5, 5, 15, 15]));
+  }).then(function(result) {
+    console.log(result);
+    // compare output with expected output
+    if (output === expectedOutput) {
+      numPassed++;
+    }
+  }, function(err) {
+    console.log(err.toString());
   });
 };

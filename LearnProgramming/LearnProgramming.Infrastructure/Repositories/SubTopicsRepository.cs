@@ -41,7 +41,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                  {
                      Id = x.Id,
                      SubTopicName = x.SubTopicName,
-                     NumberOfTasks = _db.ProgrammingTask.Count(y => y.SubTopicId == x.Id),
+                     NumberOfTasks = _db.ProgrammingTasks.Count(y => y.SubTopicId == x.Id),
                  })
                  .ToListAsync();
 

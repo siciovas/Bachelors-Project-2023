@@ -10,7 +10,6 @@ namespace LearnProgramming.Infrastructure.Database
         public DbSet<User> Users { get; set; }
         public DbSet<LearningTopic> LearningTopics { get; set; }
         public DbSet<SubTopic> SubTopics { get; set; }
-        public DbSet<ProgrammingTask> ProgrammingTask { get; set; }
         public DbSet<Product> Product { get; set; }
         public DbSet<ShoppingCartItem> ShoppingCartItems { get; set; }
         public DbSet<Order> Order { get; set; }
@@ -18,5 +17,8 @@ namespace LearnProgramming.Infrastructure.Database
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
         public DbSet<Submission> Submission { get; set; }
         public DbSet<TeacherAndStudent> TeacherAndStudent { get; set; }
+        public DbSet<ProgrammingTask> ProgrammingTasks { get; set; }
+        public DbSet<ProgrammingTaskTest> ProgrammingTaskTests { get; set; }
+        public DbSet<StudentGrades> StudentGrades { get; set; }
     }
 }

@@ -43,9 +43,10 @@ const Submissions = () => {
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    const messageLength =  convertToRaw(message.getCurrentContent()).blocks[0].text.trim().length;
-    if (messageLength > 0)
-    {
+    const messageLength = convertToRaw(
+      message.getCurrentContent()
+    ).blocks[0].text.trim().length;
+    if (messageLength > 0) {
       const response = await fetch("https://localhost:7266/api/submission", {
         headers: {
           "Content-Type": "application/json",
@@ -54,10 +55,9 @@ const Submissions = () => {
         method: "POST",
         body: JSON.stringify({
           topic,
-          message: draftToHtml(convertToRaw(message.getCurrentContent())).replace(
-            /\s+$/,
-            ""
-          ),
+          message: draftToHtml(
+            convertToRaw(message.getCurrentContent())
+          ).replace(/\s+$/, ""),
         }),
       });
       if (response.status === 201) {
@@ -66,9 +66,8 @@ const Submissions = () => {
       } else {
         toast.error("Nepavyko!");
       }
-    }
-    else{
-      toast.error("Tuščios žinutės išsiųsti neįmanoma!"); 
+    } else {
+      toast.error("Tuščios žinutės išsiųsti neįmanoma!");
     }
   };
 
@@ -106,16 +105,22 @@ const Submissions = () => {
               </FormControl>
               <FormControl mt={4} isRequired>
                 <>
-                <FormLabel>Žinutė</FormLabel>
-                <Editor
-                  editorStyle={ isMobile ? { border: "1px solid black", height:"150px" } : { border: "1px solid black", height:"300px" }}
-                  toolbarHidden={isMobile ? true : false}
-                  editorState={message}
-                  onEditorStateChange={(editorState) => setMessage(editorState)}
-                  wrapperClassName={"rte-wrapper"}
-                  toolbarClassName={"rte-wrapper"}
-                  editorClassName={"rte-wrapper"}
-                />
+                  <FormLabel>Žinutė</FormLabel>
+                  <Editor
+                    editorStyle={
+                      isMobile
+                        ? { border: "1px solid black", height: "150px" }
+                        : { border: "1px solid black", height: "300px" }
+                    }
+                    toolbarHidden={isMobile ? true : false}
+                    editorState={message}
+                    onEditorStateChange={(editorState) =>
+                      setMessage(editorState)
+                    }
+                    wrapperClassName={"rte-wrapper"}
+                    toolbarClassName={"rte-wrapper"}
+                    editorClassName={"rte-wrapper"}
+                  />
                 </>
               </FormControl>
             </ModalBody>

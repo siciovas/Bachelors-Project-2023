@@ -26,11 +26,11 @@ import { FiHome, FiShoppingCart } from "react-icons/fi";
 import { Step, Steps, useSteps } from "chakra-ui-steps";
 import { ShoppingCartTypes } from "../Types/ShoppingCartTypes";
 import { CloseIcon } from "@chakra-ui/icons";
-import EmptyCart from "./WebPhotos/emptycart.png";
 import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 import toast from "react-hot-toast";
 import { isMobile } from "react-device-detect";
+import { url } from "inspector";
 
 const steps = [
   {
@@ -106,7 +106,7 @@ const ShoppingCart = () => {
           <Heading textAlign={"center"} mt={5}>
             Tuščias krepšelis
           </Heading>
-          <Image margin={"auto"} mt={10} src={EmptyCart} />
+          <Image margin={"auto"} mt={10} src={"/photos/WebPhotos/emptycart.png"} />
         </>
       ) : (
         <>
@@ -250,6 +250,7 @@ const ShoppingCart = () => {
                             boxShadow={"lg"}
                             p={8}
                             height={"325px"}
+                            bg={"white"}
                           >
                             <Stack spacing={4}>
                               <HStack>
@@ -312,6 +313,7 @@ const ShoppingCart = () => {
                             boxShadow={"lg"}
                             p={8}
                             height={"325px"}
+                            bg={"white"}
                           >
                             <Stack spacing={4}>
                               <HStack>

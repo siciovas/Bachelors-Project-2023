@@ -177,7 +177,7 @@ const TeacherStudents = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Studento atsisakymas</ModalHeader>
+            <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Text>Ar tikrai norite pašalinti studentą iš savo sąrašo?</Text>

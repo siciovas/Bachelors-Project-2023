@@ -1,4 +1,4 @@
-import React, { FormEvent, useCallback, useEffect, useState } from "react";
+import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
 import {
   Box,
   Badge,
@@ -27,6 +27,9 @@ import { Unauthorized } from "../Constants/Auth";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
+import { GetRandomPhotos } from "../Helpers/GetRandomPhotos";
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 const LearningTopics = () => {
   const navigate = useNavigate();
@@ -36,6 +39,7 @@ const LearningTopics = () => {
   const role = localStorage.getItem("role");
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [deletingId, setDeletingId] = useState<number>();
+  const [photos, setPhotos] = useState<string[]>([]);
 
   const NavigateToSubTopics = (learningTopicId: number) => {
     navigate("/potemes", {
@@ -93,6 +97,8 @@ const LearningTopics = () => {
     } else if (response.status === 200) {
       const allTopics = await response.json();
       setTopics(allTopics);
+      const photosArray = allTopics.map(() => GetRandomPhotos());
+      setPhotos(photosArray);
       setIsLoading(false);
     } else {
       toast.error("Netikėta klaida!");
@@ -102,6 +108,7 @@ const LearningTopics = () => {
   useEffect(() => {
     getLearningTopics();
   }, [isLoading]);
+  
 
   const deleteLearningTopic = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -139,15 +146,16 @@ const LearningTopics = () => {
   return (
     <>
       <Flex mt={5} justify="center">
-        <Heading size="lg">Temos</Heading>
+        <Heading size="lg">Kursai</Heading>
       </Flex>
-      <Grid margin={18} templateColumns={{base: "repeat(2, 1fr)", md: "repeat(4, 1fr)"}} gap={6}>
+      <Grid margin={18} templateColumns={{base: "repeat(2, 1fr)", md: "repeat(3, 1fr)"}} gap={6}>
         {role === UserRole.Teacher && (
           <>
             <AddNewLearningTopic AddLearningTopic={AddLearningTopic} />
           </>
         )}
-        {topics.map((topic) => {
+        <Fade left>
+        {topics.map((topic, index) => {
           return (
             <Box
               borderWidth="1px"
@@ -155,32 +163,36 @@ const LearningTopics = () => {
               borderColor={"black"}
               overflow="hidden"
               bg={"whitesmoke"}
-            >
+              >
               <Flex
                 cursor={"pointer"}
-                onClick={() => NavigateToSubTopics(topic.id)}
                 height="100px"
                 align={"center"}
                 justify={"center"}
+                onClick={() => NavigateToSubTopics(topic.id)}
+                bg={`url(${photos[index]})`}
               >
-                <Text
-                  color={"black"}
-                  textTransform="uppercase"
-                  fontWeight={"bold"}
-                  fontSize={{base: "x-small", sm: "md"}}
-                  textAlign={"center"}
-                >
-                  {topic.title}
-                </Text>
               </Flex>
-
               <Box
                 p="6"
                 borderWidth="1px 0px 0px 0px"
                 borderRadius={"md"}
                 borderColor={"black"}
               >
-                <Box display="flex" alignItems="baseline">
+                <Box height={55}>
+                <Text
+                  color={"black"}
+                  textTransform="uppercase"
+                  fontWeight={"bold"}
+                  fontSize={{base: "x-small", sm: "md"}}
+                  textAlign={"center"}
+                  cursor={"pointer"}
+                  onClick={() => NavigateToSubTopics(topic.id)}
+                >
+                  {topic.title}
+                </Text>
+                </Box>
+                <Box mt={3} display="flex" alignItems="baseline">
                   <Badge
                     borderRadius="full"
                     px="2"
@@ -203,7 +215,7 @@ const LearningTopics = () => {
                 </Box>
                 {(role === UserRole.Teacher || role === UserRole.Admin) && (
                   <>
-                    <Flex justify="flex-end" mt={4}>
+                    <Flex justify="flex-end" mt={4} >
                       <DeleteIcon
                         cursor={"pointer"}
                         color={"red.500"}
@@ -216,12 +228,13 @@ const LearningTopics = () => {
             </Box>
           );
         })}
+        </Fade>
       </Grid>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Temos trynimas</ModalHeader>
+            <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Text>Ar tikrai norite ištrinti temą?</Text>

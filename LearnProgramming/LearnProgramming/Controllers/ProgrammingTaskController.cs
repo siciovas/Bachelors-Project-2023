@@ -54,13 +54,20 @@ namespace LearnProgramming.API.Controllers
 
             var task = await _programmingTask.Get(id);
 
-            var taskDto = _mapper.Map<ProgrammingTaskDto>(task);
+            var taskDto = new ProgrammingTaskDto
+            {
+                Id = task.Id,
+                Name = task.Name,
+                Description = task.Description,
+                LearningTopicName = task.LearningTopic.Title,
+                SubTopicName = task.SubTopic.SubTopicName,
+            };
 
             return Ok(taskDto);
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Admin,Teacher")]
         public async Task<ActionResult> Delete(int learningtopicId, int subtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -78,7 +85,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPut("{id}")]
-        [Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult<ProgrammingTaskPostDto>> Update(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
@@ -92,8 +99,6 @@ namespace LearnProgramming.API.Controllers
 
             task.Name = programmingTask.Name;
             task.Description = programmingTask.Description;
-            task.DataAndAnswers = programmingTask.DataAndAnswers;
-            task.AdditionalInformation = programmingTask.AdditionalInformation;
 
             await _programmingTask.Update(task);
 
@@ -101,8 +106,8 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpPost]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<ProgrammingTaskPostDto>> Post(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask)
+        [Authorize(Roles = "Teacher")]
+        public async Task<ActionResult<int>> Post(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
@@ -114,15 +119,25 @@ namespace LearnProgramming.API.Controllers
             {
                 Name = programmingTask.Name,
                 Description = programmingTask.Description,
-                DataAndAnswers = programmingTask.DataAndAnswers,
-                AdditionalInformation = programmingTask.AdditionalInformation,
                 LearningTopicId = learningtopicId,
                 SubTopicId = subtopicId,
             };
 
             await _programmingTask.Create(newTask);
 
-            return Created($"api/learningtopic/{learningtopicId}/subtopic/{subtopicId}/task/{newTask.Id}", _mapper.Map<ProgrammingTaskPostDto>(newTask));
+            var newTests = programmingTask.InputOutput.Select(x => new ProgrammingTaskTest
+            {
+                Input = x.Input,
+                Output = x.Output,
+                ProgrammingTaskId = newTask.Id
+            }).ToList();
+
+            await _programmingTask.AddTests(newTests);
+
+            newTask.ProgrammingTaskTests = newTests;
+
+            return Created($"api/learningtopic/{learningtopicId}/subtopic/{subtopicId}/task/{newTask.Id}", newTask.Id);
         }
+
     }
 }

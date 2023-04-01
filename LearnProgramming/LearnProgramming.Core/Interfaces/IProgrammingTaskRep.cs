@@ -9,5 +9,6 @@ namespace LearnProgramming.Core.Interfaces
         Task<ProgrammingTask> Create(ProgrammingTask programmingTask);
         Task<ProgrammingTask> Update(ProgrammingTask programmingTask);
         Task Delete(ProgrammingTask programmingTask);
+        Task<List<ProgrammingTaskTest>> AddTests(List<ProgrammingTaskTest> tests);
     }
 }

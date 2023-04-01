@@ -1,12 +1,12 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { Box, Button, Flex, Grid, Heading, Spinner } from "@chakra-ui/react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { AddNewProgrammingTask } from "../Components/AddNewProgrammingTask";
+import { Box, Button, Flex, Grid, Heading, Modal, Text, ModalBody, ModalCloseButton, ModalContent, ModalFooter, ModalHeader, ModalOverlay, Spinner, useDisclosure } from "@chakra-ui/react";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { ChatIcon, DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
+import { Submissions } from "./Submissions";
 
 const ProgrammingTasksList = () => {
   const navigate = useNavigate();
@@ -14,17 +14,24 @@ const ProgrammingTasksList = () => {
   const { state } = useLocation();
   const [subTopic, setSubTopic] = useState<LearningSubTopicsType>();
   const [tasks, setTasks] = useState<ProgrammingTaskTypes[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const role = localStorage.getItem("role");
-
-  const NavigateToTask = (taskId: number) => {
-    navigate("/uzduotis", {
+  const { isOpen, onOpen, onClose } = useDisclosure();
+  const [deletingId, setDeletingId] = useState<number>();
+  
+  const NavigateTo = (url: string, taskId?: number) => {
+    navigate(url, {
       state: {
         learningTopicId: state.learningTopicId,
         subTopicId: state.subTopicId,
-        taskId: taskId,
+        taskId,
       },
     });
+  };
+
+  const openModal = (id: number) => {
+    setDeletingId(id);
+    onOpen();
   };
 
   const getLearningSubTopicName = useCallback(async () => {
@@ -67,7 +74,7 @@ const ProgrammingTasksList = () => {
   }, [isLoading]);
 
   const deleteProgrammingTask = async (
-    e: React.MouseEvent<SVGElement, MouseEvent>,
+    e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
     taskId: number
   ): Promise<void> => {
     e.preventDefault();
@@ -85,6 +92,7 @@ const ProgrammingTasksList = () => {
     if (response.status === 204) {
       setIsLoading(true);
       toast.success("Uždavinys ištrintas!");
+      onClose();
     } else {
       toast.error("Nepavyko ištrinti!");
     }
@@ -99,11 +107,14 @@ const ProgrammingTasksList = () => {
   }
 
   return (
+    <>
     <Box className="container" mt={10}>
       <Grid className="col-md-12">
         <Flex justifyContent={"center"}>
           <Box>
-            <Heading size={"lg"}>„{subTopic?.subTopicName}“ užduotys</Heading>
+            <Heading textAlign={"center"} size={"lg"}>
+              „{subTopic?.subTopicName}“ užduotys
+            </Heading>
           </Box>
         </Flex>
         {role === UserRole.Teacher && (
@@ -117,7 +128,7 @@ const ProgrammingTasksList = () => {
                 cursor={"pointer"}
                 color={"black"}
                 position="relative"
-                onClick={() => navigate("/kurtiuzduoti")}
+                onClick={() => NavigateTo("/kurtiuzduoti")}
                 _hover={{
                   _after: {
                     transform: "scaleX(1)",
@@ -152,51 +163,78 @@ const ProgrammingTasksList = () => {
                   padding={"10px"}
                   borderRadius={"5px"}
                   marginTop={"12px"}
+                  bg={"white"}
                 >
                   <Flex
                     alignItems={"center"}
                     justifyContent={"space-between"}
                     width={"100%"}
                   >
-                    <Heading
-                      color="black"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      onClick={() => NavigateToTask(task.id)}
-                      textTransform="uppercase"
-                      size={"sm"}
-                      cursor={"pointer"}
-                      position="relative"
-                      _hover={{
-                        _after: {
-                          transform: "scaleX(1)",
-                          transformOrigin: "bottom left",
-                        },
-                      }}
-                      _after={{
-                        content: '" "',
-                        position: "absolute",
-                        width: "100%",
-                        height: "2px",
-                        bottom: 0,
-                        left: 0,
-                        backgroundColor: "black",
-                        transform: "scaleX(0)",
-                        transformOrigin: "bottom right",
-                        transition: "transform 0.25s ease-out",
-                      }}
+                    <Flex width="45%" align={"center"}>
+                      <Heading
+                        color="black"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        onClick={() => NavigateTo("/uzduotis", task.id)}
+                        textTransform="uppercase"
+                        size={"sm"}
+                        cursor={"pointer"}
+                        position="relative"
+                        _hover={{
+                          _after: {
+                            transform: "scaleX(1)",
+                            transformOrigin: "bottom left",
+                          },
+                        }}
+                        _after={{
+                          content: '" "',
+                          position: "absolute",
+                          width: "100%",
+                          height: "2px",
+                          bottom: 0,
+                          left: 0,
+                          backgroundColor: "black",
+                          transform: "scaleX(0)",
+                          transformOrigin: "bottom right",
+                          transition: "transform 0.25s ease-out",
+                        }}
+                      >
+                        {task.name}
+                      </Heading>
+                    </Flex>
+                    <Flex
+                      justifyContent={"flex-end"}
+                      align={"center"}
+                      justify={"center"}
                     >
-                      {task.name}
-                    </Heading>
-                    <Button colorScheme={"green"} variant="outline" borderRadius={"50px 50px 50px 50px"}
->
-                      Pažymėti kaip atliktą
-                    </Button>
-                    <DeleteIcon
-                      cursor={"pointer"}
-                      onClick={(e) => deleteProgrammingTask(e, task.id)}
-                      color={"red.500"}
-                    />
+                      <Button
+                        colorScheme={"green"}
+                        variant="outline"
+                        borderRadius={"50px 50px 50px 50px"}
+                        mr={10}
+                      >
+                        Pažymėti kaip atliktą
+                      </Button>
+                      <ChatIcon mr={3} />
+                      <Heading
+                        fontWeight={"none"}
+                        size={"sm"}
+                        textColor="red"
+                        cursor={"pointer"}
+                        onClick={() => <Submissions />}
+                        mr={3}
+                      >
+                        Pranešti administratoriui
+                      </Heading>
+                      {(role === UserRole.Teacher ||
+                        role === UserRole.Admin) && (
+                        <DeleteIcon
+                          cursor={"pointer"}
+                          onClick={() => openModal(task.id)}
+                          color={"red.500"}
+                        />
+                      )}
+                    </Flex>
                   </Flex>
                 </Flex>
               </Flex>
@@ -205,6 +243,30 @@ const ProgrammingTasksList = () => {
         })}
       </Grid>
     </Box>
+    <>
+        <Modal isOpen={isOpen} onClose={onClose}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Perspėjimas!</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>Ar tikrai norite ištrinti uždavinį?</Text>
+            </ModalBody>
+
+            <ModalFooter>
+              <Button
+                background="red.500"
+                mr={3}
+                borderRadius={"50px 50px 50px 50px"}
+                onClick={(e) => deleteProgrammingTask(e, deletingId as number)}
+                >
+                Ištrinti
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      </>
+    </>
   );
 };
 

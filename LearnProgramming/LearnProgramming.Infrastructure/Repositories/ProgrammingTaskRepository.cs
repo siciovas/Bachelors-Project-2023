@@ -28,12 +28,12 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<ProgrammingTask?> Get(int id)
         {
-            return await _db.ProgrammingTask.FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.ProgrammingTasks.Include(topic => topic.LearningTopic).Include(subtopic => subtopic.SubTopic).FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<ProgrammingTask>> GetAll(int subTopicId)
         {
-            return await _db.ProgrammingTask.Where(x => x.SubTopicId == subTopicId).ToListAsync();
+            return await _db.ProgrammingTasks.Where(x => x.SubTopicId == subTopicId).ToListAsync();
         }
 
         public async Task<ProgrammingTask> Update(ProgrammingTask programmingTask)
@@ -43,6 +43,14 @@ namespace LearnProgramming.Infrastructure.Repositories
             await _db.SaveChangesAsync();
 
             return programmingTask;
+        }
+
+        public async Task<List<ProgrammingTaskTest>> AddTests(List<ProgrammingTaskTest> tests)
+        {
+            _db.ProgrammingTaskTests.AddRange(tests);
+            await _db.SaveChangesAsync();
+
+            return tests;
         }
     }
 }

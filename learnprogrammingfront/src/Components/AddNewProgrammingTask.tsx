@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { ChangeEvent, FormEvent, useEffect, useState } from "react";
 import {
   Button,
   FormControl,
@@ -13,20 +13,26 @@ import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
 import { Editor } from "react-draft-wysiwyg";
 import draftToHtml from "draftjs-to-html";
 import { isMobile } from "react-device-detect";
+import toast from "react-hot-toast";
+import { useLocation, useNavigate } from "react-router-dom";
 
 const AddNewProgrammingTask = () => {
-  const [fields, setFields] = useState([{ field1: "", field2: "" }]);
-  const [inputCount, setInputCount] = useState<number>(1);
-  const addField = () => {
-    setFields([...fields, { field1: "", field2: "" }]);
-  };
   const [name, setName] = useState<string>("");
   const [description, setDescription] = React.useState<EditorState>(
     EditorState.createEmpty()
-  );
-  const [inputOutput, setInputOutput] = React.useState<EditorState>(
-    EditorState.createEmpty()
-  );
+    );
+    const token = localStorage.getItem("accessToken");
+    const { state } = useLocation();
+    const navigate = useNavigate();
+
+  const onNameChange = (e: ChangeEvent<HTMLInputElement>): void => {
+    setName(e.target.value as string);
+  }
+  const [fields, setFields] = useState([{ input: "", output: "" }]);
+  const addField = () => {
+    setFields([...fields, { input: "", output: "" }]);
+  };
+
   const handleFieldChange = (
     index: number,
     field: keyof typeof fields[0],
@@ -44,6 +50,47 @@ const AddNewProgrammingTask = () => {
     }
   };
 
+  const CreateTask = async(
+    e: FormEvent<HTMLFormElement>
+  ) : Promise<void> => {
+    e.preventDefault();
+    const descriptionLength = convertToRaw(description.getCurrentContent()).blocks[0].text.trim().length;
+    if(descriptionLength > 0)
+      {
+        const response = await fetch(`https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task`, {
+          headers:{
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          method: "POST",
+          body: JSON.stringify({
+            name,
+            description: draftToHtml(convertToRaw(description.getCurrentContent())).replace(
+              /\s+$/,
+              ""
+            ),
+            inputOutput: fields,
+          }),
+        });
+        if (response.status === 201) {
+          const id = await response.json();
+          toast.success("Užduotis sukurta!");
+          navigate(`/uzduotis`,{
+            state: {
+              learningTopicId: state.learningTopicId,
+              subTopicId: state.subTopicId,
+              taskId: id,
+            },
+          })
+        } else {
+          toast.error("Nepavyko!");
+        }
+      }
+      else{
+        toast.error("Sukurti užduoties su tuščiu aprašymu neįmanoma!"); 
+      }
+    };
+
   return (
     <>
       <Flex justify={"center"}>
@@ -51,10 +98,11 @@ const AddNewProgrammingTask = () => {
           Naujos užduoties kūrimas
         </Heading>
       </Flex>
+      <form onSubmit={(e) => CreateTask(e)}>
       <Flex justify={"center"}>
         <FormControl mt={4} isRequired width={"50%"}>
           <FormLabel>Pavadinimas</FormLabel>
-          <Input type={"text"} backgroundColor={"white"} />
+          <Input type={"text"} backgroundColor={"white"} onChange={(e) => onNameChange(e)}/>
         </FormControl>
       </Flex>
       <Flex justify={"center"}>
@@ -64,20 +112,6 @@ const AddNewProgrammingTask = () => {
             editorStyle={ isMobile ? { border: "1px solid black", height:"150px", background:"white" } : { border: "1px solid black", height:"300px",  background:"white" }}
             editorState={description}
             onEditorStateChange={(editorState) => setDescription(editorState)}
-            wrapperClassName={"rte-wrapper"}
-            toolbarClassName={"rte-wrapper"}
-            toolbarHidden={isMobile ? true : false}
-            editorClassName={"rte-wrapper"}
-          />
-        </FormControl>
-      </Flex>
-      <Flex justify={"center"}>
-        <FormControl mt={4} isRequired width={"50%"}>
-          <FormLabel>Įvesties, išvesties pavyzdžiai</FormLabel>
-          <Editor
-            editorStyle={ isMobile ? { border: "1px solid black", height:"150px", background:"white" } : { border: "1px solid black", height:"300px",  background:"white" }}
-            editorState={inputOutput}
-            onEditorStateChange={(editorState) => setInputOutput(editorState)}
             wrapperClassName={"rte-wrapper"}
             toolbarClassName={"rte-wrapper"}
             toolbarHidden={isMobile ? true : false}
@@ -101,17 +135,17 @@ const AddNewProgrammingTask = () => {
           <FormControl>
             <Input
               type={"text"}
-              value={field.field1}
+              value={field.input}
               backgroundColor={"white"}
-              onChange={(e) => handleFieldChange(index, "field1", e)}
+              onChange={(e) => handleFieldChange(index, "input", e)}
             />
           </FormControl>
           <FormControl>
             <Input
               type={"text"}
-              value={field.field2}
+              value={field.output}
               backgroundColor={"white"}
-              onChange={(e) => handleFieldChange(index, "field2", e)}
+              onChange={(e) => handleFieldChange(index, "output", e)}
             />
           </FormControl>
           {fields.length > 1 && (
@@ -169,6 +203,7 @@ const AddNewProgrammingTask = () => {
           Sukurti
         </Button>
       </Flex>
+      </form>
     </>
   );
 };
