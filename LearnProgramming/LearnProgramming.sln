@@ -11,6 +11,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnProgramming.Domain", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LearnProgramming.Infrastructure", "LearnProgramming.Infrastructure\LearnProgramming.Infrastructure.csproj", "{F5EBF4E0-4214-4756-BDAD-F30FA674B4E7}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LearnProgramming.Test", "LearnProgramming.Test\LearnProgramming.Test.csproj", "{9891B932-28B4-4F8C-B329-D84FB6216FC7}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{F5EBF4E0-4214-4756-BDAD-F30FA674B4E7}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F5EBF4E0-4214-4756-BDAD-F30FA674B4E7}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F5EBF4E0-4214-4756-BDAD-F30FA674B4E7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9891B932-28B4-4F8C-B329-D84FB6216FC7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9891B932-28B4-4F8C-B329-D84FB6216FC7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9891B932-28B4-4F8C-B329-D84FB6216FC7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9891B932-28B4-4F8C-B329-D84FB6216FC7}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
