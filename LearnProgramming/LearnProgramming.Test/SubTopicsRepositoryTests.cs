@@ -1,4 +1,5 @@
 ﻿using AutoFixture;
+using LearnProgramming.Core.Dto;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using LearnProgramming.Infrastructure.Repositories;
@@ -21,6 +22,7 @@ namespace LearnProgramming.Test
         {
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .Options;
 
             _databaseContext = new DatabaseContext(dbContextOptions);
@@ -60,7 +62,7 @@ namespace LearnProgramming.Test
 
             var expected = await _databaseContext.SubTopics.FirstAsync();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected.SubTopicName, result.SubTopicName);
         }
 
         [Fact]
@@ -89,7 +91,8 @@ namespace LearnProgramming.Test
 
             var expected = await _databaseContext.SubTopics.FirstAsync();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected.SubTopicName, result.SubTopicName);
+
         }
 
         [Fact]
@@ -116,9 +119,12 @@ namespace LearnProgramming.Test
 
             var newNameForSubTopic = _fixture.Create<string>();
 
-            subTopic.SubTopicName = newNameForSubTopic;
+            var subTopicUpdateDto = new SubTopicUpdateDto
+            {
+                SubTopicName = newNameForSubTopic
+            };
 
-            await repo.Update(subTopic);
+            await repo.Update(subTopicUpdateDto, subTopic.Id);
 
             var expected = await _databaseContext.SubTopics.FirstAsync();
 

@@ -10,7 +10,7 @@ namespace LearnProgramming.Core.Interfaces
         Task<List<LearningTopicsDto>> GetAllByStudent(Guid studentId);
         Task<LearningTopic> Get(int id);
         Task<LearningTopic> Create(LearningTopic learningTopics);
-        Task<LearningTopic> Update(LearningTopic learningTopics);
+        Task<LearningTopic> Update(LearningTopicsDto learningTopics, int id);
         Task Delete(LearningTopic learningTopics);
     }
 }
