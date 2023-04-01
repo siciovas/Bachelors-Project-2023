@@ -36,13 +36,11 @@ namespace LearnProgramming.Test
         {
             var repo = CreateRepository();
 
-            var user = _fixture.Create<User>();
-
             var learningTopic = _fixture
                 .Build<LearningTopic>()
                 .Create();
 
-            await _databaseContext.AddRangeAsync(learningTopic, user);
+            await _databaseContext.AddRangeAsync(learningTopic);
             await _databaseContext.SaveChangesAsync();
 
             var result = await repo.GetAll();
@@ -60,11 +58,8 @@ namespace LearnProgramming.Test
         {
             var repo = CreateRepository();
 
-            var user = _fixture.Create<User>();
-
             var learningTopic = _fixture
                 .Build<LearningTopic>()
-                .Without(x => x.User)
                 .Create();
 
             var subTopic = _fixture
@@ -81,7 +76,7 @@ namespace LearnProgramming.Test
                 .Without(x => x.SubTopic)
                 .Create();      
 
-            await _databaseContext.AddRangeAsync(learningTopic, user, subTopic, programmingTask);
+            await _databaseContext.AddRangeAsync(learningTopic, subTopic, programmingTask);
             await _databaseContext.SaveChangesAsync();
 
             var result = await repo.GetAll();
