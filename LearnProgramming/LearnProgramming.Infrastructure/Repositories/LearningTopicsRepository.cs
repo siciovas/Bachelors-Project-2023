@@ -24,7 +24,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                     Title = x.Title,
                     DifficultyInText = x.DifficultyInText,
                     NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
-                    NumberOfAllTasks = _db.ProgrammingTask.Count(y => y.LearningTopicId == x.Id)
+                    NumberOfAllTasks = _db.ProgrammingTasks.Count(y => y.LearningTopicId == x.Id)
                 })
                 .ToListAsync();
 
@@ -40,7 +40,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                     Title = x.Title,
                     DifficultyInText = x.DifficultyInText,
                     NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
-                    NumberOfAllTasks = _db.ProgrammingTask.Count(y => y.LearningTopicId == x.Id),
+                    NumberOfAllTasks = _db.ProgrammingTasks.Count(y => y.LearningTopicId == x.Id),
                     UserId = teacherId
                 })
                 .ToListAsync();
@@ -65,7 +65,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                     Title = x.Title,
                     DifficultyInText = x.DifficultyInText,
                     NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
-                    NumberOfAllTasks = _db.ProgrammingTask.Count(y => y.LearningTopicId == x.Id),
+                    NumberOfAllTasks = _db.ProgrammingTasks.Count(y => y.LearningTopicId == x.Id),
                     UserId = (Guid)studentTeacherId
                 })
                 .ToListAsync();

@@ -12,7 +12,7 @@ import {
   Grid,
 } from "@chakra-ui/react";
 import { ShopTypes } from "../Types/ShopTypes";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
 import eventBus from "../Helpers/EventBus";
@@ -27,7 +27,11 @@ const ShopItemPage = () => {
   const { state } = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const role = localStorage.getItem("role");
+  const navigate = useNavigate();
 
+  const NavigateToPage = (url: string) => {
+    navigate(url);
+  };
   const getShopItems = useCallback(async () => {
     const response = await fetch(
       `https://localhost:7266/api/shop/${state.shopItemId}`,
@@ -193,6 +197,8 @@ const ShopItemPage = () => {
                     overflow="hidden"
                     width={"325px"}
                     position="relative"
+                    onClick={() => NavigateToPage('/')}
+                    cursor={"pointer"}
                   >
                     <Image
                       cursor={"pointer"}

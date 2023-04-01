@@ -19,6 +19,7 @@ const ForgotPassword = () => {
         boxShadow={"lg"}
         p={6}
         my={12}
+        background={"white"}
       >
         <Heading lineHeight={1.1} fontSize={{ base: "2xl", md: "3xl" }}>
           Pamiršai slaptažodį?

@@ -20,10 +20,11 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { LearningTopicTypes } from "../Types/LearningTopicsTypes";
 import { AddNewSubTopic } from "../Components/AddNewSubTopic";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { ChatIcon, DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import eventBus from "../Helpers/EventBus";
 import toast from "react-hot-toast";
+import { Submissions } from "./Submissions";
 
 const LearningSubTopics = () => {
   const navigate = useNavigate();
@@ -170,54 +171,98 @@ const LearningSubTopics = () => {
           {subtopics.map((subtopic) => {
             return (
               <Box mt={3}>
-                <Flex
-                  border="1px solid black"
-                  padding="10px"
-                  borderRadius="5px"
-                  marginTop="12px"
-                  wordBreak="break-word"
-                >
-                  <Flex width="50%" align={"center"}>
-                    <Heading
-                      color="black"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      textTransform="uppercase"
-                      size="sm"
-                      cursor="pointer"
-                      display={{ base: "none", xs:"block" }}
-                      onClick={() => NavigateToTask(subtopic.id)}
+                <Flex flexDir={"column"}>
+                  <Flex
+                    justifyContent={"space-between"}
+                    border={"1px solid black"}
+                    padding={"10px"}
+                    borderRadius={"5px"}
+                    marginTop={"12px"}
+                    bg={"white"}
+                  >
+                    <Flex
+                      alignItems={"center"}
+                      justifyContent={"space-between"}
+                      width={"100%"}
                     >
-                      {subtopic.subTopicName}
-                    </Heading>
-                  </Flex>
-                  <Flex width="16.6%" align={"center"}>
-                    <Box
-                      color="black"
-                      fontWeight="semibold"
-                      letterSpacing="wide"
-                      textTransform="uppercase"
-                      display={{ base: "none", md:"block" }}
-                    >
-                      uždaviniai/ių: {subtopic.numberOfTasks}
-                    </Box>
-                  </Flex>
-                  <Flex width="33.3%" justifyContent={"flex-end"} align={"center"} gap={5}>
-                    <Button
-                      colorScheme="green"
-                      variant="outline"
-                      borderRadius="50px 50px 50px 50px"
-                      display={{ base: "none", md:"block" }}
-                    >
-                      Pažymėti kaip atliktą
-                    </Button>
-                    {(role === UserRole.Teacher || role === UserRole.Admin) && (
-                      <DeleteIcon
-                        cursor="pointer"
-                        onClick={() => openModal(subtopic.id)}
-                        color="red.500"
-                      />
-                    )}
+                      <Flex width="45%" align={"center"}>
+                        <Heading
+                          position="relative"
+                          color="black"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          textTransform="uppercase"
+                          size="sm"
+                          cursor="pointer"
+                          display={{ base: "none", xs: "block" }}
+                          onClick={() => NavigateToTask(subtopic.id)}
+                          _hover={{
+                            _after: {
+                              transform: "scaleX(1)",
+                              transformOrigin: "bottom left",
+                            },
+                          }}
+                          _after={{
+                            content: '" "',
+                            position: "absolute",
+                            width: "100%",
+                            height: "2px",
+                            bottom: 0,
+                            left: 0,
+                            backgroundColor: "black",
+                            transform: "scaleX(0)",
+                            transformOrigin: "bottom right",
+                            transition: "transform 0.25s ease-out",
+                          }}
+                        >
+                          {subtopic.subTopicName}
+                        </Heading>
+                      </Flex>
+                      <Flex
+                        justifyContent={"flex-end"}
+                        align={"center"}
+                        justify={"center"}
+                      >
+                        <Box
+                          color="black"
+                          fontWeight="semibold"
+                          letterSpacing="wide"
+                          textTransform="uppercase"
+                          display={{ base: "none", md: "block" }}
+                          mr={10}
+                        >
+                          uždaviniai/ių: {subtopic.numberOfTasks}
+                        </Box>
+                        <Button
+                          colorScheme="green"
+                          variant="outline"
+                          borderRadius="50px 50px 50px 50px"
+                          display={{ base: "none", md: "block" }}
+                          mr={10}
+                        >
+                          Pažymėti kaip atliktą
+                        </Button>
+                        <ChatIcon mr={3} />
+                        <Heading
+                          cursor={"pointer"}
+                          fontWeight={"none"}
+                          size={"sm"}
+                          textColor="red"
+                          mr={3}
+                          onClick={() => <Submissions />}
+                        >
+                          Pranešti administratoriui
+                        </Heading>
+                        {(role === UserRole.Teacher ||
+                          role === UserRole.Admin) && (
+                          <DeleteIcon
+                            cursor="pointer"
+                            onClick={() => openModal(subtopic.id)}
+                            color="red.500"
+                          />
+                        )}
+                      </Flex>
+                    </Flex>
                   </Flex>
                 </Flex>
               </Box>
@@ -229,7 +274,7 @@ const LearningSubTopics = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Potemės trynimas</ModalHeader>
+            <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Text>Ar tikrai norite ištrinti potemę?</Text>

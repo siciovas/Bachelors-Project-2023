@@ -24,6 +24,8 @@ import { AddNewShopItem } from "../Components/AddNewShopItem";
 import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
+// @ts-ignore
+import Fade from 'react-reveal/Fade';
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -144,10 +146,11 @@ const Shop = () => {
   return (
     <>
       <Flex mt={5} justify="center">
-        <Heading size="lg">Knygos</Heading>
+        <Heading size="lg">El. Parduotuvė</Heading>
       </Flex>
       {role === UserRole.Admin && <AddNewShopItem AddShopItem={AddShopItem} />}
       <Grid margin={20} templateColumns={{base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg:"repeat(3, 1fr)", xl: "repeat(3, 1fr)", "2xl": "repeat(4, 1fr)"}} justifyContent={"center"} gap={3} mt={10}>
+      <Fade left>
         {items.map((item) => {
           return (
             <Box
@@ -208,12 +211,13 @@ const Shop = () => {
             </Box>
           );
         })}
+        </Fade>
       </Grid>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Prekės trynimas</ModalHeader>
+            <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Text>Ar tikrai norite ištrinti prekę?</Text>

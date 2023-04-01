@@ -19,6 +19,7 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
+  background,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -220,8 +221,8 @@ const Profile = () => {
 
   return (
     <>
-      <Box width={"100%"}>
-        <Flex minH={"100vh"} align={"center"} justify={"center"}>
+      <Box width={"100%"} >
+        <Flex minH={"100vh"} align={"center"} justify={"center"} >
           <Stack
             spacing={4}
             w={"full"}
@@ -230,6 +231,7 @@ const Profile = () => {
             boxShadow={"lg"}
             p={6}
             my={12}
+            background={"white"}
           >
             <Heading
               lineHeight={1.1}
@@ -387,7 +389,7 @@ const Profile = () => {
         <Modal isOpen={isOpen} onClose={onClose}>
           <ModalOverlay />
           <ModalContent>
-            <ModalHeader>Paskyros trynimas</ModalHeader>
+            <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
               <Text>Ar tikrai norite ištrinti savo paskyrą?</Text>

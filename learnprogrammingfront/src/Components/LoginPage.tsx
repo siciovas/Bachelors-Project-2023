@@ -60,7 +60,7 @@ const LoginPage = () => {
             ir nerk į programavimo pasaulį ✌️
           </Text>
         </Stack>
-        <Box rounded={"lg"} boxShadow={"lg"} p={8}>
+        <Box rounded={"lg"} boxShadow={"lg"} p={8} background={"white"}>
           <Stack spacing={4}>
             <form onSubmit={(e) => Login(e)}>
               <FormControl id="usernameOrEmail">
