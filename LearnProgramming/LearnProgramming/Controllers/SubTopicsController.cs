@@ -77,15 +77,9 @@ namespace LearnProgramming.API.Controllers
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
 
-            var subTopic = await _subTopicsRep.Get(id);
-            if (subTopic == null) return NotFound();
+            await _subTopicsRep.Update(subTopicDto, id);
 
-            subTopic.SubTopicName = subTopicDto.SubTopicName;
-
-
-            await _subTopicsRep.Update(subTopic);
-
-            return Ok(subTopic);
+            return Ok(subTopicDto);
 
         }
 

@@ -48,12 +48,15 @@ namespace LearnProgramming.Infrastructure.Repositories
             return subTopics;
         }
 
-        public async Task<SubTopic> Update(SubTopic subTopic)
+        public async Task<SubTopic> Update(SubTopicUpdateDto subTopic, int id)
         {
-            _db.Update(subTopic);
+            var sub = await _db.SubTopics.AsTracking().FirstAsync(x => x.Id == id);
+
+            sub.SubTopicName = subTopic.SubTopicName;
+
             await _db.SaveChangesAsync();
 
-            return subTopic;
+            return sub;
         }
     }
 }

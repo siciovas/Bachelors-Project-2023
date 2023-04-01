@@ -6,6 +6,7 @@ using System;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Repositories;
 using System.Linq;
+using LearnProgramming.Core.Dto;
 
 namespace LearnProgramming.Test
 {
@@ -18,6 +19,7 @@ namespace LearnProgramming.Test
         {
             var dbContextOptions = new DbContextOptionsBuilder<DatabaseContext>()
                 .UseInMemoryDatabase(Guid.NewGuid().ToString())
+                .UseQueryTrackingBehavior(QueryTrackingBehavior.NoTracking)
                 .Options;
 
             _databaseContext = new DatabaseContext(dbContextOptions);
@@ -282,7 +284,8 @@ namespace LearnProgramming.Test
 
             var expected = await _databaseContext.LearningTopics.FirstAsync();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected.Title, result.Title);
+            Assert.Equal(expected.DifficultyInText, result.DifficultyInText);
         }
 
         [Fact]
@@ -303,9 +306,14 @@ namespace LearnProgramming.Test
 
             var newTitleForLearningTopic = _fixture.Create<string>();
 
+            var learningTopicDto = new LearningTopicsDto
+            {
+                Title = newTitleForLearningTopic
+            };
+
             learningTopic.Title = newTitleForLearningTopic;
 
-            await repo.Update(learningTopic);
+            await repo.Update(learningTopicDto, learningTopic.Id);
 
             var expected = await _databaseContext.LearningTopics.FirstAsync();
 
@@ -355,7 +363,8 @@ namespace LearnProgramming.Test
 
             var expected = await _databaseContext.LearningTopics.FirstAsync();
 
-            Assert.Equal(expected, result);
+            Assert.Equal(expected.Title, result.Title);
+            Assert.Equal(expected.DifficultyInText, result.DifficultyInText);
         }
     }
 }

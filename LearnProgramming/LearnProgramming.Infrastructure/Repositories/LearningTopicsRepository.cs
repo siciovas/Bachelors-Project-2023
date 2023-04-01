@@ -91,14 +91,16 @@ namespace LearnProgramming.Infrastructure.Repositories
         }
 
 
-        public async Task<LearningTopic> Update(LearningTopic learningTopics)
+        public async Task<LearningTopic> Update(LearningTopicsDto learningTopics, int id)
         {
-           _db.LearningTopics.Update(learningTopics);
-           await _db.SaveChangesAsync();
+            var topic = await _db.LearningTopics.AsTracking().FirstAsync(x => x.Id == id);
 
-            return learningTopics;
+            topic.Title = learningTopics.Title;
+            topic.DifficultyInText = learningTopics.DifficultyInText;
+
+            await _db.SaveChangesAsync();
+
+            return topic;
         }
-
-      
     }
 }

@@ -77,15 +77,10 @@ namespace LearnProgramming.API.Controllers
 
         public async Task<ActionResult<LearningTopicsDto>> Update(LearningTopicsDto learningTopics, int id) 
         {
-            var topics = await _learningTopicsRep.Get(id);
-            if(topics == null) return NotFound();
 
-            topics.Title = learningTopics.Title;
-            topics.DifficultyInText = learningTopics.DifficultyInText;
+            await _learningTopicsRep.Update(learningTopics, id);
 
-            await _learningTopicsRep.Update(topics);
-
-            return Ok(topics);
+            return Ok(learningTopics);
         }
 
         [HttpPost]
