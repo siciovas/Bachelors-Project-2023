@@ -42,7 +42,7 @@ namespace LearnProgramming.Test
                 .Build<LearningTopic>()
                 .Create();
 
-            await _databaseContext.AddRangeAsync(learningTopic);
+            await _databaseContext.AddAsync(learningTopic);
             await _databaseContext.SaveChangesAsync();
 
             var result = await repo.GetAll();

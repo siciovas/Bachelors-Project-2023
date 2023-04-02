@@ -1,4 +1,5 @@
-﻿using LearnProgramming.Core.Interfaces;
+﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +48,7 @@ namespace LearnProgramming.Infrastructure.Repositories
 
             if(count < 4)
             {
-                return await _db.Product.Where(x => x.Id != id).ToListAsync();
+                return await _db.Product.Where(x => x.Id != id).Take(2).ToListAsync();
             }
 
             int skipper = rand.Next(0, count - 3);
@@ -55,12 +56,23 @@ namespace LearnProgramming.Infrastructure.Repositories
             return await _db.Product.Where(x => x.Id != id).Skip(skipper).Take(3).ToListAsync();
         }
 
-        public async Task<Product> Update(Product shopItem)
+        public async Task<Product> Update(ProductDto shopItem, int id)
         {
-           _db.Product.Update(shopItem);
+            var product = await _db.Product.AsTracking().FirstAsync(x => x.Id == id);
+
+            product.Photo = shopItem.Photo;
+            product.Name = shopItem.Name;
+            product.Description = shopItem.Description;
+            product.Price = shopItem.Price;
+            product.PageNumber = shopItem.PageNumber;
+            product.Language = shopItem.Language;
+            product.BookCoverType = shopItem.BookCoverType;
+            product.Publisher = shopItem.Publisher;
+            product.ReleaseDate = shopItem.ReleaseDate;
+
             await _db.SaveChangesAsync();
 
-            return shopItem;
+            return product;
         }
     }
 }

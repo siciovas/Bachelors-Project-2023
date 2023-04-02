@@ -1,4 +1,5 @@
-﻿using LearnProgramming.Domain.Entities;
+﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Domain.Entities;
 
 namespace LearnProgramming.Core.Interfaces
 {
@@ -7,7 +8,7 @@ namespace LearnProgramming.Core.Interfaces
         Task<List<Product>> GetAll();
         Task<Product> Get(int id);
         Task<Product> Create(Product shopItem);
-        Task<Product> Update (Product shopItem);
+        Task<Product> Update (ProductDto shopItem, int id);
         Task Delete (Product shopItem);
         Task<List<Product>> GetSuggestions(int id);
     }
