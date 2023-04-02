@@ -86,7 +86,7 @@ namespace LearnProgramming.API.Controllers
 
         [HttpPut("{id}")]
         [Authorize(Roles = "Teacher")]
-        public async Task<ActionResult<ProgrammingTaskPostDto>> Update(int learningtopicId, int subtopicId, ProgrammingTaskPostDto programmingTask, int id)
+        public async Task<ActionResult<ProgrammingTaskPostDto>> Update(int learningtopicId, int subtopicId, ProgrammingTaskDto programmingTask, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
@@ -97,10 +97,7 @@ namespace LearnProgramming.API.Controllers
             var task = await _programmingTask.Get(id);
             if (task == null) return NotFound();
 
-            task.Name = programmingTask.Name;
-            task.Description = programmingTask.Description;
-
-            await _programmingTask.Update(task);
+            await _programmingTask.Update(programmingTask, id);
 
             return Ok(programmingTask);
         }
