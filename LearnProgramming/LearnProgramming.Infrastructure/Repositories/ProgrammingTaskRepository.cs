@@ -1,4 +1,5 @@
-﻿using LearnProgramming.Core.Interfaces;
+﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -41,9 +42,14 @@ namespace LearnProgramming.Infrastructure.Repositories
                 .ToListAsync();
         }
 
-        public async Task<ProgrammingTask> Update(ProgrammingTask programmingTask)
+        public async Task<ProgrammingTask> Update(ProgrammingTaskDto programmingTaskDto, int id)
         {
-            _db.Update(programmingTask);
+            var programmingTask = await _db.ProgrammingTasks
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
+
+            programmingTask.Name = programmingTaskDto.Name;
+            programmingTask.Description = programmingTaskDto.Description;
 
             await _db.SaveChangesAsync();
 
