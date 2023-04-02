@@ -1,4 +1,5 @@
 ﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Domain.Enums;
@@ -59,7 +60,10 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<List<UserDto>> GetAllStudents()
         {
-            var students = await _db.Users.Where(user => user.Role == AllRoles.Student).Select(student => new StudentDto
+            var students = await _db.Users
+                .Include(x => x.Teacher)
+                .Where(user => user.Role == AllRoles.Student)
+                .Select(student => new StudentDto
             {
                 Id = student.Id,
                 Avatar = student.Avatar,
@@ -68,7 +72,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                 Name = student.Name,
                 Surname = student.Surname,
                 School = student.School,
-                IsAssigned = _db.TeacherAndStudent.Any(relation => relation.StudentId == student.Id),
+                IsAssigned = student.Teacher != null,
             }).ToListAsync();
 
             return students.Cast<UserDto>().ToList();
@@ -76,7 +80,11 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<List<TeachersAllStudentsDto>> GetTeacherAllStudents(Guid id)
         {
-            var students = await _db.Users.Include(user => user.Students).Where(user => user.Id == id).SelectMany(teacher => teacher.Students.Select(student => new TeachersAllStudentsDto
+            var students = await _db.Users
+                .Include(user => user.Students)
+                .Where(user => user.Id == id)
+                .SelectMany(teacher => teacher.Students
+                .Select(student => new TeachersAllStudentsDto
             {
                 Id = student.StudentId,
                 Avatar = student.Student.Avatar,
@@ -123,9 +131,32 @@ namespace LearnProgramming.Infrastructure.Repositories
             return user;
         }
 
-        public async Task<User> Update(User user)
+        public async Task<User> UpdateProfile(UserUpdateDto userDto, Guid id)
         {
-            _db.Users.Update(user);
+            var user = await _db.Users
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
+
+            user.Avatar = userDto.Avatar;
+            user.UserName = userDto.UserName;
+            user.Email = userDto.Email;
+            user.City = userDto.City;
+            user.School = userDto.School;
+
+            await _db.SaveChangesAsync();
+
+            return user;
+        }
+
+        public async Task<User> UpdatePassword(UserPasswordUpdateDto userDto, Guid id)
+        {
+            var user = await _db.Users
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
+
+            user.PasswordHash = userDto.PasswordHash;
+            user.PasswordSalt = userDto.PasswordSalt;
+
             await _db.SaveChangesAsync();
 
             return user;

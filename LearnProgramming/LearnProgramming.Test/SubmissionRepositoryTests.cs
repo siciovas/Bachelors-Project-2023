@@ -51,12 +51,12 @@ namespace LearnProgramming.Test
             await _databaseContext.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
 
-            var result = await repo.Create(submission);
+            await repo.Create(submission);
 
             var expected = await _databaseContext.Submission.FirstAsync();
 
-            Assert.Equal(expected.Topic, result.Topic);
-            Assert.Equal(expected.Message, result.Message);
+            Assert.Equal(expected.Topic, submission.Topic);
+            Assert.Equal(expected.Message, submission.Message);
 
         }
 

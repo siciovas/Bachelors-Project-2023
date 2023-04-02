@@ -1,4 +1,5 @@
 ﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Domain.Entities;
 
 namespace LearnProgramming.Core.Interfaces
@@ -12,7 +13,8 @@ namespace LearnProgramming.Core.Interfaces
         Task<List<TeachersAllStudentsDto>> GetTeacherAllStudents(Guid id);
         Task<User> GetById(Guid id);
         Task<User> Register(User user);
-        Task<User> Update(User user);
+        Task<User> UpdateProfile(UserUpdateDto user, Guid id);
+        Task<User> UpdatePassword(UserPasswordUpdateDto user, Guid id);
         Task DeleteStudent(TeacherAndStudent student);
         Task<TeacherAndStudent> PostStudent(TeacherAndStudent student);
         Task<TeacherAndStudent?> GetByIdStudent(Guid id);

@@ -48,17 +48,26 @@ namespace LearnProgramming.Infrastructure.Repositories
 
             if(count < 4)
             {
-                return await _db.Product.Where(x => x.Id != id).Take(2).ToListAsync();
+                return await _db.Product
+                    .Where(x => x.Id != id)
+                    .Take(2)
+                    .ToListAsync();
             }
 
             int skipper = rand.Next(0, count - 3);
 
-            return await _db.Product.Where(x => x.Id != id).Skip(skipper).Take(3).ToListAsync();
+            return await _db.Product
+                .Where(x => x.Id != id)
+                .Skip(skipper)
+                .Take(3)
+                .ToListAsync();
         }
 
         public async Task<Product> Update(ProductDto shopItem, int id)
         {
-            var product = await _db.Product.AsTracking().FirstAsync(x => x.Id == id);
+            var product = await _db.Product
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
 
             product.Photo = shopItem.Photo;
             product.Name = shopItem.Name;

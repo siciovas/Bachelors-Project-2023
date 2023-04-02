@@ -280,12 +280,12 @@ namespace LearnProgramming.Test
             await _databaseContext.AddAsync(user);
             await _databaseContext.SaveChangesAsync();
 
-            var result = await repo.Create(learningTopic);
+            await repo.Create(learningTopic);
 
             var expected = await _databaseContext.LearningTopics.FirstAsync();
 
-            Assert.Equal(expected.Title, result.Title);
-            Assert.Equal(expected.DifficultyInText, result.DifficultyInText);
+            Assert.Equal(expected.Title, learningTopic.Title);
+            Assert.Equal(expected.DifficultyInText, learningTopic.DifficultyInText);
         }
 
         [Fact]

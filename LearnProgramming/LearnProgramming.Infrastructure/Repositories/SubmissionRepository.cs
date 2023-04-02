@@ -23,14 +23,19 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<List<Submission>> GetById(Guid UserId)
         {
-           var submissions = await _db.Submission.Include(submission => submission.User).Where(submission => submission.UserId == UserId).ToListAsync();
+           var submissions = await _db.Submission
+                .Include(submission => submission.User)
+                .Where(submission => submission.UserId == UserId)
+                .ToListAsync();
 
             return submissions;
         }
 
         public async Task<List<Submission>> GetAll()
         {
-            var submissions = await _db.Submission.Include(submission => submission.User).ToListAsync();
+            var submissions = await _db.Submission
+                .Include(submission => submission.User)
+                .ToListAsync();
 
             return submissions;
         }

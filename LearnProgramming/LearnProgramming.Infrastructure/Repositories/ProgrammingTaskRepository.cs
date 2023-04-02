@@ -28,12 +28,17 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<ProgrammingTask?> Get(int id)
         {
-            return await _db.ProgrammingTasks.Include(topic => topic.LearningTopic).Include(subtopic => subtopic.SubTopic).FirstOrDefaultAsync(x => x.Id == id);
+            return await _db.ProgrammingTasks
+                .Include(topic => topic.LearningTopic)
+                .Include(subtopic => subtopic.SubTopic)
+                .FirstOrDefaultAsync(x => x.Id == id);
         }
 
         public async Task<List<ProgrammingTask>> GetAll(int subTopicId)
         {
-            return await _db.ProgrammingTasks.Where(x => x.SubTopicId == subTopicId).ToListAsync();
+            return await _db.ProgrammingTasks
+                .Where(x => x.SubTopicId == subTopicId)
+                .ToListAsync();
         }
 
         public async Task<ProgrammingTask> Update(ProgrammingTask programmingTask)

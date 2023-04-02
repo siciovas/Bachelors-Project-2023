@@ -50,7 +50,8 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<List<LearningTopicsDto>> GetAllByStudent(Guid studentId)
         {
-            var studentTeacherId = _db.TeacherAndStudent.SingleOrDefault(x => x.StudentId == studentId)?.TeacherId;
+            var studentTeacherId = _db.TeacherAndStudent
+                .SingleOrDefault(x => x.StudentId == studentId)?.TeacherId;
 
             if (studentTeacherId == null)
             {
@@ -93,7 +94,9 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<LearningTopic> Update(LearningTopicsDto learningTopics, int id)
         {
-            var topic = await _db.LearningTopics.AsTracking().FirstAsync(x => x.Id == id);
+            var topic = await _db.LearningTopics
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
 
             topic.Title = learningTopics.Title;
             topic.DifficultyInText = learningTopics.DifficultyInText;

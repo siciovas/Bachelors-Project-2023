@@ -85,11 +85,11 @@ namespace LearnProgramming.Test
             await _databaseContext.AddRangeAsync(user, learningTopic);
             await _databaseContext.SaveChangesAsync();
 
-            var result = await repo.Create(subTopic);
+            await repo.Create(subTopic);
 
             var expected = await _databaseContext.SubTopics.FirstAsync();
 
-            Assert.Equal(expected.SubTopicName, result.SubTopicName);
+            Assert.Equal(expected.SubTopicName, subTopic.SubTopicName);
 
         }
 
