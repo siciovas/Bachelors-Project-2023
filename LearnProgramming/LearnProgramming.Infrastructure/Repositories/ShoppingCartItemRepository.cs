@@ -30,12 +30,17 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<List<ShoppingCartItem>> GetByUserId(Guid UserId)
         {
-            return await _db.ShoppingCartItems.Include(product => product.Product).Where(user => user.UserId == UserId).ToListAsync();
+            return await _db.ShoppingCartItems
+                .Include(product => product.Product)
+                .Where(user => user.UserId == UserId)
+                .ToListAsync();
         }
 
         public async Task<ShoppingCartItem> GetById(int id)
         {
-            return await _db.ShoppingCartItems.Where(cart => cart.Id == id).FirstOrDefaultAsync();
+            return await _db.ShoppingCartItems
+                .Where(cart => cart.Id == id)
+                .FirstOrDefaultAsync();
         }
 
     }

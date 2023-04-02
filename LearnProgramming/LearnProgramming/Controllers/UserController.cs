@@ -132,13 +132,7 @@ namespace LearnProgramming.API.Controllers
             var user = await _userRepository.GetById(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
             if (user == null) return NotFound();
 
-            user.Avatar = userDto.Avatar;
-            user.UserName = userDto.UserName;
-            user.Email = userDto.Email;
-            user.City = userDto.City;
-            user.School = userDto.School;
-
-            await _userRepository.Update(user);
+            await _userRepository.UpdateProfile(userDto, user.Id);
 
             return Ok(userDto);
         }
@@ -171,12 +165,15 @@ namespace LearnProgramming.API.Controllers
                 {
                     var (passwordHash, passwordSalt) = _hashService.HashPassword(userDto.NewPassword);
 
-                    user.PasswordSalt = passwordSalt;
-                    user.PasswordHash = passwordHash;
+                    await _userRepository.UpdatePassword(new UserPasswordUpdateDto 
+                    { 
+                        PasswordHash = passwordHash,
+                        PasswordSalt = passwordSalt,
+                    }, user.Id);
+                  
                 }
             }
 
-            await _userRepository.Update(user);
 
             return Ok();
         }

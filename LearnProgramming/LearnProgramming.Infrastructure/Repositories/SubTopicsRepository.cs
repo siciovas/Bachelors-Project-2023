@@ -30,7 +30,9 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<SubTopic> Get(int id)
         {
-            return await _db.SubTopics.Where(subtopic => subtopic.Id == id).FirstAsync();     
+            return await _db.SubTopics
+                .Where(subtopic => subtopic.Id == id)
+                .FirstAsync();     
         }
 
         public async Task<List<SubTopicDto>> GetAll(int learningTopicId)
@@ -50,7 +52,9 @@ namespace LearnProgramming.Infrastructure.Repositories
 
         public async Task<SubTopic> Update(SubTopicUpdateDto subTopic, int id)
         {
-            var sub = await _db.SubTopics.AsTracking().FirstAsync(x => x.Id == id);
+            var sub = await _db.SubTopics
+                .AsTracking()
+                .FirstAsync(x => x.Id == id);
 
             sub.SubTopicName = subTopic.SubTopicName;
 

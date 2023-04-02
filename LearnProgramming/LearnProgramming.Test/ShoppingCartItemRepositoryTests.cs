@@ -51,13 +51,16 @@ namespace LearnProgramming.Test
                 .Without(x => x.Product)
                 .Create();
 
-            var result = await repo.Create(cartItem);
+            await _databaseContext.AddRangeAsync(user, product);
+            await _databaseContext.SaveChangesAsync();
+
+            await repo.Create(cartItem);
 
             var expected = await _databaseContext.ShoppingCartItems.FirstAsync();
 
-            Assert.Equal(expected.Quantity, result.Quantity);
-            Assert.Equal(expected.UserId, result.UserId);
-            Assert.Equal(expected.ProductId, result.ProductId);
+            Assert.Equal(expected.Quantity, cartItem.Quantity);
+            Assert.Equal(expected.UserId, cartItem.UserId);
+            Assert.Equal(expected.ProductId, cartItem.ProductId);
         }
 
         [Fact]
