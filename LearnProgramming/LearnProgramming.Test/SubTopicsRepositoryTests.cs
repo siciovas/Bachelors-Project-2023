@@ -37,7 +37,7 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async void Get_GetExistingSubTopic_ReturnCorrectData()
+        public async void Get_GetExistingSubTopic_ReturnsCorrectData()
         {
             var repo = CreateRepository();
 
@@ -60,9 +60,7 @@ namespace LearnProgramming.Test
 
             var result = await repo.Get(subTopic.Id);
 
-            var expected = await _databaseContext.SubTopics.FirstAsync();
-
-            Assert.Equal(expected.SubTopicName, result.SubTopicName);
+            Assert.Equal(subTopic.SubTopicName, result.SubTopicName);
         }
 
         [Fact]
@@ -161,7 +159,7 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async void GetAll_GetAllSubTopicsWithoutProgrammingTask_ReturnCorrectData()
+        public async void GetAll_GetAllSubTopicsWithoutProgrammingTask_ReturnsCorrectData()
         {
             var repo = CreateRepository();
 
@@ -187,7 +185,7 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async void GetAll_GetAllSubTopicsWithProgrammingTask_ReturnCorrectData()
+        public async void GetAll_GetAllSubTopicsWithProgrammingTask_ReturnsCorrectData()
         {
             var repo = CreateRepository();
 

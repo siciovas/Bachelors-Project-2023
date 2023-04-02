@@ -63,19 +63,9 @@ namespace LearnProgramming.API.Controllers
             var item = await _shopItemRep.Get(id);
             if (item == null) return NotFound();
 
-            item.Photo = itemsDto.Photo;
-            item.Name = itemsDto.Name;
-            item.Description = itemsDto.Description;
-            item.Price = itemsDto.Price;
-            item.PageNumber = itemsDto.PageNumber;
-            item.Language = itemsDto.Language;
-            item.BookCoverType = itemsDto.BookCoverType;
-            item.Publisher = itemsDto.Publisher;
-            item.ReleaseDate = itemsDto.ReleaseDate;
+            await _shopItemRep.Update(itemsDto, id);
 
-            await _shopItemRep.Update(item);
-
-            return Ok(item);
+            return Ok(itemsDto);
         }
 
         [HttpPost]

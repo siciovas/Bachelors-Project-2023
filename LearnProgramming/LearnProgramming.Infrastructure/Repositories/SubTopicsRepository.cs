@@ -28,9 +28,9 @@ namespace LearnProgramming.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<SubTopic?> Get(int id)
+        public async Task<SubTopic> Get(int id)
         {
-            return await _db.SubTopics.Where(subtopic => subtopic.Id == id).FirstOrDefaultAsync();     
+            return await _db.SubTopics.Where(subtopic => subtopic.Id == id).FirstAsync();     
         }
 
         public async Task<List<SubTopicDto>> GetAll(int learningTopicId)
