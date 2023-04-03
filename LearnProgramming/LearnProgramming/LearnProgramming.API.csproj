@@ -44,4 +44,10 @@
     <ProjectReference Include="..\LearnProgramming.Infrastructure\LearnProgramming.Infrastructure.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Reference Include="EVP.WebToPay.ClientAPI">
+      <HintPath>bin\Debug\net6.0\EVP.WebToPay.ClientAPI.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
 </Project>

@@ -22,9 +22,20 @@ namespace LearnProgramming.Infrastructure.Repositories
             return order;
         }
 
-        public async Task<List<Order>> GetAll(Guid userId)
+        public async Task<List<Order>> GetByUserId(Guid userId)
         {
-            return await _db.Order.Where(order => order.UserId == userId).ToListAsync();
+            return await _db.Order
+                .Include(orderItem => orderItem.OrderItems)
+                .Where(order => order.UserId == userId && order.IsPaid)
+                .ToListAsync();
+        }
+
+        public async Task<List<Order>> GetAll()
+        {
+            return await _db.Order
+                .Include(orderItem => orderItem.OrderItems)
+                .Where(order => order.IsPaid)
+                .ToListAsync();
         }
     }
 }

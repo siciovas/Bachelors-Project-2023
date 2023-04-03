@@ -22,15 +22,11 @@ namespace LearnProgramming.Infrastructure.Repositories
             return orderItem;
         }
 
-        public async Task<OrderItem> Get(int id, int orderId)
-        {
-            return await _db.OrderItem.Where(x => x.Id == id && x.OrderId == orderId).FirstOrDefaultAsync();
-
-        }
-
         public async Task<List<OrderItem>> GetAll(int orderId)
         {
-            return await _db.OrderItem.Where(x => x.OrderId == orderId).ToListAsync();
+            return await _db.OrderItem
+                .Where(x => x.OrderId == orderId)
+                .ToListAsync();
 
         }
     }

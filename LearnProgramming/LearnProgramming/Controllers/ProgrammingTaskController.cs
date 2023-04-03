@@ -44,7 +44,7 @@ namespace LearnProgramming.API.Controllers
 
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<LearningTopicsDto>> Get(int learningtopicId, int subtopicId, int id)
+        public async Task<ActionResult<ProgrammingTaskDto>> Get(int learningtopicId, int subtopicId, int id)
         {
             var topic = await _learningTopicsRep.Get(learningtopicId);
             if (topic == null) return NotFound();
