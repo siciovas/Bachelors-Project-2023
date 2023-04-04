@@ -24,17 +24,25 @@ const ShopItemPage = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShopTypes>();
   const [suggestions, setSuggestions] = useState<ShopTypes[]>([]);
-  const { state } = useLocation();
+  const location = useLocation();
   const [isLoading, setIsLoading] = useState(true);
   const role = localStorage.getItem("role");
   const navigate = useNavigate();
 
-  const NavigateToPage = (url: string) => {
-    navigate(url);
+  const NavigateToItem = (shopItemId: number) => {
+    navigate("/preke", {
+      state: {
+        shopItemId: shopItemId,
+      },
+      replace: true,
+    });
+    window.location.reload();
   };
-  const getShopItems = useCallback(async () => {
+
+  const getShopItems = useCallback(async (id:number | undefined) => {
+    console.log(location.state.shopItemId);
     const response = await fetch(
-      `https://localhost:7266/api/shop/${state.shopItemId}`,
+      `https://localhost:7266/api/shop/${id != undefined ? id : location.state.shopItemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -56,7 +64,7 @@ const ShopItemPage = () => {
 
   const getShopSuggestions = useCallback(async () => {
     const response = await fetch(
-      `https://localhost:7266/api/shop/suggestions/${state.shopItemId}`,
+      `https://localhost:7266/api/shop/suggestions/${location.state.shopItemId}`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -99,9 +107,9 @@ const ShopItemPage = () => {
   };
 
   useEffect(() => {
-    getShopItems();
+    getShopItems(undefined);
     getShopSuggestions();
-  }, [isLoading]);
+  }, []);
 
   if (isLoading) {
     return (
@@ -197,7 +205,7 @@ const ShopItemPage = () => {
                     overflow="hidden"
                     width={"325px"}
                     position="relative"
-                    onClick={() => NavigateToPage('/')}
+                    onClick={() => NavigateToItem(suggestion.id)}
                     cursor={"pointer"}
                   >
                     <Image

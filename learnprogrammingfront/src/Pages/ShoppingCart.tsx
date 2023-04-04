@@ -1,4 +1,10 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  FormEvent,
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
 import {
   Box,
   Button,
@@ -28,9 +34,11 @@ import { ShoppingCartTypes } from "../Types/ShoppingCartTypes";
 import { CloseIcon } from "@chakra-ui/icons";
 import { BookCover } from "../Types/ShopTypes";
 import { GetBookCoverType } from "../Helpers/GetBookCover";
-import toast from "react-hot-toast";
 import { isMobile } from "react-device-detect";
-import { url } from "inspector";
+import { ShippingInformationTypes } from "../Types/ShippingInformationTypes";
+import eventBus from "../Helpers/EventBus";
+import { Unauthorized } from "../Constants/Auth";
+import toast from "react-hot-toast";
 
 const steps = [
   {
@@ -44,11 +52,23 @@ const steps = [
 const ShoppingCart = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShoppingCartTypes>();
+  const [information, setInformation] = useState<ShippingInformationTypes>();
   const [isLoading, setIsLoading] = useState(true);
 
   const { nextStep, prevStep, activeStep } = useSteps({
     initialStep: 0,
   });
+
+  const handleFieldChange = (
+    field: keyof typeof information,
+    event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+      event.preventDefault();
+      const newFields = { ...information } as ShippingInformationTypes;
+      newFields[field] = event.target.value as never;
+      console.log(newFields)
+      setInformation(newFields);
+  };
 
   const getShoppingCartItems = useCallback(async () => {
     const response = await fetch(`https://localhost:7266/api/shoppingcart`, {
@@ -91,6 +111,76 @@ const ShoppingCart = () => {
     getShoppingCartItems();
   }, [isLoading]);
 
+  const getShippingInformation = useCallback(async () => {
+    const response = await fetch(
+      `https://localhost:7266/api/shoppingcart/shipping`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
+    const information = await response.json();
+    setInformation(information);
+    setIsLoading(false);
+  }, []);
+
+  useEffect(() => {
+    getShippingInformation();
+  }, [isLoading]);
+
+  const postShippingInformation = async (
+    e: FormEvent<HTMLFormElement>
+  ): Promise<void> => {
+    e.preventDefault();
+    console.log(information)
+    const response = await fetch(
+      "https://localhost:7266/api/shoppingcart/shipping",
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: information !== undefined ? "PUT" : "POST",
+        body: JSON.stringify(information),
+      }
+    );
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", Unauthorized);
+    }
+    if (response.status === 201 || response.status === 200) {
+      toast.success("Informacija atnaujinta!");
+      await createPaymentRequest();
+    } else {
+      toast.error("Nepavyko!");
+    }
+  };
+
+  const createPaymentRequest = async (
+  ): Promise<void> => {
+      const response = await fetch("https://localhost:7266/api/paysera",
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        body: JSON.stringify(
+          {
+            amount: items?.totalPrice.toFixed(2) as unknown as number * 100,
+            email: information?.email
+          }
+        ),
+      }
+    );
+      if (response.status === 200)
+      {
+        const url = await response.text();
+        window.location.replace(url);
+      }
+  };
+
   if (isLoading) {
     return (
       <Flex justifyContent="center" top="50%" left="50%" position="fixed">
@@ -106,15 +196,19 @@ const ShoppingCart = () => {
           <Heading textAlign={"center"} mt={5}>
             Tuščias krepšelis
           </Heading>
-          <Image margin={"auto"} mt={10} src={"/photos/WebPhotos/emptycart.png"} />
+          <Image
+            margin={"auto"}
+            mt={10}
+            src={"/photos/WebPhotos/emptycart.png"}
+          />
         </>
       ) : (
         <>
           <Steps
             activeStep={activeStep}
             mt={3}
-            maxW={{base: '100%', md: '50%'}}
-            m={{base: "0", md: "auto"}}
+            maxW={{ base: "100%", md: "50%" }}
+            m={{ base: "0", md: "auto" }}
             ml={isMobile ? "none" : "25%"}
             colorScheme={"green"}
           >
@@ -128,37 +222,26 @@ const ShoppingCart = () => {
                 {index === 0 ? (
                   <>
                     <Box py={10} px={10} overflowX="auto">
-                      <Table
-                        alignItems={"center"}
-                      >
+                      <Table alignItems={"center"}>
                         <Thead>
                           <Tr>
-                            <Th>
-                              Knyga
-                            </Th>
-                            <Th textAlign={"center"}>
-                              Viršelio tipas
-                            </Th>
-                            <Th textAlign={"center"}>
-                              Kiekis
-                            </Th>
-                            <Th textAlign={"center"}>
-                              Kaina
-                            </Th>
+                            <Th>Knyga</Th>
+                            <Th textAlign={"center"}>Viršelio tipas</Th>
+                            <Th textAlign={"center"}>Kiekis</Th>
+                            <Th textAlign={"center"}>Kaina</Th>
                             <Th></Th>
                           </Tr>
                         </Thead>
                         <Tbody>
                           {items?.shoppingCartItems.map((item) => {
                             return (
-                              <Tr
-                                gap={4}
-                                alignItems={"center"}
-                                mb={3}
-                              >
+                              <Tr gap={4} alignItems={"center"} mb={3}>
                                 <Td>
                                   <Flex alignItems={"center"}>
-                                    <Box m={"20px 15px 5px 15px"} display={{base: 'none', md:'block'}}>
+                                    <Box
+                                      m={"20px 15px 5px 15px"}
+                                      display={{ base: "none", md: "block" }}
+                                    >
                                       <Image
                                         src={
                                           "data:image/jpeg;base64," +
@@ -234,156 +317,231 @@ const ShoppingCart = () => {
                       </Flex>
                     </Flex>
                   </>
-                ) 
-                : (
+                ) : (
                   <>
-                    <Flex mt={10} justifyContent={"center"} flexDir={{base: "column", md: "row"}}>
-                      <Grid justifyContent={"center"}>
-                        <Stack maxW={"lg"} px={6}>
-                          <Stack align={"center"}>
-                            <Heading fontSize={"4xl"} textAlign={"center"}>
-                              Asmens duomenys
-                            </Heading>
-                          </Stack>
-                          <Box
-                            rounded={"lg"}
-                            boxShadow={"lg"}
-                            p={8}
-                            height={"325px"}
-                            bg={"white"}
-                          >
-                            <Stack spacing={4}>
-                              <HStack>
-                                <Box>
-                                  <FormControl id="firstName" isRequired>
-                                    <FormLabel>Vardas</FormLabel>
-                                    <Input type="text" />
-                                  </FormControl>
-                                </Box>
-                                <Box>
-                                  <FormControl id="lastName" isRequired>
-                                    <FormLabel>Pavardė</FormLabel>
-                                    <Input type="text" />
-                                  </FormControl>
-                                </Box>
-                              </HStack>
-                              <HStack>
-                                <FormControl id="email" isRequired>
-                                  <FormLabel>El. Paštas</FormLabel>
-                                  <Input type="email" />
-                                </FormControl>
-                                <FormControl id="email" isRequired>
-                                  <FormLabel>
-                                    Patvirtink savo el. paštą
-                                  </FormLabel>
-                                  <Input type="email" />
-                                </FormControl>
-                              </HStack>
-                              <HStack>
-                                <FormControl id="number" width={"30%"}>
-                                  <FormLabel>Prefiksas</FormLabel>
-                                  <Input
-                                    type="number"
-                                    isDisabled={true}
-                                    placeholder={"+370"}
-                                  />
-                                </FormControl>
-                                <FormControl id="text" isRequired>
-                                  <FormLabel>Mob. telefono numeris</FormLabel>
-                                  <Input
-                                    type="text"
-                                    pattern="[0-9]"
-                                    maxLength={8}
-                                  />
-                                </FormControl>
-                              </HStack>
+                    <form onSubmit={(e) => postShippingInformation(e)}>
+                      <Flex
+                        mt={10}
+                        justifyContent={"center"}
+                        flexDir={{ base: "column", md: "row" }}
+                      >
+                        <Grid justifyContent={"center"}>
+                          <Stack maxW={"lg"} px={6}>
+                            <Stack align={"center"}>
+                              <Heading fontSize={"4xl"} textAlign={"center"}>
+                                Asmens duomenys
+                              </Heading>
                             </Stack>
-                          </Box>
-                        </Stack>
-                      </Grid>
-                      <Grid justifyContent={"center"} mt={{base: 10, md: 0}}>
-                        <Stack maxW={"lg"} px={6}>
-                          <Stack align={"center"}>
-                            <Heading fontSize={"4xl"} textAlign={"center"}>
-                              Pristatymo duomenys
-                            </Heading>
+                            <Box
+                              rounded={"lg"}
+                              boxShadow={"lg"}
+                              p={8}
+                              height={"325px"}
+                              bg={"white"}
+                            >
+                              <Stack spacing={4}>
+                                <HStack>
+                                  <Box>
+                                    <FormControl id="firstName" isRequired>
+                                      <FormLabel>Vardas</FormLabel>
+                                      <Input
+                                        type="text"
+                                        onChange={(e) =>
+                                          handleFieldChange("name" as never, e)
+                                        }
+                                        value={information?.name}
+                                      />
+                                    </FormControl>
+                                  </Box>
+                                  <Box>
+                                    <FormControl id="lastName" isRequired>
+                                      <FormLabel>Pavardė</FormLabel>
+                                      <Input
+                                        type="text"
+                                        value={information?.surname}
+                                        onChange={(e) =>
+                                          handleFieldChange(
+                                            "surname" as never,
+                                            e
+                                          )
+                                        }
+                                      />
+                                    </FormControl>
+                                  </Box>
+                                </HStack>
+                                  <FormControl id="email" isRequired>
+                                    <FormLabel>El. Paštas</FormLabel>
+                                    <Input
+                                      type="email"
+                                      value={information?.email}
+                                      onChange={(e) =>
+                                        handleFieldChange("email" as never, e)
+                                      }
+                                    />
+                                  </FormControl>
+                                  <FormControl id="email" isRequired>
+                                    <FormLabel>
+                                      Patvirtink savo el. paštą
+                                    </FormLabel>
+                                    <Input
+                                      type="email"
+                                      value={information?.repeatEmail}
+                                      onChange={(e) =>
+                                        handleFieldChange(
+                                          "repeatEmail" as never,
+                                          e
+                                        )
+                                      }
+                                    />
+                                  </FormControl>
+                              </Stack>
+                            </Box>
                           </Stack>
-                          <Box
-                            rounded={"lg"}
-                            boxShadow={"lg"}
-                            p={8}
-                            height={"325px"}
-                            bg={"white"}
-                          >
-                            <Stack spacing={4}>
-                              <HStack>
-                                <Box>
-                                  <FormControl id="street" isRequired>
-                                    <FormLabel>Gatvė</FormLabel>
-                                    <Input type="text" />
-                                  </FormControl>
-                                </Box>
-                                <Box>
-                                  <FormControl id="address" isRequired>
-                                    <FormLabel>Adresas</FormLabel>
-                                    <Input type="text" />
-                                  </FormControl>
-                                </Box>
-                              </HStack>
-                              <HStack>
-                                <FormControl id="zipcode" isRequired>
-                                  <FormLabel>Pašto kodas</FormLabel>
-                                  <Input type="text" />
-                                </FormControl>
-                                <FormControl id="city" isRequired>
-                                  <FormLabel>Miestas</FormLabel>
-                                  <Input type="text" />
-                                </FormControl>
-                              </HStack>
-                              <Select isRequired variant={"flushed"}>
-                                <option disabled selected>
-                                  Pasirinkite rajoną
-                                </option>
-                                <option value="option1">Alytus</option>
-                                <option value="option2">Kaunas</option>
-                                <option value="option3">Klaipėda</option>
-                                <option value="option4">Marijampolė</option>
-                                <option value="option5">Tauragė</option>
-                                <option value="option6">Telšiai</option>
-                                <option value="option7">Utena</option>
-                                <option value="option8">Vilnius</option>
-                                <option value="option9">Šiauliai</option>
-                              </Select>
+                        </Grid>
+                        <Grid
+                          justifyContent={"center"}
+                          mt={{ base: 10, md: 0 }}
+                        >
+                          <Stack maxW={"lg"} px={6}>
+                            <Stack align={"center"}>
+                              <Heading fontSize={"4xl"} textAlign={"center"}>
+                                Pristatymo duomenys
+                              </Heading>
                             </Stack>
-                          </Box>
-                        </Stack>
-                      </Grid>
-                    </Flex>
+                            <Box
+                              rounded={"lg"}
+                              boxShadow={"lg"}
+                              p={8}
+                              height={"325px"}
+                              bg={"white"}
+                            >
+                              <Stack spacing={4}>
+                                <HStack>
+                                  <Box>
+                                    <FormControl id="street" isRequired>
+                                      <FormLabel>Gatvė</FormLabel>
+                                      <Input
+                                        type="text"
+                                        value={information?.street}
+                                        onChange={(e) =>
+                                          handleFieldChange(
+                                            "street" as never,
+                                            e
+                                          )
+                                        }
+                                      />
+                                    </FormControl>
+                                  </Box>
+                                  <Box>
+                                    <FormControl id="address" isRequired>
+                                      <FormLabel>Adresas</FormLabel>
+                                      <Input
+                                        type="text"
+                                        value={information?.address}
+                                        onChange={(e) =>
+                                          handleFieldChange(
+                                            "address" as never,
+                                            e
+                                          )
+                                        }
+                                      />
+                                    </FormControl>
+                                  </Box>
+                                </HStack>
+                                <HStack>
+                                  <FormControl id="zipcode" isRequired>
+                                    <FormLabel>Pašto kodas</FormLabel>
+                                    <Input
+                                      type="text"
+                                      value={information?.zipCode}
+                                      onChange={(e) =>
+                                        handleFieldChange("zipCode" as never, e)
+                                      }
+                                    />
+                                  </FormControl>
+                                  <FormControl id="city" isRequired>
+                                    <FormLabel>Miestas</FormLabel>
+                                    <Input
+                                      type="text"
+                                      value={information?.city}
+                                      onChange={(e) =>
+                                        handleFieldChange("city" as never, e)
+                                      }
+                                    />
+                                  </FormControl>
+                                </HStack>
+                                <Select
+                                  isRequired
+                                  variant={"flushed"}
+                                  value={information?.region}
+                                  onChange={(e) =>
+                                    handleFieldChange("region" as never, e)
+                                  }
+                                >
+                                  <option disabled selected>
+                                    Pasirinkite rajoną
+                                  </option>
+                                  <option value="Alytus">Alytus</option>
+                                  <option value="Kaunas">Kaunas</option>
+                                  <option value="Klaipėda">Klaipėda</option>
+                                  <option value="Marijampolė">
+                                    Marijampolė
+                                  </option>
+                                  <option value="Tauragė">Tauragė</option>
+                                  <option value="Telšiai">Telšiai</option>
+                                  <option value="Utena">Utena</option>
+                                  <option value="Vilnius">Vilnius</option>
+                                  <option value="Šiauliai">Šiauliai</option>
+                                </Select>
+                              </Stack>
+                            </Box>
+                          </Stack>
+                        </Grid>
+                      </Flex>
+                      <Flex justify={"flex-end"}>
+                      <Button
+                          type="submit"
+                          justifyContent={"end"}
+                          mr={5}
+                          borderRadius={"50px 50px 50px 50px"}
+                          bg={"green.500"}
+                          color={"white"}
+                          _hover={{
+                            bg: "green",
+                          }}
+                        >
+                          Apmokėti
+                        </Button>
+                        </Flex>
+                    </form>
                   </>
                 )}
               </Step>
             ))}
           </Steps>
-          <Flex width="100%" justify="flex-end" mt={4} mb={{base: 5, md: 0}}>
-             {activeStep !== 0 && (
-              <Button justifyContent={"end"} mr={3} onClick={prevStep} borderRadius={"50px 50px 50px 50px"} bg={"red.500"} color={"white"}
+          <Flex width="100%" justify="flex-end" mt={4} mb={{ base: 5, md: 0 }}>
+            {activeStep !== 0 ? (
+              <Button
+                justifyContent={"end"}
+                mr={3}
+                onClick={prevStep}
+                borderRadius={"50px 50px 50px 50px"}
+                bg={"red.500"}
+                color={"white"}
                 _hover={{
                   bg: "red.700",
                 }}
               >
                 Atgal
               </Button>
-            )}
-            {activeStep === steps.length - 1 ? (
-              <Button type="submit" justifyContent={"end"} mr={5} borderRadius={"50px 50px 50px 50px"} bg={"green.500"} color={"white"}
-                _hover={{
-                  bg: "green",
-                }}
-              >
-                Apmokėti
-              </Button>
             ) : (
-              <Button justifyContent={"end"} onClick={nextStep} mr={10} borderRadius={"50px 50px 50px 50px"} bg={"green.500"} color={"white"}
+              <Button
+                justifyContent={"end"}
+                onClick={nextStep}
+                mr={10}
+                borderRadius={"50px 50px 50px 50px"}
+                bg={"green.500"}
+                color={"white"}
                 _hover={{
                   bg: "green",
                 }}

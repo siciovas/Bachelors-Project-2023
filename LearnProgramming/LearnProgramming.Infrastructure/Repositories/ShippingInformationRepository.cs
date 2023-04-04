@@ -41,7 +41,6 @@ namespace LearnProgramming.Infrastructure.Repositories
             shippingInformation.RepeatEmail = shippingInformationDto.RepeatEmail;
             shippingInformation.Address = shippingInformationDto.Address;
             shippingInformation.City = shippingInformationDto.City;
-            shippingInformation.PhoneNumber = shippingInformationDto.PhoneNumber;
             shippingInformation.Region = shippingInformationDto.Region;
             shippingInformation.Street = shippingInformationDto.Street;
             shippingInformation.ZipCode = shippingInformationDto.ZipCode;
