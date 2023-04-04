@@ -1,4 +1,6 @@
-﻿using LearnProgramming.Core.Interfaces;
+﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoPost;
+using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
@@ -27,9 +29,23 @@ namespace LearnProgramming.Infrastructure.Repositories
             return await _db.ShippingInformation.FirstOrDefaultAsync(x => x.UserId == userId);
         }
 
-        public async Task<ShippingInformation> Update(ShippingInformation shippingInformation)
+        public async Task<ShippingInformation> Update(ShippingInformationPostDto shippingInformationDto, Guid userId)
         {
-            _db.Update(shippingInformation);
+            var shippingInformation = await _db.ShippingInformation
+                .AsTracking()
+                .FirstAsync(x => x.UserId == userId);
+
+            shippingInformation.Name = shippingInformationDto.Name;
+            shippingInformation.Surname = shippingInformationDto.Surname;
+            shippingInformation.Email = shippingInformationDto.Email;
+            shippingInformation.RepeatEmail = shippingInformationDto.RepeatEmail;
+            shippingInformation.Address = shippingInformationDto.Address;
+            shippingInformation.City = shippingInformationDto.City;
+            shippingInformation.PhoneNumber = shippingInformationDto.PhoneNumber;
+            shippingInformation.Region = shippingInformationDto.Region;
+            shippingInformation.Street = shippingInformationDto.Street;
+            shippingInformation.ZipCode = shippingInformationDto.ZipCode;
+
             await _db.SaveChangesAsync();
 
             return shippingInformation;

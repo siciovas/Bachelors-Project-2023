@@ -104,8 +104,6 @@ namespace LearnProgramming.Test
                 Name = newNameForProduct
             };
 
-            product.Name = newNameForProduct;
-
             await repo.Update(productDto, product.Id);
 
             var expected = await _databaseContext.Product.FirstAsync();

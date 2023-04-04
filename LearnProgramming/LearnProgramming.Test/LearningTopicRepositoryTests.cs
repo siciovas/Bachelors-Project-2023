@@ -311,8 +311,6 @@ namespace LearnProgramming.Test
                 Title = newTitleForLearningTopic
             };
 
-            learningTopic.Title = newTitleForLearningTopic;
-
             await repo.Update(learningTopicDto, learningTopic.Id);
 
             var expected = await _databaseContext.LearningTopics.FirstAsync();
