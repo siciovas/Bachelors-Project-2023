@@ -72,17 +72,13 @@ namespace LearnProgramming.API.Controllers
             await _shoppingCartItem.Create(cart);
 
             return Created($"api/shoppingcart/{cart.Id}", _mapper.Map<ShoppingCartItemPostDto>(cart));
-
         }
 
         [HttpPost]
         [Route("shipping")]
         public async Task<ActionResult<ShippingInformationPostDto>> PostShippingInformation(ShippingInformationPostDto shippingInformation)
         {
-
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
-
-            var shippingInfo = await _shippingInformationRep.Get(userId);
 
             var newShippingInformation = new ShippingInformation
             {
@@ -102,32 +98,27 @@ namespace LearnProgramming.API.Controllers
             if (shippingInformation.Email != shippingInformation.RepeatEmail)
             {
                 return BadRequest();
-            } 
-            else
-            {
-                if (shippingInfo != null)
-                {
-                    shippingInfo.Name = shippingInformation.Name;
-                    shippingInfo.Surname = shippingInformation.Surname;
-                    shippingInfo.Email = shippingInformation.Email;
-                    shippingInfo.RepeatEmail = shippingInformation.RepeatEmail;
-                    shippingInfo.Address = shippingInformation.Address;
-                    shippingInfo.City = shippingInformation.City;
-                    shippingInfo.PhoneNumber = shippingInformation.PhoneNumber;
-                    shippingInfo.Region = shippingInformation.Region;
-                    shippingInfo.Street = shippingInformation.Street;
-                    shippingInfo.ZipCode = shippingInformation.ZipCode;
-
-                    await _shippingInformationRep.Update(shippingInfo);
-                }
-                else 
-                {
-                    await _shippingInformationRep.Create(newShippingInformation);
-                }
-
-                return Created($"api/shoppingcart/shipping/{newShippingInformation.Id}", _mapper.Map<ShippingInformationPostDto>(newShippingInformation));
             }
+            
+            await _shippingInformationRep.Create(newShippingInformation);
+
+            return Created($"api/shoppingcart/shipping/{newShippingInformation.Id}", _mapper.Map<ShippingInformationPostDto>(newShippingInformation));
         }
 
+        [HttpPut]
+        [Route("shipping")]
+        public async Task<ActionResult<ShippingInformationPostDto>> UpdateShippingInformation(ShippingInformationPostDto shippingInformation, int id)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+
+            if (shippingInformation.Email != shippingInformation.RepeatEmail)
+            {
+                return BadRequest();
+            }
+
+            await _shippingInformationRep.Update(shippingInformation, userId);
+
+            return Ok(shippingInformation);
+        }
     }
 }

@@ -221,8 +221,6 @@ namespace LearnProgramming.Test
                 Name = newTaskName
             };
 
-            programmingTask.Name = newTaskName;
-
             await repo.Update(programminTaskDto, programmingTask.Id);
 
             var expected = await _databaseContext.ProgrammingTasks.FirstAsync();
