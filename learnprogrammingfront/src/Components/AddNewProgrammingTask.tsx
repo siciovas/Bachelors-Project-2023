@@ -42,6 +42,7 @@ const AddNewProgrammingTask = () => {
     newFields[index][field] = event.target.value;
     setFields(newFields);
   };
+  
   const deleteField = (index: number) => {
     if (fields.length > 1) {
       const newFields = [...fields];

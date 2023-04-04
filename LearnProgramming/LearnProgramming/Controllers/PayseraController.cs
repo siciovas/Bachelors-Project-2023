@@ -1,0 +1,38 @@
+﻿using EVP.WebToPay.ClientAPI;
+using LearnProgramming.Core.Dto;
+using Microsoft.AspNetCore.Mvc;
+
+namespace LearnProgramming.API.Controllers
+{
+    [ApiController]
+    [Route("api/paysera")]
+    public class PayseraController : Controller
+    {
+        [HttpPost]
+        public ActionResult<string> CreatePayment([FromBody] PayseraDto payseraDto)
+        {
+            int projectId = 236200;
+            string signPassword = "0afd133fdc22d2f091b7d43ad4c46eaa";
+
+            Client client = new Client(projectId, signPassword);
+
+            var request = client.NewMacroRequest();
+
+            Guid randomGuid = Guid.NewGuid();
+
+            request.OrderId = randomGuid.ToString();
+            request.Amount = payseraDto.Amount;
+            request.Email = payseraDto.Email;
+            request.Currency = "EUR";
+            request.Country = "LT";
+            request.Test = true;
+            request.AcceptUrl = "https://bachelortestapp.azurewebsites.net";
+            request.CancelUrl = "https://bachelortestapp.azurewebsites.net";
+            request.CallbackUrl = "https://bachelortestapp.azurewebsites.net";
+
+            string redirectUrl = client.BuildRequestUrl(request);
+
+            return Ok(redirectUrl);
+        }
+    }
+}

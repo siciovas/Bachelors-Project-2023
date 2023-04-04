@@ -76,6 +76,7 @@ namespace LearnProgramming.API.Controllers
 
         [HttpPost]
         [Route("shipping")]
+        [Authorize]
         public async Task<ActionResult<ShippingInformationPostDto>> PostShippingInformation(ShippingInformationPostDto shippingInformation)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
@@ -89,7 +90,6 @@ namespace LearnProgramming.API.Controllers
                RepeatEmail = shippingInformation.RepeatEmail,
                Address = shippingInformation.Address,
                City = shippingInformation.City,
-               PhoneNumber = shippingInformation.PhoneNumber,
                Region = shippingInformation.Region,
                Street = shippingInformation.Street,
                ZipCode = shippingInformation.ZipCode,
@@ -107,6 +107,7 @@ namespace LearnProgramming.API.Controllers
 
         [HttpPut]
         [Route("shipping")]
+        [Authorize]
         public async Task<ActionResult<ShippingInformationPostDto>> UpdateShippingInformation(ShippingInformationPostDto shippingInformation, int id)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
@@ -119,6 +120,35 @@ namespace LearnProgramming.API.Controllers
             await _shippingInformationRep.Update(shippingInformation, userId);
 
             return Ok(shippingInformation);
+        }
+
+        [HttpGet]
+        [Route("shipping")]
+        [Authorize]
+        public async Task<ActionResult<ShippingInformationDto?>> GetInformation()
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+
+            var shippingInformation = await _shippingInformationRep.Get(userId);
+
+            if (shippingInformation == null)
+            {
+                return null;
+            }
+
+            return new ShippingInformationDto
+            {
+                Name = shippingInformation.Name,
+                Surname = shippingInformation.Surname,
+                Email = shippingInformation.Email,
+                ZipCode = shippingInformation.ZipCode,
+                Address = shippingInformation.Address,
+                City = shippingInformation.City,
+                Region = shippingInformation.Region,
+                RepeatEmail = shippingInformation.RepeatEmail,
+                Street = shippingInformation.Street,
+                Id = shippingInformation.Id,
+            };
         }
     }
 }

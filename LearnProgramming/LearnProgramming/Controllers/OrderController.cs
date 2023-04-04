@@ -82,17 +82,3 @@ namespace LearnProgramming.API.Controllers
         }
     }
 }
-
-/*int projectId = 236200;
-string signPassword = "0afd133fdc22d2f091b7d43ad4c46eaa";
-Client client = new Client(projectId, signPassword);
-var request = client.NewMacroRequest();
-request.OrderId = "ORDER0001";
-request.Amount = 1000;
-request.Currency = "EUR";
-request.Country = "LT";
-request.Test = true;
-request.AcceptUrl = "https://google.com";
-request.CancelUrl = "https://google.com";
-request.CallbackUrl = "https://google.com";
-string redirectUrl = client.BuildRequestUrl(request);*/

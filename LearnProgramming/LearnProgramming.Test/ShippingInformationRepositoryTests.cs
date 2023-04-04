@@ -59,7 +59,6 @@ namespace LearnProgramming.Test
 
             Assert.Equal(expected.Address, result.Address);
             Assert.Equal(expected.Name, result.Name);
-            Assert.Equal(expected.PhoneNumber, result.PhoneNumber);
             Assert.Equal(expected.Region, result.Region);
             Assert.Equal(expected.Email, result.Email);
             Assert.Equal(expected.City, result.City);
@@ -86,7 +85,6 @@ namespace LearnProgramming.Test
 
             Assert.Equal(shippingInformation.Address, result!.Address);
             Assert.Equal(shippingInformation.Name, result.Name);
-            Assert.Equal(shippingInformation.PhoneNumber, result.PhoneNumber);
             Assert.Equal(shippingInformation.Region, result.Region);
             Assert.Equal(shippingInformation.Email, result.Email);
             Assert.Equal(shippingInformation.City, result.City);
