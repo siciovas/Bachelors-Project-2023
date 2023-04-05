@@ -108,7 +108,7 @@ namespace LearnProgramming.API.Controllers
         [HttpPut]
         [Route("shipping")]
         [Authorize]
-        public async Task<ActionResult<ShippingInformationPostDto>> UpdateShippingInformation(ShippingInformationPostDto shippingInformation, int id)
+        public async Task<ActionResult<ShippingInformationPostDto>> UpdateShippingInformation(ShippingInformationPostDto shippingInformation)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
 

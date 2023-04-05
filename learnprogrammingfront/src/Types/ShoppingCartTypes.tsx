@@ -16,4 +16,5 @@ export interface Product {
   bookCoverType: string;
   photo: string;
   name: string;
+  id: number;
 }

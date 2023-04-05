@@ -5,6 +5,6 @@ namespace LearnProgramming.Core.Interfaces
     public interface IOrderItemRep
     {
         Task<List<OrderItem>> GetAll(int orderId);
-        Task<OrderItem> Create(OrderItem orderItem);
+        Task<List<OrderItem>> Create(List<OrderItem> orderItem);
     }
 }

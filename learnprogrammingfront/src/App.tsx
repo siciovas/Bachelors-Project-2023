@@ -21,7 +21,6 @@ import { ProgrammingTask } from './Pages/ProgrammingTask';
 import { AddNewProgrammingTask } from './Components/AddNewProgrammingTask';
 import { GetAllSubmissionsForAdmin } from './Pages/GetAllSubmissionsForAdmin';
 import { GetAllUsersForAdmin } from './Pages/GetAllUsersForAdmin';
-import { GetAllOrdersForAdmin } from './Pages/GetAllOrdersForAdmin';
 import { StudentsMarksForTeacher } from './Pages/StudentsMarksForTeacher';
 import { ChooseStudentForTeacher } from './Pages/ChooseStudentForTeacher';
 import { StudentsMarks } from './Pages/StudentsMarks';
@@ -29,6 +28,7 @@ import { OrderHistory } from './Pages/OrderHistory';
 import { Toaster } from 'react-hot-toast';
 import toast from "react-hot-toast";
 import { TeacherStudents } from './Pages/TeacherStudents';
+import { PayseraSuccessfully } from './Pages/PayseraSuccessfully';
 
 
 function App() {
@@ -83,12 +83,12 @@ function App() {
           <Route path='/kurtiuzduoti' element={<AddNewProgrammingTask/>} />
           <Route path='/prasymai' element={<GetAllSubmissionsForAdmin/>} />
           <Route path='/visinariai' element={<GetAllUsersForAdmin/>} />
-          <Route path='/visiuzsakymai' element={<GetAllOrdersForAdmin/>} />
           <Route path='/studentuivertinimai' element={<StudentsMarksForTeacher/>} />
           <Route path='/studentusarasas' element={<ChooseStudentForTeacher/>} />
           <Route path='/manopazymiai' element={<StudentsMarks/>} />
           <Route path='/manouzsakymai' element={<OrderHistory/>} />
           <Route path='/manostudentai' element={<TeacherStudents/>} />
+          <Route path='/sekmingasuzsakymas' element={<PayseraSuccessfully/>} />
         </Routes>
       </div>
     </ChakraProvider>

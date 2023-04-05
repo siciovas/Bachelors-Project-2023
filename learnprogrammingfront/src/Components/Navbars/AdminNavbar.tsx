@@ -141,7 +141,6 @@ const AdminNavbar = () => {
               <MenuItem onClick={() => navigate('/prasymai')}>Gauti prašymai</MenuItem>
               <MenuDivider />
               <MenuItem onClick={() => navigate('/visinariai')} >Visi nariai</MenuItem>
-              <MenuItem onClick={() => navigate('/visiuzsakymai')} >Žmonių užsakymai</MenuItem>
               <MenuDivider />
               <MenuItem onClick={(e) => Logout(e)}>Atsijungti</MenuItem>
             </MenuList>
