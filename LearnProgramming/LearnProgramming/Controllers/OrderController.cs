@@ -13,15 +13,17 @@ namespace LearnProgramming.API.Controllers
     public class OrderController : Controller
     {
         private readonly IOrderRep _orderRep;
+        private readonly IOrderItemRep _itemRep;
         private readonly IMapper _mapper;
 
-        public OrderController(IOrderRep orderRep, IMapper mapper)
+        public OrderController(IOrderRep orderRep, IMapper mapper, IOrderItemRep itemRep)
         {
             _mapper = mapper;
             _orderRep = orderRep;
+            _itemRep = itemRep;
         }
 
-        [HttpGet]
+        /*[HttpGet]
         [Authorize(Roles = "Admin")]
         public async Task<ActionResult<List<OrderDto>>> GetAll()
         {
@@ -34,16 +36,16 @@ namespace LearnProgramming.API.Controllers
                 Total = order.Total,
                 OrderItems = order.OrderItems.Select(orderItem => new OrderItemCollectionDto
                 {
+                    Photo = orderItem.Photo,
                     Name = orderItem.Name,
-                    Quantity = orderItem.Quantity,
                     ProductId = orderItem.ProductId,
                 }).ToList()
             }).ToList());
-        }
+        }*/
 
         [HttpGet]
         [Authorize]
-        [Route("/getByUserId")]
+        [Route("getByUserId")]
         public async Task<ActionResult<List<OrderDto>>> GetByUserId()
         {
             var orders = await _orderRep.GetByUserId(Guid.Parse(User.FindFirstValue(ClaimTypes.Sid)));
@@ -55,8 +57,9 @@ namespace LearnProgramming.API.Controllers
                 Total = orderDto.Total,
                 OrderItems = orderDto.OrderItems.Select(orderItem => new OrderItemCollectionDto
                 {
+                    Photo = orderItem.Photo,
+                    Price = orderItem.Price,
                     Name = orderItem.Name,
-                    Quantity = orderItem.Quantity,
                     ProductId = orderItem.ProductId,
                 }).ToList()
             }).ToList());
@@ -64,21 +67,42 @@ namespace LearnProgramming.API.Controllers
 
         [HttpPost]
         [Authorize]
-        public async Task<ActionResult<OrderDto>> Post(OrderDto order)
+        public async Task<ActionResult<string>> Post(OrderDto order)
         {
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
 
             var newOrder = new Order
             {
                 UserId = userId,
-                OrderNumber = order.OrderNumber,
+                OrderNumber = Guid.NewGuid(),
                 OrderTime = order.OrderTime,
                 Total = order.Total,
             };
 
             await _orderRep.Create(newOrder);
 
-            return Created($"api/{newOrder.Id}", _mapper.Map<OrderDto>(newOrder));
+            var orderItems = order.OrderItems.Select(x => new OrderItem
+            {
+                Photo = x.Photo,
+                Price= x.Price,
+                Name = x.Name,
+                ProductId = x.ProductId,
+                OrderId = newOrder.Id
+            }).ToList();
+
+            await _itemRep.Create(orderItems);
+
+            return Created($"api/{newOrder.Id}", newOrder.OrderNumber.ToString());
+        }
+
+        [HttpPut]
+        [Route("{orderNumber}")]
+        [Authorize]
+        public async Task<ActionResult<Order>> Update(string orderNumber)
+        {
+            var order = await _orderRep.Update(Guid.Parse(orderNumber));
+
+            return Ok(order);
         }
     }
 }

@@ -6,6 +6,8 @@ namespace LearnProgramming.Core.Interfaces
     {
         Task<List<Order>> GetAll();
         Task<List<Order>> GetByUserId(Guid id);
+        Task<Order> Update(Guid orderNumber);
+
         Task<Order> Create(Order order);
     }
 }

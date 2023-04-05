@@ -18,17 +18,15 @@ namespace LearnProgramming.API.Controllers
 
             var request = client.NewMacroRequest();
 
-            Guid randomGuid = Guid.NewGuid();
-
-            request.OrderId = randomGuid.ToString();
+            request.OrderId = payseraDto.OrderNumber;
             request.Amount = payseraDto.Amount;
             request.Email = payseraDto.Email;
             request.Currency = "EUR";
             request.Country = "LT";
             request.Test = true;
-            request.AcceptUrl = "https://bachelortestapp.azurewebsites.net";
-            request.CancelUrl = "https://bachelortestapp.azurewebsites.net";
-            request.CallbackUrl = "https://bachelortestapp.azurewebsites.net";
+            request.AcceptUrl = $"http://localhost:3000/sekmingasuzsakymas?ordernumber={payseraDto.OrderNumber}";
+            request.CancelUrl = "http://localhost:3000/sekmingasuzsakymas";
+            request.CallbackUrl = "http://localhost:3000/sekmingasuzsakymas";
 
             string redirectUrl = client.BuildRequestUrl(request);
 

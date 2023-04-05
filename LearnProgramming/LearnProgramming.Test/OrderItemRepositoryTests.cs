@@ -37,39 +37,6 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async void Create_OrderItem_ReturnsCorrectData()
-        {
-            var repo = CreateRepository();
-
-            var user = _fixture.Create<User>();
-
-            var product = _fixture.Create<Product>();
-
-            var order = _fixture.Build<Order>()
-                .With(x => x.UserId, user.Id)
-                .Without(x => x.User)
-                .Without(x => x.OrderItems)
-                .Create();
-
-            var orderItem = _fixture.Build<OrderItem>()
-                .With(x => x.OrderId, order.Id)
-                .With(x => x.ProductId, product.Id)
-                .Without(x => x.Order)
-                .Without(x => x.Product)
-                .Create();
-
-            await _databaseContext.AddRangeAsync(user, product, order);
-            await _databaseContext.SaveChangesAsync();
-
-            await repo.Create(orderItem);
-
-            var expected = await _databaseContext.OrderItem.FirstOrDefaultAsync();
-
-            Assert.Equal(expected!.Name, orderItem.Name);
-            Assert.Equal(expected.Quantity, orderItem.Quantity);
-        }
-
-        [Fact]
         public async void GetAll_OrderItem_ReturnsCorrectData()
         {
             var repo = CreateRepository();

@@ -37,5 +37,20 @@ namespace LearnProgramming.Infrastructure.Repositories
                 .Where(order => order.IsPaid)
                 .ToListAsync();
         }
+
+        
+        public async Task<Order> Update(Guid orderNumber)
+        {
+            var sub = await _db.Order
+                .Include(x => x.OrderItems)
+                .AsTracking()
+                .FirstAsync(x => x.OrderNumber == orderNumber);
+
+            sub.IsPaid = true;
+
+            await _db.SaveChangesAsync();
+
+            return sub;
+        }
     }
 }

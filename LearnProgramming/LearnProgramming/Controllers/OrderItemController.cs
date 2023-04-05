@@ -30,13 +30,15 @@ namespace LearnProgramming.API.Controllers
             return Ok(orderItem.Select(orderItemDto => new OrderItemDto
             {
                 Name = orderItemDto.Name,
+                Photo = orderItemDto.Photo,
+                Price = orderItemDto.Price,
                 Quantity = orderItemDto.Quantity,
                 OrderId = orderId,
                 ProductId = orderItemDto.ProductId,
             }).ToList());
         }
 
-        [HttpPost]
+       /* [HttpPost]
         [Authorize]
         public async Task<ActionResult<OrderItemPostDto>> Post(OrderItemPostDto orderItem, int orderId)
         {
@@ -51,6 +53,6 @@ namespace LearnProgramming.API.Controllers
             await _orderItemRep.Create(newOrderItem);
 
             return Created($"api/order/{newOrderItem.OrderId}/orderitem/{newOrderItem.Id}", _mapper.Map<OrderItemPostDto>(newOrderItem));
-        }
+        }*/
     }
 }

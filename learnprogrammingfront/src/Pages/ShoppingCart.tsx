@@ -39,6 +39,9 @@ import { ShippingInformationTypes } from "../Types/ShippingInformationTypes";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import toast from "react-hot-toast";
+import { OrderItemsTypes, OrderTypes } from "../Types/OrderTypes";
+import { useLocation } from "react-router-dom";
+import moment from "moment";
 
 const steps = [
   {
@@ -53,6 +56,8 @@ const ShoppingCart = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShoppingCartTypes>();
   const [information, setInformation] = useState<ShippingInformationTypes>();
+  const [order, setOrder] = useState<OrderTypes>();
+  const [orderItems, setOrderItems] = useState<OrderItemsTypes>();
   const [isLoading, setIsLoading] = useState(true);
 
   const { nextStep, prevStep, activeStep } = useSteps({
@@ -63,11 +68,11 @@ const ShoppingCart = () => {
     field: keyof typeof information,
     event: ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
-      event.preventDefault();
-      const newFields = { ...information } as ShippingInformationTypes;
-      newFields[field] = event.target.value as never;
-      console.log(newFields)
-      setInformation(newFields);
+    event.preventDefault();
+    const newFields = { ...information } as ShippingInformationTypes;
+    newFields[field] = event.target.value as never;
+    console.log(newFields);
+    setInformation(newFields);
   };
 
   const getShoppingCartItems = useCallback(async () => {
@@ -135,7 +140,7 @@ const ShoppingCart = () => {
     e: FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    console.log(information)
+    console.log(information);
     const response = await fetch(
       "https://localhost:7266/api/shoppingcart/shipping",
       {
@@ -151,35 +156,57 @@ const ShoppingCart = () => {
       eventBus.dispatch("logOut", Unauthorized);
     }
     if (response.status === 201 || response.status === 200) {
-      toast.success("Informacija atnaujinta!");
-      await createPaymentRequest();
+      var orderNumber = await postUnpaidOrder();
+      console.log(orderNumber);
+      await createPaymentRequest(orderNumber);
     } else {
       toast.error("Nepavyko!");
     }
   };
 
-  const createPaymentRequest = async (
-  ): Promise<void> => {
-      const response = await fetch("https://localhost:7266/api/paysera",
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        body: JSON.stringify(
-          {
-            amount: items?.totalPrice.toFixed(2) as unknown as number * 100,
-            email: information?.email
-          }
-        ),
-      }
-    );
-      if (response.status === 200)
-      {
-        const url = await response.text();
-        window.location.replace(url);
-      }
+  const createPaymentRequest = async (orderNumber: string): Promise<void> => {
+    const response = await fetch("https://localhost:7266/api/paysera", {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        amount: (items?.totalPrice.toFixed(2) as unknown as number) * 100,
+        email: information?.email,
+        orderNumber
+      }),
+    });
+    if (response.status === 200) {
+      const url = await response.text();
+      window.location.replace(url);
+    }
   };
+
+  const postUnpaidOrder = async (): Promise<string> => {
+    const response = await fetch("https://localhost:7266/api/order", {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        orderTime: moment(order?.orderTime).format("yyyy-MM-DD HH:mm:ss"),
+        total: items?.totalPrice.toFixed(2),
+        orderItems: items?.shoppingCartItems.map((item) => {
+          return {
+            name: item.product.name,
+            productId: item.product.id,
+            photo: item.product.photo,
+            price: item.product.price,
+          }
+        })
+      }),
+    });
+      const orderNumber = await response.text();
+      return orderNumber;
+      setIsLoading(false);
+  };
+
 
   if (isLoading) {
     return (
@@ -369,31 +396,31 @@ const ShoppingCart = () => {
                                     </FormControl>
                                   </Box>
                                 </HStack>
-                                  <FormControl id="email" isRequired>
-                                    <FormLabel>El. Paštas</FormLabel>
-                                    <Input
-                                      type="email"
-                                      value={information?.email}
-                                      onChange={(e) =>
-                                        handleFieldChange("email" as never, e)
-                                      }
-                                    />
-                                  </FormControl>
-                                  <FormControl id="email" isRequired>
-                                    <FormLabel>
-                                      Patvirtink savo el. paštą
-                                    </FormLabel>
-                                    <Input
-                                      type="email"
-                                      value={information?.repeatEmail}
-                                      onChange={(e) =>
-                                        handleFieldChange(
-                                          "repeatEmail" as never,
-                                          e
-                                        )
-                                      }
-                                    />
-                                  </FormControl>
+                                <FormControl id="email" isRequired>
+                                  <FormLabel>El. Paštas</FormLabel>
+                                  <Input
+                                    type="email"
+                                    value={information?.email}
+                                    onChange={(e) =>
+                                      handleFieldChange("email" as never, e)
+                                    }
+                                  />
+                                </FormControl>
+                                <FormControl id="email" isRequired>
+                                  <FormLabel>
+                                    Patvirtink savo el. paštą
+                                  </FormLabel>
+                                  <Input
+                                    type="email"
+                                    value={information?.repeatEmail}
+                                    onChange={(e) =>
+                                      handleFieldChange(
+                                        "repeatEmail" as never,
+                                        e
+                                      )
+                                    }
+                                  />
+                                </FormControl>
                               </Stack>
                             </Box>
                           </Stack>
@@ -499,7 +526,7 @@ const ShoppingCart = () => {
                         </Grid>
                       </Flex>
                       <Flex justify={"flex-end"}>
-                      <Button
+                        <Button
                           type="submit"
                           justifyContent={"end"}
                           mr={5}
@@ -512,7 +539,7 @@ const ShoppingCart = () => {
                         >
                           Apmokėti
                         </Button>
-                        </Flex>
+                      </Flex>
                     </form>
                   </>
                 )}
