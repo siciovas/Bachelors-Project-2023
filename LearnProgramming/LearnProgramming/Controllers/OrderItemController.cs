@@ -1,8 +1,6 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
-using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Core.Interfaces;
-using LearnProgramming.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
@@ -37,22 +35,5 @@ namespace LearnProgramming.API.Controllers
                 ProductId = orderItemDto.ProductId,
             }).ToList());
         }
-
-       /* [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<OrderItemPostDto>> Post(OrderItemPostDto orderItem, int orderId)
-        {
-            var newOrderItem = new OrderItem
-            {
-                Name = orderItem.Name,
-                OrderId = orderId,
-                ProductId = orderItem.ProductId,
-                Quantity = orderItem.Quantity,
-            };
-
-            await _orderItemRep.Create(newOrderItem);
-
-            return Created($"api/order/{newOrderItem.OrderId}/orderitem/{newOrderItem.Id}", _mapper.Map<OrderItemPostDto>(newOrderItem));
-        }*/
     }
 }

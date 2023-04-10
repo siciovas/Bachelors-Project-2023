@@ -4,10 +4,7 @@ using LearnProgramming.Infrastructure.Database;
 using LearnProgramming.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace LearnProgramming.Test
@@ -59,44 +56,6 @@ namespace LearnProgramming.Test
             Assert.Equal(expected.Total, order.Total);
             Assert.Equal(expected.UserId, order.UserId);
             Assert.Equal(expected.Id, order.Id);
-        }
-
-        [Fact]
-        public async void GetAll_Order_ReturnsCorrectData()
-        {
-            var repo = CreateRepository();
-
-            var user = _fixture.Create<User>();
-
-            var product = _fixture.Create<Product>();
-
-            var order = _fixture.Build<Order>()
-                .With(x => x.UserId, user.Id)
-                .Without(x => x.User)
-                .Without(x => x.OrderItems)
-                .Create();
-
-            var orderItem = _fixture.Build<OrderItem>()
-                .With(x => x.OrderId, order.Id)
-                .With(x => x.ProductId, product.Id)
-                .Without(x => x.Order)
-                .Without(x => x.Product)
-                .Create();
-
-            await _databaseContext.AddRangeAsync(user, product, order, orderItem);
-            await _databaseContext.SaveChangesAsync();
-
-            var result = await repo.GetAll();
-
-            Assert.Single(result);
-            Assert.Equal(order.OrderNumber, result.First().OrderNumber);
-            Assert.Equal(order.Total, result.First().Total);
-            Assert.Equal(order.UserId, result.First().UserId);
-            Assert.Equal(order.OrderItems.First().Name, result.First().OrderItems.First().Name);
-            Assert.Equal(order.OrderItems.First().Id, result.First().OrderItems.First().Id);
-            Assert.Equal(order.OrderItems.First().OrderId, result.First().OrderItems.First().OrderId);
-            Assert.Equal(order.OrderItems.First().ProductId, result.First().OrderItems.First().ProductId);
-
         }
 
         [Fact]

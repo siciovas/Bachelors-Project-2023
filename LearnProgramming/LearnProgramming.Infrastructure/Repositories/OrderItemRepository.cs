@@ -13,15 +13,6 @@ namespace LearnProgramming.Infrastructure.Repositories
         {
             _db = db;
         }
-
-        public async Task<List<OrderItem>> Create(List<OrderItem> orderItems)
-        {
-            _db.AddRange(orderItems);
-            await _db.SaveChangesAsync();
-
-            return orderItems;
-        }
-
         public async Task<List<OrderItem>> GetAll(int orderId)
         {
             return await _db.OrderItem

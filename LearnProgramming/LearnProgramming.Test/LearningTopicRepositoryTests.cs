@@ -5,7 +5,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Repositories;
-using System.Linq;
 using LearnProgramming.Core.Dto;
 
 namespace LearnProgramming.Test

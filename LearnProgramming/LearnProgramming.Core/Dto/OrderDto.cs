@@ -1,6 +1,4 @@
-﻿using LearnProgramming.Domain.Entities;
-
-namespace LearnProgramming.Core.Dto
+﻿namespace LearnProgramming.Core.Dto
 {
     public class OrderDto
     {
