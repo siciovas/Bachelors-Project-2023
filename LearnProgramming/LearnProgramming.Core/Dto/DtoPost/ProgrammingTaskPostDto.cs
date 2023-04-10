@@ -1,6 +1,4 @@
-﻿using LearnProgramming.Domain.Entities;
-
-namespace LearnProgramming.Core.Dto.DtoPost
+﻿namespace LearnProgramming.Core.Dto.DtoPost
 {
     public class ProgrammingTaskPostDto
     {

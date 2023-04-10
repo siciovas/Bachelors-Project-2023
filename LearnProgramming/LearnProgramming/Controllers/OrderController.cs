@@ -23,26 +23,6 @@ namespace LearnProgramming.API.Controllers
             _itemRep = itemRep;
         }
 
-        /*[HttpGet]
-        [Authorize(Roles = "Admin")]
-        public async Task<ActionResult<List<OrderDto>>> GetAll()
-        {
-            var orders = await _orderRep.GetAll();
-
-            return Ok(orders.Select(order => new OrderDto
-            {
-                OrderNumber = order.OrderNumber,
-                OrderTime = order.OrderTime,
-                Total = order.Total,
-                OrderItems = order.OrderItems.Select(orderItem => new OrderItemCollectionDto
-                {
-                    Photo = orderItem.Photo,
-                    Name = orderItem.Name,
-                    ProductId = orderItem.ProductId,
-                }).ToList()
-            }).ToList());
-        }*/
-
         [HttpGet]
         [Authorize]
         [Route("getByUserId")]
@@ -63,36 +43,6 @@ namespace LearnProgramming.API.Controllers
                     ProductId = orderItem.ProductId,
                 }).ToList()
             }).ToList());
-        }
-
-        [HttpPost]
-        [Authorize]
-        public async Task<ActionResult<string>> Post(OrderDto order)
-        {
-            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
-
-            var newOrder = new Order
-            {
-                UserId = userId,
-                OrderNumber = Guid.NewGuid(),
-                OrderTime = order.OrderTime,
-                Total = order.Total,
-            };
-
-            await _orderRep.Create(newOrder);
-
-            var orderItems = order.OrderItems.Select(x => new OrderItem
-            {
-                Photo = x.Photo,
-                Price= x.Price,
-                Name = x.Name,
-                ProductId = x.ProductId,
-                OrderId = newOrder.Id
-            }).ToList();
-
-            await _itemRep.Create(orderItems);
-
-            return Created($"api/{newOrder.Id}", newOrder.OrderNumber.ToString());
         }
 
         [HttpPut]

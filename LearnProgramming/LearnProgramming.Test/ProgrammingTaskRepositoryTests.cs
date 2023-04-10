@@ -5,10 +5,7 @@ using LearnProgramming.Infrastructure.Database;
 using LearnProgramming.Infrastructure.Repositories;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Xunit;
 
 namespace LearnProgramming.Test

@@ -29,16 +29,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                 .Where(order => order.UserId == userId && order.IsPaid)
                 .ToListAsync();
         }
-
-        public async Task<List<Order>> GetAll()
-        {
-            return await _db.Order
-                .Include(orderItem => orderItem.OrderItems)
-                .Where(order => order.IsPaid)
-                .ToListAsync();
-        }
-
-        
+       
         public async Task<Order> Update(Guid orderNumber)
         {
             var sub = await _db.Order

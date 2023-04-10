@@ -1,5 +1,4 @@
-﻿using LearnProgramming.Core.Dto;
-using LearnProgramming.Core.Dto.DtoPost;
+﻿using LearnProgramming.Core.Dto.DtoPost;
 using LearnProgramming.Domain.Entities;
 
 namespace LearnProgramming.Core.Interfaces
