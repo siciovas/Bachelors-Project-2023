@@ -63,5 +63,14 @@ namespace LearnProgramming.Infrastructure.Repositories
 
             return tests;
         }
+
+        public async Task<List<ProgrammingTaskTestDto>> GetTaskTests(int id)
+        {
+            return await _db.ProgrammingTaskTests.Where(x => x.ProgrammingTaskId == id).Select(x => new ProgrammingTaskTestDto
+            {
+                Input = x.Input,
+                Output = x.Output,
+            }).ToListAsync();
+        }
     }
 }

@@ -19,13 +19,14 @@ import Editor from "@monaco-editor/react";
 import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { defineTheme } from "../defineTheme";
-import { run } from "./compiler";
+import { run, runTest } from "./compiler";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
 import { CompilerTemplate } from "../Types/CompilerTemplate";
+import { ProgrammingTaskTest } from "../Types/ProgrammingTaskTest";
 
 interface ThemeType {
   value: string;
@@ -33,7 +34,7 @@ interface ThemeType {
 }
 
 const ProgrammingTask = () => {
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<string>("");
   const [code, setCode] = useState();
   const [theme, setTheme] = useState<ThemeType>();
   const [isLoading, setIsLoading] = useState(true);
@@ -42,6 +43,8 @@ const ProgrammingTask = () => {
   const token = localStorage.getItem("accessToken");
   const [taskInformation, setTaskInformation] =
     useState<ProgrammingTaskTypes>();
+  const [taskTests, setTaskTests] = useState<ProgrammingTaskTest[]>([]);
+  const [grade, setGrade] = useState<number>();
 
   const openModal = () => {
     onOpen();
@@ -63,6 +66,7 @@ const ProgrammingTask = () => {
     } else if (response.status === 200) {
       const taskInfo = await response.json();
       setTaskInformation(taskInfo);
+      setTaskTests(taskInfo.tests);
       setIsLoading(false);
     } else {
       toast.error("Netikėta klaida!");
@@ -77,11 +81,33 @@ const ProgrammingTask = () => {
     setIsLoading(false);
   }, []);
 
-  const compile = () => {
-    run(code);
-    var aa = document.getElementById("output") as any;
-    setValue(aa.value);
+  const compile = async () => {
+    await Promise.resolve(run(code)).then(() => {
+      console.log("aasdfaaa")
+      var output = document.getElementById("output") as any;
+      setValue(output.value);
+    }).catch((result) => {
+      toast.error("Kode yra klaidų. Klaidos informacija išvesties eilutėje!");
+      setValue(result);
+    });
   };
+
+  const evaluate = async () => {
+    var testsPassed = 0;
+    await Promise.all(taskTests?.map(async (test) => {
+      const result = await runTest(code, test.input);
+      console.log("amen", result);
+      if (result.toString().trim() === test.output.toString().trim()) {
+        testsPassed++;
+      }
+    }))
+      .then(() => {
+        var mark = (testsPassed / taskTests.length) * 100;
+        setGrade(mark);
+      }).catch(() => {
+        toast.error("Kodas neatitinka reikalavimų");
+      });
+  }
 
   const handleEditorChange = (value: any) => {
     setCode(value);
@@ -153,8 +179,15 @@ const ProgrammingTask = () => {
             onChange={handleEditorChange}
             value={CompilerTemplate}
           />
-          <Input id="output" disabled value={value} />
-          <Box>{value == 10 ? "GOOD" : "BAD"}</Box>
+          Išvestis
+          <Input
+            disabled
+            _disabled={{
+              backgroundColor: "#1b2b34",
+              textColor: "white"
+            }}
+            id="output" value={value} />
+          <Box>Įvertis: {grade}%</Box>
         </Flex>
         <Flex mt={5} mr={5} ml={20} flexDirection="column" w="50%">
           <Heading size="sm">Užduoties aprašymas</Heading>
@@ -198,6 +231,7 @@ const ProgrammingTask = () => {
                 _hover={{
                   bg: "green.700",
                 }}
+                onClick={evaluate}
               >
                 Įvertinti!
               </Button>

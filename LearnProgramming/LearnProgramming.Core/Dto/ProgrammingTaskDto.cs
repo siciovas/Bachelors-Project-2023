@@ -7,5 +7,6 @@
         public string Description { get; set; } = string.Empty!;
         public string LearningTopicName { get; set; } = string.Empty!;
         public string SubTopicName { get; set; } = string.Empty!;
+        public List<ProgrammingTaskTestDto> Tests { get; set; } = new();
     }
 }

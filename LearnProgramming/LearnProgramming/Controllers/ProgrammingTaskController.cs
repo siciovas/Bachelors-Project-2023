@@ -61,6 +61,7 @@ namespace LearnProgramming.API.Controllers
                 Description = task.Description,
                 LearningTopicName = task.LearningTopic.Title,
                 SubTopicName = task.SubTopic.SubTopicName,
+                Tests = await _programmingTask.GetTaskTests(id),
             };
 
             return Ok(taskDto);
