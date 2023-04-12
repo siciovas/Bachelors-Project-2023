@@ -25,6 +25,7 @@ import { Unauthorized } from "../Constants/Auth";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
+import { CompilerTemplate } from "../Types/CompilerTemplate";
 
 interface ThemeType {
   value: string;
@@ -150,6 +151,7 @@ const ProgrammingTask = () => {
             language={"python"}
             theme={theme?.value}
             onChange={handleEditorChange}
+            value={CompilerTemplate}
           />
           <Input id="output" disabled value={value} />
           <Box>{value == 10 ? "GOOD" : "BAD"}</Box>
