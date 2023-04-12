@@ -11,5 +11,6 @@ namespace LearnProgramming.Core.Interfaces
         Task<ProgrammingTask> Update(ProgrammingTaskDto programmingTask, int id);
         Task Delete(ProgrammingTask programmingTask);
         Task<List<ProgrammingTaskTest>> AddTests(List<ProgrammingTaskTest> tests);
+        Task<List<ProgrammingTaskTestDto>> GetTaskTests(int id);
     }
 }
