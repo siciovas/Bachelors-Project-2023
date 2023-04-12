@@ -66,7 +66,6 @@ namespace LearnProgramming.API.Controllers
             await _subTopicsRep.Create(subTopic);
 
             return Created($"api/learningtopic/{topic.Id}/subtopic/{subTopic.Id}", _mapper.Map<SubTopicPostDto>(subTopic));
-
         }
 
 

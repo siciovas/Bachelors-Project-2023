@@ -114,7 +114,48 @@ namespace LearnProgramming.Test
             Assert.Equal(order.OrderItems.First().Id, result.First().OrderItems.First().Id);
             Assert.Equal(order.OrderItems.First().OrderId, result.First().OrderItems.First().OrderId);
             Assert.Equal(order.OrderItems.First().ProductId, result.First().OrderItems.First().ProductId);
+        }
 
+        [Fact]
+        public async void Update_UpdateOrder_ReturnsCorrectData()
+        {
+            var repo = CreateRepository();
+
+            var user = _fixture
+                .Create<User>();
+
+            var product = _fixture
+                .Create<Product>();
+
+            var order = _fixture.Build<Order>()
+                .With(x => x.UserId, user.Id)
+                .With(x => x.IsPaid, false)
+                .Without(x => x.User)
+                .Without(x => x.OrderItems)
+                .Create();
+
+            var orderItem = _fixture.Build<OrderItem>()
+                .With(x => x.OrderId, order.Id)
+                .With(x => x.ProductId, product.Id)
+                .Without(x => x.Order)
+                .Without(x => x.Product)
+                .Create();
+
+            await _databaseContext.AddRangeAsync(user, product, order, orderItem);
+            await _databaseContext.SaveChangesAsync();
+
+            var changeStatus = _fixture.Create<bool>();
+
+            var orderDto = new Order
+            {
+                IsPaid = changeStatus
+            };
+
+            await repo.Update(order.OrderNumber);
+
+            var expected = await _databaseContext.Order.FirstAsync();
+
+            Assert.Equal(expected.IsPaid, changeStatus);
         }
     }
 }
