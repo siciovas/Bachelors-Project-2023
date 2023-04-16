@@ -16,7 +16,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
-import React, { MouseEvent, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { defineTheme } from "../defineTheme";
 import { run, runTest } from "./compiler";
@@ -49,28 +49,26 @@ const ProgrammingTask = () => {
     onOpen();
   };
 
-  const postGrade = (
-    async (mark: number): Promise<void> => {
-      const response = await fetch(`https://localhost:7266/api/grades`, {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        method: "POST",
-        body: JSON.stringify({
-          grade: mark,
-          programmingTaskId: state.taskId
-        }),
-      });
-      if (response.status === 401) {
-        eventBus.dispatch("logOut", "");
-      } else if (response.status === 201 || response.status === 200) {
-        toast.success("Įvertinta!");
-      } else {
-        toast.error("Nepavyko!");
-      }
+  const postGrade = async (mark: number): Promise<void> => {
+    const response = await fetch(`https://localhost:7266/api/grades`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      method: "POST",
+      body: JSON.stringify({
+        grade: mark,
+        programmingTaskId: state.taskId,
+      }),
+    });
+    if (response.status === 401) {
+      eventBus.dispatch("logOut", "");
+    } else if (response.status === 201 || response.status === 200) {
+      toast.success("Įvertinta!");
+    } else {
+      toast.error("Nepavyko!");
     }
-  );
+  };
 
   const getProgrammingTaskInformation = useCallback(async () => {
     const response = await fetch(
@@ -104,34 +102,39 @@ const ProgrammingTask = () => {
   }, []);
 
   const compile = async () => {
-    await Promise.resolve(run(code)).then(() => {
-      var output = document.getElementById("output") as any;
-      setValue(output.value);
-    }).catch((result) => {
-      toast.error("Kode yra klaidų. Klaidos informacija išvesties eilutėje!");
-      setValue(result);
-    });
+    await Promise.resolve(run(code))
+      .then(() => {
+        var output = document.getElementById("output") as any;
+        setValue(output.value);
+      })
+      .catch((result) => {
+        toast.error("Kode yra klaidų. Klaidos informacija išvesties eilutėje!");
+        setValue(result);
+      });
   };
 
   const evaluate = async () => {
     var testsPassed = 0;
     var mark = 0;
-    await Promise.all(taskTests?.map(async (test) => {
-      const result = await runTest(code, test.input);
-      console.log(result)
-      if (result.toString().trim() === test.output.toString().trim()) {
-        testsPassed++;
-      }
-    }))
+    await Promise.all(
+      taskTests?.map(async (test) => {
+        const result = await runTest(code, test.input);
+        console.log(result);
+        if (result.toString().trim() === test.output.toString().trim()) {
+          testsPassed++;
+        }
+      })
+    )
       .then(() => {
         mark = (testsPassed / taskTests.length) * 100;
         setGrade(mark);
-      }).catch((e) => {
+      })
+      .catch((e) => {
         console.log(e);
         toast.error("Kodas neatitinka reikalavimų");
       });
     await postGrade(mark);
-  }
+  };
 
   const handleEditorChange = (value: any) => {
     setCode(value);
@@ -208,9 +211,11 @@ const ProgrammingTask = () => {
             disabled
             _disabled={{
               backgroundColor: "#1b2b34",
-              textColor: "white"
+              textColor: "white",
             }}
-            id="output" value={value} />
+            id="output"
+            value={value}
+          />
           <Box>Įvertis: {grade}%</Box>
         </Flex>
         <Flex mt={5} mr={5} ml={20} flexDirection="column" w="50%">

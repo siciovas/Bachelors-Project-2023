@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  Box,
-  Stack,
-  Heading,
-  Text,
-  Container,
-} from "@chakra-ui/react";
+import { Box, Stack, Heading, Text, Container } from "@chakra-ui/react";
 import Slider from "react-slick";
 
 const settings = {
@@ -73,7 +67,11 @@ const HomePage = () => {
                 >
                   {card.title}
                 </Heading>
-                <Text textColor={"white"} fontSize={{ base: "md", lg: "lg" }} width={{base: "200px", md: "500px", }}>
+                <Text
+                  textColor={"white"}
+                  fontSize={{ base: "md", lg: "lg" }}
+                  width={{ base: "200px", md: "500px" }}
+                >
                   {card.text}
                 </Text>
               </Stack>

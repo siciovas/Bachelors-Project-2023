@@ -1,10 +1,6 @@
 import {
   Flex,
   Heading,
-  Accordion,
-  AccordionItem,
-  AccordionButton,
-  AccordionPanel,
   Spinner,
   Text,
   Box,

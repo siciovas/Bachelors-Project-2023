@@ -195,7 +195,7 @@ const RegisterPage = () => {
               </Accordion>
               <Stack spacing={10} pt={2}>
                 <Button
-                 mt={4}
+                  mt={4}
                   loadingText="Submitting"
                   type="submit"
                   borderRadius={"50px 50px 50px 50px"}

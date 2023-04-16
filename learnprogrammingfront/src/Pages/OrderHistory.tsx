@@ -8,7 +8,6 @@ import {
   Spinner,
   Heading,
   Image,
-  Divider,
 } from "@chakra-ui/react";
 import { useCallback, useEffect, useState } from "react";
 import eventBus from "../Helpers/EventBus";

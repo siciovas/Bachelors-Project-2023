@@ -1,1 +1,1 @@
-export const CompilerTemplate = "# Toliau rašykite kodą..."
+export const CompilerTemplate = "# Toliau rašykite kodą...";

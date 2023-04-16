@@ -19,7 +19,6 @@ import {
   ModalOverlay,
   Text,
   useDisclosure,
-  background,
 } from "@chakra-ui/react";
 import {
   ChangeEvent,
@@ -221,8 +220,8 @@ const Profile = () => {
 
   return (
     <>
-      <Box width={"100%"} >
-        <Flex minH={"100vh"} align={"center"} justify={"center"} >
+      <Box width={"100%"}>
+        <Flex minH={"100vh"} align={"center"} justify={"center"}>
           <Stack
             spacing={4}
             w={"full"}

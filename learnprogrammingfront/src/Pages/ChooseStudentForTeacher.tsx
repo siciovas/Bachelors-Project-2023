@@ -128,58 +128,58 @@ const ChooseStudentForTeacher = () => {
             />
           </InputGroup>
         </Flex>
-        <Box overflowX= "auto" maxWidth= "100%">
-        <Table variant="striped">
-          <Thead>
-            <Tr>
-              <Th>Nuotrauka</Th>
-              <Th>Asmuo</Th>
-              <Th>El.Paštas</Th>
-              <Th>Miestas</Th>
-              <Th>Mokykla</Th>
-              <Th>Statusas</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {filteredUsers.map((user, index) => (
-              <Tr key={index}>
-                <Td>
-                  <Avatar src={"data:image/jpeg;base64," + user.avatar} />
-                </Td>
-                <Td>
-                  <Text>
-                    {user.name} {user.surname}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text>{user.email}</Text>
-                </Td>
-                <Td>
-                  <Text>{user.city}</Text>
-                </Td>
-                <Td>
-                  <Text>{user.school}</Text>
-                </Td>
-                <Td>
-                  {user.isAssigned === false ? (
-                    <Button
-                      colorScheme={"green"}
-                      borderRadius={"50px 50px 50px 50px"}
-                      onClick={() => openModal(user.id)}
-                      _hover={{
-                        bg: "green",
-                      }}
-                    >
-                      Priskirti studentą
-                    </Button>
-                  ) : (
-                    <Text>Užimtas</Text>
-                  )}
-                </Td>
+        <Box overflowX="auto" maxWidth="100%">
+          <Table variant="striped">
+            <Thead>
+              <Tr>
+                <Th>Nuotrauka</Th>
+                <Th>Asmuo</Th>
+                <Th>El.Paštas</Th>
+                <Th>Miestas</Th>
+                <Th>Mokykla</Th>
+                <Th>Statusas</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {filteredUsers.map((user, index) => (
+                <Tr key={index}>
+                  <Td>
+                    <Avatar src={"data:image/jpeg;base64," + user.avatar} />
+                  </Td>
+                  <Td>
+                    <Text>
+                      {user.name} {user.surname}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text>{user.email}</Text>
+                  </Td>
+                  <Td>
+                    <Text>{user.city}</Text>
+                  </Td>
+                  <Td>
+                    <Text>{user.school}</Text>
+                  </Td>
+                  <Td>
+                    {user.isAssigned === false ? (
+                      <Button
+                        colorScheme={"green"}
+                        borderRadius={"50px 50px 50px 50px"}
+                        onClick={() => openModal(user.id)}
+                        _hover={{
+                          bg: "green",
+                        }}
+                      >
+                        Priskirti studentą
+                      </Button>
+                    ) : (
+                      <Text>Užimtas</Text>
+                    )}
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
         </Box>
       </Box>
       <>

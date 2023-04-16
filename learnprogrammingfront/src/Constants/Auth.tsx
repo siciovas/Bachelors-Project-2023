@@ -1,1 +1,1 @@
-export const Unauthorized = 'unauthorized';
+export const Unauthorized = "unauthorized";

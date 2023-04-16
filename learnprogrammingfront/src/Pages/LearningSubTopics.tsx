@@ -20,11 +20,10 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { LearningTopicTypes } from "../Types/LearningTopicsTypes";
 import { AddNewSubTopic } from "../Components/AddNewSubTopic";
-import { ChatIcon, DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import eventBus from "../Helpers/EventBus";
 import toast from "react-hot-toast";
-import { Submissions } from "./Submissions";
 
 const LearningSubTopics = () => {
   const navigate = useNavigate();

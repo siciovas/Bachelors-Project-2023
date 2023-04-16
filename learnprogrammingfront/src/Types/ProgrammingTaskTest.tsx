@@ -1,4 +1,4 @@
-export interface ProgrammingTaskTest{
-    input:string;
-    output:string;
+export interface ProgrammingTaskTest {
+  input: string;
+  output: string;
 }

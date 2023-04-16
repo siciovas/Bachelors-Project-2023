@@ -49,11 +49,11 @@ body::-webkit-scrollbar {
   transform: scale(1.15) translateZ(0);
 }
 
-.suggestions:hover > .suggestion:not(:hover) {
+.suggestions:hover>.suggestion:not(:hover) {
   transform: scale(0.9);
 }
 
-.suggestions:hover > .suggestion:not(:hover) {
+.suggestions:hover>.suggestion:not(:hover) {
   filter: brightness(0.5) blur(5px);
 }
 
@@ -99,12 +99,14 @@ body::-webkit-scrollbar {
   padding: 0;
   margin: 0;
 }
+
 .wrapper {
   height: 25vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
+
 .checkmark__circle {
   stroke-dasharray: 166;
   stroke-dashoffset: 166;
@@ -114,6 +116,7 @@ body::-webkit-scrollbar {
   fill: none;
   animation: stroke 0.6s cubic-bezier(0.65, 0, 0.45, 1) forwards;
 }
+
 .checkmark {
   width: 56px;
   height: 56px;
@@ -127,26 +130,32 @@ body::-webkit-scrollbar {
   animation: fill 0.4s ease-in-out 0.4s forwards,
     scale 0.3s ease-in-out 0.9s both;
 }
+
 .checkmark__check {
   transform-origin: 50% 50%;
   stroke-dasharray: 48;
   stroke-dashoffset: 48;
   animation: stroke 0.3s cubic-bezier(0.65, 0, 0.45, 1) 0.8s forwards;
 }
+
 @keyframes stroke {
   100% {
     stroke-dashoffset: 0;
   }
 }
+
 @keyframes scale {
+
   0%,
   100% {
     transform: none;
   }
+
   50% {
     transform: scale3d(1.1, 1.1, 1);
   }
 }
+
 @keyframes fill {
   100% {
     box-shadow: inset 0px 0px 0px 30px #7ac142;

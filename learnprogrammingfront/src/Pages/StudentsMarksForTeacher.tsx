@@ -9,7 +9,6 @@ import {
   Text,
   Box,
   Tbody,
-  Avatar,
   Table,
   Td,
   Th,
@@ -25,9 +24,8 @@ import { FaChevronDown } from "react-icons/fa";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import toast from "react-hot-toast";
-import { GradesForTeacherTypes, GradesTypes } from "../Types/GradesTypes";
+import { GradesForTeacherTypes } from "../Types/GradesTypes";
 import { SearchIcon } from "@chakra-ui/icons";
-import { UserTypes } from "../Types/UserTypes";
 
 const StudentsMarksForTeacher = () => {
   const token = localStorage.getItem("accessToken");
@@ -51,13 +49,16 @@ const StudentsMarksForTeacher = () => {
   };
 
   const getGrades = useCallback(async () => {
-    const response = await fetch(`https://localhost:7266/api/grades/gradesForTeacher`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      method: "GET",
-    });
+    const response = await fetch(
+      `https://localhost:7266/api/grades/gradesForTeacher`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "GET",
+      }
+    );
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
@@ -71,7 +72,7 @@ const StudentsMarksForTeacher = () => {
 
   useEffect(() => {
     getGrades();
-  },[isLoading])
+  }, [isLoading]);
 
   if (isLoading) {
     return (
@@ -111,73 +112,73 @@ const StudentsMarksForTeacher = () => {
         mb={7}
       >
         {filteredUsers.map((grade, index) => (
-        <AccordionItem>
-          <AccordionButton
-            onClick={() => handleAccordionClick(index)}
-            _focus={{ boxShadow: "none" }}
-            _hover={{ backgroundColor: "transparent" }}
-            _active={{ backgroundColor: "transparent" }}
-            backgroundColor={expandedIndex === index ? "gray.200" : "white"}
-            borderRadius="full"
-            border="1px"
-            borderColor="gray.400"
-            display="flex"
-            justifyContent="flex-start"
-            alignItems="center"
-            px={4}
-            py={2}
-            transition="background-color 0.2s ease-out"
-            _expanded={{ backgroundColor: "gray.200" }}
-            _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
-            mt={2}
-          >
-            <Box
-              as={FaChevronDown}
-              mr={3}
-              w={4}
-              h={4}
+          <AccordionItem>
+            <AccordionButton
+              onClick={() => handleAccordionClick(index)}
+              _focus={{ boxShadow: "none" }}
+              _hover={{ backgroundColor: "transparent" }}
+              _active={{ backgroundColor: "transparent" }}
+              backgroundColor={expandedIndex === index ? "gray.200" : "white"}
               borderRadius="full"
-              backgroundColor="gray.400"
-            />
-           {grade.name} {grade.surname}
-          </AccordionButton>
-          <AccordionPanel
-            background={"white"}
-            borderRadius={"50px 50px 50px 50px"}
-            display={expandedIndex === index ? "block" : "none"}
-          >
-            <Box overflowX="auto" maxWidth="100%">
-              <Table variant="striped">
-                <Thead>
-                  <Tr>
-                    <Th>Kurso tema</Th>
-                    <Th>Potemė</Th>
-                    <Th>Uždavinys</Th>
-                    <Th>Pažymys (%)</Th>
-                  </Tr>
-                </Thead>
-                <Tbody>
-                  {grade.grades.map((gradeinfo) =>(
-                  <Tr>
-                    <Td>
-                      <Text>{gradeinfo.topic}</Text>
-                    </Td>
-                    <Td>
-                      <Text>{gradeinfo.subTopic}</Text>
-                    </Td>
-                    <Td>
-                      <Text>{gradeinfo.task}</Text>
-                    </Td>
-                    <Td>
-                      <Text>{gradeinfo.grade}</Text>
-                    </Td>
-                  </Tr>
-                ))}
-                </Tbody>
-              </Table>
-            </Box>
-          </AccordionPanel>
-        </AccordionItem>
+              border="1px"
+              borderColor="gray.400"
+              display="flex"
+              justifyContent="flex-start"
+              alignItems="center"
+              px={4}
+              py={2}
+              transition="background-color 0.2s ease-out"
+              _expanded={{ backgroundColor: "gray.200" }}
+              _disabled={{ opacity: 0.4, cursor: "not-allowed" }}
+              mt={2}
+            >
+              <Box
+                as={FaChevronDown}
+                mr={3}
+                w={4}
+                h={4}
+                borderRadius="full"
+                backgroundColor="gray.400"
+              />
+              {grade.name} {grade.surname}
+            </AccordionButton>
+            <AccordionPanel
+              background={"white"}
+              borderRadius={"50px 50px 50px 50px"}
+              display={expandedIndex === index ? "block" : "none"}
+            >
+              <Box overflowX="auto" maxWidth="100%">
+                <Table variant="striped">
+                  <Thead>
+                    <Tr>
+                      <Th>Kurso tema</Th>
+                      <Th>Potemė</Th>
+                      <Th>Uždavinys</Th>
+                      <Th>Pažymys (%)</Th>
+                    </Tr>
+                  </Thead>
+                  <Tbody>
+                    {grade.grades.map((gradeinfo) => (
+                      <Tr>
+                        <Td>
+                          <Text>{gradeinfo.topic}</Text>
+                        </Td>
+                        <Td>
+                          <Text>{gradeinfo.subTopic}</Text>
+                        </Td>
+                        <Td>
+                          <Text>{gradeinfo.task}</Text>
+                        </Td>
+                        <Td>
+                          <Text>{gradeinfo.grade}</Text>
+                        </Td>
+                      </Tr>
+                    ))}
+                  </Tbody>
+                </Table>
+              </Box>
+            </AccordionPanel>
+          </AccordionItem>
         ))}
       </Accordion>
     </>
