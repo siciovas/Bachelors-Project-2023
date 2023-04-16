@@ -16,7 +16,7 @@ import {
   Heading,
 } from "@chakra-ui/react";
 import Editor from "@monaco-editor/react";
-import React, { useCallback, useEffect, useState } from "react";
+import React, { MouseEvent, useCallback, useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { defineTheme } from "../defineTheme";
 import { run, runTest } from "./compiler";
@@ -25,7 +25,6 @@ import { Unauthorized } from "../Constants/Auth";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
-import { CompilerTemplate } from "../Types/CompilerTemplate";
 import { ProgrammingTaskTest } from "../Types/ProgrammingTaskTest";
 
 interface ThemeType {
@@ -50,6 +49,29 @@ const ProgrammingTask = () => {
     onOpen();
   };
 
+  const postGrade = (
+    async (mark: number): Promise<void> => {
+      const response = await fetch(`https://localhost:7266/api/grades`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "POST",
+        body: JSON.stringify({
+          grade: mark,
+          programmingTaskId: state.taskId
+        }),
+      });
+      if (response.status === 401) {
+        eventBus.dispatch("logOut", "");
+      } else if (response.status === 201 || response.status === 200) {
+        toast.success("Įvertinta!");
+      } else {
+        toast.error("Nepavyko!");
+      }
+    }
+  );
+
   const getProgrammingTaskInformation = useCallback(async () => {
     const response = await fetch(
       `https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${state.subTopicId}/task/${state.taskId}`,
@@ -66,6 +88,7 @@ const ProgrammingTask = () => {
     } else if (response.status === 200) {
       const taskInfo = await response.json();
       setTaskInformation(taskInfo);
+      setCode(taskInfo.programmingCode);
       setTaskTests(taskInfo.tests);
       setIsLoading(false);
     } else {
@@ -74,16 +97,14 @@ const ProgrammingTask = () => {
   }, []);
 
   useEffect(() => {
+    getProgrammingTaskInformation();
     defineTheme("oceanic-next").then((_) =>
       setTheme({ value: "oceanic-next", label: "Oceanic Next" })
     );
-    getProgrammingTaskInformation();
-    setIsLoading(false);
   }, []);
 
   const compile = async () => {
     await Promise.resolve(run(code)).then(() => {
-      console.log("aasdfaaa")
       var output = document.getElementById("output") as any;
       setValue(output.value);
     }).catch((result) => {
@@ -94,19 +115,22 @@ const ProgrammingTask = () => {
 
   const evaluate = async () => {
     var testsPassed = 0;
+    var mark = 0;
     await Promise.all(taskTests?.map(async (test) => {
       const result = await runTest(code, test.input);
-      console.log("amen", result);
+      console.log(result)
       if (result.toString().trim() === test.output.toString().trim()) {
         testsPassed++;
       }
     }))
       .then(() => {
-        var mark = (testsPassed / taskTests.length) * 100;
+        mark = (testsPassed / taskTests.length) * 100;
         setGrade(mark);
-      }).catch(() => {
+      }).catch((e) => {
+        console.log(e);
         toast.error("Kodas neatitinka reikalavimų");
       });
+    await postGrade(mark);
   }
 
   const handleEditorChange = (value: any) => {
@@ -177,7 +201,7 @@ const ProgrammingTask = () => {
             language={"python"}
             theme={theme?.value}
             onChange={handleEditorChange}
-            value={CompilerTemplate}
+            value={taskInformation?.programmingCode}
           />
           Išvestis
           <Input

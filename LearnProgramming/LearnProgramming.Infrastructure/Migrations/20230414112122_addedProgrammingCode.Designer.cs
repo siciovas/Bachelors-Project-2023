@@ -3,6 +3,7 @@ using System;
 using LearnProgramming.Infrastructure.Database;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace LearnProgramming.Infrastructure.Migrations
 {
     [DbContext(typeof(DatabaseContext))]
-    partial class DatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20230414112122_addedProgrammingCode")]
+    partial class addedProgrammingCode
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -284,24 +286,19 @@ namespace LearnProgramming.Infrastructure.Migrations
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.StudentGrades", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                        .HasColumnType("char(36)");
 
-                    b.Property<double>("Grade")
-                        .HasColumnType("double");
+                    b.Property<int>("Grade")
+                        .HasColumnType("int");
 
                     b.Property<int>("ProgrammingTaskId")
                         .HasColumnType("int");
 
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
                     b.HasKey("Id");
 
                     b.HasIndex("ProgrammingTaskId");
-
-                    b.HasIndex("UserId");
 
                     b.ToTable("StudentGrades");
                 });
@@ -533,15 +530,7 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("LearnProgramming.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
                     b.Navigation("ProgrammingTask");
-
-                    b.Navigation("User");
                 });
 
             modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>

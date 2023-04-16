@@ -6,27 +6,41 @@ import {
   AccordionButton,
   AccordionPanel,
   Spinner,
+  Text,
   Box,
+  Tbody,
+  Avatar,
+  Table,
+  Td,
+  Th,
+  Thead,
+  Tr,
+  Icon,
+  Input,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import { FaChevronDown } from "react-icons/fa";
 import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
-import { UserTypes } from "../Types/UserTypes";
 import toast from "react-hot-toast";
+import { GradesForTeacherTypes, GradesTypes } from "../Types/GradesTypes";
+import { SearchIcon } from "@chakra-ui/icons";
+import { UserTypes } from "../Types/UserTypes";
 
 const StudentsMarksForTeacher = () => {
   const token = localStorage.getItem("accessToken");
   const [isLoading, setIsLoading] = useState(true);
   const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
   const [searchTerm, setSearchTerm] = useState("");
-  const [users, setUsers] = useState<UserTypes[]>([]);
+  const [grades, setGrades] = useState<GradesForTeacherTypes[]>([]);
 
-  // const filteredUsers = users.filter(
-  //   (user) =>
-  //     user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  //     user.surname.toLowerCase().includes(searchTerm.toLowerCase()) ||
-  // );
+  const filteredUsers = grades.filter(
+    (user) =>
+      user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      user.surname.toLowerCase().includes(searchTerm.toLowerCase())
+  );
 
   const handleAccordionClick = (index: number) => {
     if (index === expandedIndex) {
@@ -36,8 +50,8 @@ const StudentsMarksForTeacher = () => {
     }
   };
 
-  const getUsers = useCallback(async () => {
-    const response = await fetch(`https://localhost:7266/api/getMyStudents`, {
+  const getGrades = useCallback(async () => {
+    const response = await fetch(`https://localhost:7266/api/grades/gradesForTeacher`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
@@ -47,21 +61,25 @@ const StudentsMarksForTeacher = () => {
     if (response.status === 401) {
       eventBus.dispatch("logOut", Unauthorized);
     } else if (response.status === 200) {
-      const user = await response.json();
-      setUsers(user);
+      const grades = await response.json();
+      setGrades(grades);
       setIsLoading(false);
     } else {
       toast.error("Netikėta klaida!");
     }
   }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <Flex justifyContent="center" top="50%" left="50%" position="fixed">
-  //       <Spinner size="xl" />
-  //     </Flex>
-  //   );
-  // }
+  useEffect(() => {
+    getGrades();
+  },[isLoading])
+
+  if (isLoading) {
+    return (
+      <Flex justifyContent="center" top="50%" left="50%" position="fixed">
+        <Spinner size="xl" />
+      </Flex>
+    );
+  }
 
   return (
     <>
@@ -69,6 +87,20 @@ const StudentsMarksForTeacher = () => {
         <Heading mt={15} size="lg">
           Mokinių įverčiai
         </Heading>
+      </Flex>
+      <Flex justify={"center"} width={"25%"} margin={"auto"} mt={4}>
+        <InputGroup mb={4}>
+          <InputLeftElement
+            pointerEvents="none"
+            children={<Icon as={SearchIcon} color="white" />}
+          />
+          <Input
+            type="text"
+            placeholder="Ieškokite pagal vardą ir pavardę"
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
+          />
+        </InputGroup>
       </Flex>
       <Accordion
         allowToggle
@@ -78,14 +110,14 @@ const StudentsMarksForTeacher = () => {
         border={"transparent"}
         mb={7}
       >
-        {/* {submissions.map((submission, index) => ( */}
+        {filteredUsers.map((grade, index) => (
         <AccordionItem>
           <AccordionButton
-            // onClick={() => handleAccordionClick(index)}
+            onClick={() => handleAccordionClick(index)}
             _focus={{ boxShadow: "none" }}
             _hover={{ backgroundColor: "transparent" }}
             _active={{ backgroundColor: "transparent" }}
-            // backgroundColor={expandedIndex === index ? "gray.200" : "white"}
+            backgroundColor={expandedIndex === index ? "gray.200" : "white"}
             borderRadius="full"
             border="1px"
             borderColor="gray.400"
@@ -107,18 +139,46 @@ const StudentsMarksForTeacher = () => {
               borderRadius="full"
               backgroundColor="gray.400"
             />
-            {/* {submission.topic} */}
-            Rokas Sičiovas
+           {grade.name} {grade.surname}
           </AccordionButton>
           <AccordionPanel
             background={"white"}
             borderRadius={"50px 50px 50px 50px"}
-            // display={expandedIndex === index ? "block" : "none"}
+            display={expandedIndex === index ? "block" : "none"}
           >
-            <Box textAlign={"center"}></Box>
+            <Box overflowX="auto" maxWidth="100%">
+              <Table variant="striped">
+                <Thead>
+                  <Tr>
+                    <Th>Kurso tema</Th>
+                    <Th>Potemė</Th>
+                    <Th>Uždavinys</Th>
+                    <Th>Pažymys (%)</Th>
+                  </Tr>
+                </Thead>
+                <Tbody>
+                  {grade.grades.map((gradeinfo) =>(
+                  <Tr>
+                    <Td>
+                      <Text>{gradeinfo.topic}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{gradeinfo.subTopic}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{gradeinfo.task}</Text>
+                    </Td>
+                    <Td>
+                      <Text>{gradeinfo.grade}</Text>
+                    </Td>
+                  </Tr>
+                ))}
+                </Tbody>
+              </Table>
+            </Box>
           </AccordionPanel>
         </AccordionItem>
-        {/* ))} */}
+        ))}
       </Accordion>
     </>
   );
