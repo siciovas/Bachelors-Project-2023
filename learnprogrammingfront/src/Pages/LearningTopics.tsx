@@ -1,10 +1,4 @@
-import React, {
-  FormEvent,
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { FormEvent, useCallback, useEffect, useState } from "react";
 import {
   Box,
   Badge,
@@ -163,80 +157,80 @@ const LearningTopics = () => {
             <AddNewLearningTopic AddLearningTopic={AddLearningTopic} />
           </>
         )}
-          {topics.map((topic, index) => {
-            return (
-                <Fade left>
+        {topics.map((topic, index) => {
+          return (
+            <Fade left>
+              <Box
+                borderWidth="1px"
+                borderRadius="lg"
+                borderColor={"black"}
+                overflow="hidden"
+                bg={"whitesmoke"}
+              >
+                <Flex
+                  cursor={"pointer"}
+                  height="100px"
+                  align={"center"}
+                  justify={"center"}
+                  onClick={() => NavigateToSubTopics(topic.id)}
+                  bg={`url(${photos[index]})`}
+                ></Flex>
                 <Box
-                  borderWidth="1px"
-                  borderRadius="lg"
+                  p="6"
+                  borderWidth="1px 0px 0px 0px"
+                  borderRadius={"md"}
                   borderColor={"black"}
-                  overflow="hidden"
-                  bg={"whitesmoke"}
                 >
-                  <Flex
-                    cursor={"pointer"}
-                    height="100px"
-                    align={"center"}
-                    justify={"center"}
-                    onClick={() => NavigateToSubTopics(topic.id)}
-                    bg={`url(${photos[index]})`}
-                  ></Flex>
-                  <Box
-                    p="6"
-                    borderWidth="1px 0px 0px 0px"
-                    borderRadius={"md"}
-                    borderColor={"black"}
-                  >
-                    <Box height={55}>
-                      <Text
-                        color={"black"}
-                        textTransform="uppercase"
-                        fontWeight={"bold"}
-                        fontSize={{ base: "x-small", sm: "md" }}
-                        textAlign={"center"}
-                        cursor={"pointer"}
-                        onClick={() => NavigateToSubTopics(topic.id)}
-                      >
-                        {topic.title}
-                      </Text>
-                    </Box>
-                    <Box mt={3} display="flex" alignItems="baseline">
-                      <Badge
-                        borderRadius="full"
-                        px="2"
-                        colorScheme={GetDifficultyColor(topic.difficultyInText)}
-                      >
-                        {GetTopicDifficulty(topic.difficultyInText)}
-                      </Badge>
-                      <Box
-                        color="black"
-                        fontWeight="semibold"
-                        letterSpacing="wide"
-                        fontSize="xs"
-                        textTransform="uppercase"
-                        ml="2"
-                        display={{ base: "none", xl: "block" }}
-                      >
-                        {topic.numberOfSubTopics} potemės/ių &bull;{" "}
-                        {topic.numberOfAllTasks} uždaviniai/ių
-                      </Box>
-                    </Box>
-                    {(role === UserRole.Teacher || role === UserRole.Admin) && (
-                      <>
-                        <Flex justify="flex-end" mt={4}>
-                          <DeleteIcon
-                            cursor={"pointer"}
-                            color={"red.500"}
-                            onClick={() => openModal(topic.id)}
-                          />
-                        </Flex>
-                      </>
-                    )}
+                  <Box height={55}>
+                    <Text
+                      color={"black"}
+                      textTransform="uppercase"
+                      fontWeight={"bold"}
+                      fontSize={{ base: "x-small", sm: "md" }}
+                      textAlign={"center"}
+                      cursor={"pointer"}
+                      onClick={() => NavigateToSubTopics(topic.id)}
+                    >
+                      {topic.title}
+                    </Text>
                   </Box>
+                  <Box mt={3} display="flex" alignItems="baseline">
+                    <Badge
+                      borderRadius="full"
+                      px="2"
+                      colorScheme={GetDifficultyColor(topic.difficultyInText)}
+                    >
+                      {GetTopicDifficulty(topic.difficultyInText)}
+                    </Badge>
+                    <Box
+                      color="black"
+                      fontWeight="semibold"
+                      letterSpacing="wide"
+                      fontSize="xs"
+                      textTransform="uppercase"
+                      ml="2"
+                      display={{ base: "none", xl: "block" }}
+                    >
+                      {topic.numberOfSubTopics} potemės/ių &bull;{" "}
+                      {topic.numberOfAllTasks} uždaviniai/ių
+                    </Box>
+                  </Box>
+                  {(role === UserRole.Teacher || role === UserRole.Admin) && (
+                    <>
+                      <Flex justify="flex-end" mt={4}>
+                        <DeleteIcon
+                          cursor={"pointer"}
+                          color={"red.500"}
+                          onClick={() => openModal(topic.id)}
+                        />
+                      </Flex>
+                    </>
+                  )}
                 </Box>
-          </Fade>
-              );
-            })}
+              </Box>
+            </Fade>
+          );
+        })}
       </Grid>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />

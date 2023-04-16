@@ -8,12 +8,10 @@ import React, {
 import {
   Box,
   Button,
-  Divider,
   Flex,
   FormControl,
   FormLabel,
   Grid,
-  GridItem,
   Heading,
   HStack,
   Image,
@@ -40,7 +38,6 @@ import eventBus from "../Helpers/EventBus";
 import { Unauthorized } from "../Constants/Auth";
 import toast from "react-hot-toast";
 import { OrderItemsTypes, OrderTypes } from "../Types/OrderTypes";
-import { useLocation } from "react-router-dom";
 import moment from "moment";
 
 const steps = [
@@ -129,7 +126,7 @@ const ShoppingCart = () => {
         method: "GET",
       }
     );
-    if(response.status === 200){
+    if (response.status === 200) {
       const information = await response.json();
       setInformation(information);
       setIsInformationExists(true);
@@ -174,7 +171,7 @@ const ShoppingCart = () => {
       body: JSON.stringify({
         amount: (items?.totalPrice.toFixed(2) as unknown as number) * 100,
         email: information?.email,
-        orderNumber
+        orderNumber,
       }),
     });
     if (response.status === 200) {
@@ -199,15 +196,14 @@ const ShoppingCart = () => {
             productId: item.product.id,
             photo: item.product.photo,
             price: item.product.price,
-          }
-        })
+          };
+        }),
       }),
     });
-      const orderNumber = await response.text();
-      return orderNumber;
-      setIsLoading(false);
+    const orderNumber = await response.text();
+    return orderNumber;
+    setIsLoading(false);
   };
-
 
   if (isLoading) {
     return (

@@ -39,10 +39,12 @@ const ShopItemPage = () => {
     window.location.reload();
   };
 
-  const getShopItems = useCallback(async (id:number | undefined) => {
+  const getShopItems = useCallback(async (id: number | undefined) => {
     console.log(location.state.shopItemId);
     const response = await fetch(
-      `https://localhost:7266/api/shop/${id != undefined ? id : location.state.shopItemId}`,
+      `https://localhost:7266/api/shop/${
+        id != undefined ? id : location.state.shopItemId
+      }`,
       {
         headers: {
           "Content-Type": "application/json",
@@ -167,22 +169,24 @@ const ShopItemPage = () => {
                 <Text>Leidinio data: {items?.releaseDate}</Text>
               </Box>
             </Box>
-            {(role === UserRole.Admin || role === UserRole.Teacher || role === UserRole.Student) && (
-                  <>
-            <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
-              <Button
-                bg={"green.500"}
-                borderRadius={"50px 50px 50px 50px"}
-                onClick={(e) => postToShoppingCart(e)}
-                color={"white"}
-                _hover={{
-                  bg: "green",
-                }}
-              >
-                Į KREPŠELĮ
-              </Button>
-            </Flex>
-            </>
+            {(role === UserRole.Admin ||
+              role === UserRole.Teacher ||
+              role === UserRole.Student) && (
+              <>
+                <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
+                  <Button
+                    bg={"green.500"}
+                    borderRadius={"50px 50px 50px 50px"}
+                    onClick={(e) => postToShoppingCart(e)}
+                    color={"white"}
+                    _hover={{
+                      bg: "green",
+                    }}
+                  >
+                    Į KREPŠELĮ
+                  </Button>
+                </Flex>
+              </>
             )}
           </Box>
           <Divider mt={3} />
@@ -190,14 +194,22 @@ const ShopItemPage = () => {
             Rekomenduojame
           </Heading>
           <Grid
-            templateColumns={{base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg: "repeat(3, 1fr)"}}
+            templateColumns={{
+              base: "repeat(1, 1fr)",
+              md: "repeat(2, 1fr)",
+              lg: "repeat(3, 1fr)",
+            }}
             className="suggestions"
             mt={10}
             mb={10}
           >
             {suggestions.map((suggestion) => {
               return (
-                <Flex flexDirection="column" className="suggestion" justify={"center"} align={"center"}
+                <Flex
+                  flexDirection="column"
+                  className="suggestion"
+                  justify={"center"}
+                  align={"center"}
                 >
                   <Box
                     borderWidth="1px"

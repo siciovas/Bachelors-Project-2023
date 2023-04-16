@@ -128,50 +128,50 @@ const TeacherStudents = () => {
             />
           </InputGroup>
         </Flex>
-        </Box>
-        <>
-        <Box overflowX= "auto" maxWidth= "100%">
-        <Table variant="striped">
-          <Thead>
-            <Tr>
-              <Th>Nuotrauka</Th>
-              <Th>Asmuo</Th>
-              <Th>El.Paštas</Th>
-              <Th>Statusas</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {filteredUsers.map((user, index) => (
-              <Tr key={index}>
-                <Td>
-                  <Avatar src={"data:image/jpeg;base64," + user.avatar} />
-                </Td>
-                <Td>
-                  <Text>
-                    {user.name} {user.surname}
-                  </Text>
-                </Td>
-                <Td>
-                  <Text>{user.email}</Text>
-                </Td>
-                <Td>
-                  <Button
-                    background="red.500"
-                    borderRadius={"50px 50px 50px 50px"}
-                    onClick={() => openModal(user.id)}
-                    color={"white"}
-                    _hover={{
-                      bg: "red.700",
-                    }}
-                  >
-                    Atsisakyti
-                  </Button>
-                </Td>
-              </Tr>
-            ))}
-          </Tbody>
-        </Table>
       </Box>
+      <>
+        <Box overflowX="auto" maxWidth="100%">
+          <Table variant="striped">
+            <Thead>
+              <Tr>
+                <Th>Nuotrauka</Th>
+                <Th>Asmuo</Th>
+                <Th>El.Paštas</Th>
+                <Th>Statusas</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              {filteredUsers.map((user, index) => (
+                <Tr key={index}>
+                  <Td>
+                    <Avatar src={"data:image/jpeg;base64," + user.avatar} />
+                  </Td>
+                  <Td>
+                    <Text>
+                      {user.name} {user.surname}
+                    </Text>
+                  </Td>
+                  <Td>
+                    <Text>{user.email}</Text>
+                  </Td>
+                  <Td>
+                    <Button
+                      background="red.500"
+                      borderRadius={"50px 50px 50px 50px"}
+                      onClick={() => openModal(user.id)}
+                      color={"white"}
+                      _hover={{
+                        bg: "red.700",
+                      }}
+                    >
+                      Atsisakyti
+                    </Button>
+                  </Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        </Box>
       </>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>

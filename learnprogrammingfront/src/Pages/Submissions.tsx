@@ -12,7 +12,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Textarea,
 } from "@chakra-ui/react";
 import { convertToRaw, EditorState } from "draft-js";
 import "react-draft-wysiwyg/dist/react-draft-wysiwyg.css";
