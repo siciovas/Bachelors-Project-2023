@@ -20,5 +20,12 @@ namespace LearnProgramming.Infrastructure.Repositories
                 .ToListAsync();
 
         }
+        public async Task<List<OrderItem>> Create(List<OrderItem> orderItems)
+        {
+            _db.AddRange(orderItems);
+            await _db.SaveChangesAsync();
+
+            return orderItems;
+        }
     }
 }

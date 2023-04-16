@@ -38,7 +38,7 @@ export const runTest = async (code, test) => {
   testCase = test;
   Sk.configure({inputfun: stdinInput, inputfunTakesPrompt: true,  output: stdoutOutput});
   await Sk.misceval.asyncToPromise(function() {
-    return Sk.importMainWithBody("", false, code, true);
+    return Sk.importMainWithBody("<stdin>", false, code, true);
   }).then(function(result) {
   }, function(err) {
     throw new Error(err.toString())

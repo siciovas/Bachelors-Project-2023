@@ -56,6 +56,7 @@ const ShoppingCart = () => {
   const token = localStorage.getItem("accessToken");
   const [items, setItems] = useState<ShoppingCartTypes>();
   const [information, setInformation] = useState<ShippingInformationTypes>();
+  const [isInformationExists, setIsInformationExists] = useState(false);
   const [order, setOrder] = useState<OrderTypes>();
   const [orderItems, setOrderItems] = useState<OrderItemsTypes>();
   const [isLoading, setIsLoading] = useState(true);
@@ -114,6 +115,7 @@ const ShoppingCart = () => {
 
   useEffect(() => {
     getShoppingCartItems();
+    getShippingInformation();
   }, [isLoading]);
 
   const getShippingInformation = useCallback(async () => {
@@ -127,14 +129,13 @@ const ShoppingCart = () => {
         method: "GET",
       }
     );
-    const information = await response.json();
-    setInformation(information);
+    if(response.status === 200){
+      const information = await response.json();
+      setInformation(information);
+      setIsInformationExists(true);
+    }
     setIsLoading(false);
   }, []);
-
-  useEffect(() => {
-    getShippingInformation();
-  }, [isLoading]);
 
   const postShippingInformation = async (
     e: FormEvent<HTMLFormElement>
@@ -148,7 +149,7 @@ const ShoppingCart = () => {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`,
         },
-        method: information !== undefined ? "PUT" : "POST",
+        method: isInformationExists ? "PUT" : "POST",
         body: JSON.stringify(information),
       }
     );

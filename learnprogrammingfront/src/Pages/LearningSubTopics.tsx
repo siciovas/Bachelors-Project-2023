@@ -233,26 +233,6 @@ const LearningSubTopics = () => {
                         >
                           uždaviniai/ių: {subtopic.numberOfTasks}
                         </Box>
-                        <Button
-                          colorScheme="green"
-                          variant="outline"
-                          borderRadius="50px 50px 50px 50px"
-                          display={{ base: "none", md: "block" }}
-                          mr={10}
-                        >
-                          Pažymėti kaip atliktą
-                        </Button>
-                        <ChatIcon mr={3} />
-                        <Heading
-                          cursor={"pointer"}
-                          fontWeight={"none"}
-                          size={"sm"}
-                          textColor="red"
-                          mr={3}
-                          onClick={() => <Submissions />}
-                        >
-                          Pranešti administratoriui
-                        </Heading>
                         {(role === UserRole.Teacher ||
                           role === UserRole.Admin) && (
                           <DeleteIcon

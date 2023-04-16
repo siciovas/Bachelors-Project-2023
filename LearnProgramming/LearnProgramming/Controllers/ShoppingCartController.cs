@@ -133,10 +133,10 @@ namespace LearnProgramming.API.Controllers
 
             if (shippingInformation == null)
             {
-                return null;
+                return NotFound();
             }
 
-            return new ShippingInformationDto
+            return Ok(new ShippingInformationDto
             {
                 Name = shippingInformation.Name,
                 Surname = shippingInformation.Surname,
@@ -148,7 +148,7 @@ namespace LearnProgramming.API.Controllers
                 RepeatEmail = shippingInformation.RepeatEmail,
                 Street = shippingInformation.Street,
                 Id = shippingInformation.Id,
-            };
+            });
         }
     }
 }

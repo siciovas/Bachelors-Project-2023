@@ -59,6 +59,7 @@ namespace LearnProgramming.API.Controllers
                 Id = task.Id,
                 Name = task.Name,
                 Description = task.Description,
+                ProgrammingCode = task.ProgrammingCode,
                 LearningTopicName = task.LearningTopic.Title,
                 SubTopicName = task.SubTopic.SubTopicName,
                 Tests = await _programmingTask.GetTaskTests(id),
@@ -117,6 +118,7 @@ namespace LearnProgramming.API.Controllers
             {
                 Name = programmingTask.Name,
                 Description = programmingTask.Description,
+                ProgrammingCode = programmingTask.ProgrammingCode,
                 LearningTopicId = learningtopicId,
                 SubTopicId = subtopicId,
             };

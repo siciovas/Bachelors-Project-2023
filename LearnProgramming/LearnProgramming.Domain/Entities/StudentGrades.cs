@@ -2,9 +2,11 @@
 {
     public class StudentGrades
     {
-        public Guid Id { get; set; }
-        public int Grade { get; set; }
+        public int Id { get; set; }
+        public double Grade { get; set; }
         public int ProgrammingTaskId { get; set; }
         public ProgrammingTask ProgrammingTask { get; set; }
+        public User User { get; set; }
+        public Guid UserId { get; set; }
     }
 }

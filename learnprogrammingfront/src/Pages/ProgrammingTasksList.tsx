@@ -156,7 +156,7 @@ const ProgrammingTasksList = () => {
         {tasks.map((task) => {
           return (
             <Box mt={3}>
-              <Flex flexDir={"column"}>
+              <Flex flexDir={"column"} >
                 <Flex
                   justifyContent={"space-between"}
                   border={"1px solid black"}
@@ -207,25 +207,6 @@ const ProgrammingTasksList = () => {
                       align={"center"}
                       justify={"center"}
                     >
-                      <Button
-                        colorScheme={"green"}
-                        variant="outline"
-                        borderRadius={"50px 50px 50px 50px"}
-                        mr={10}
-                      >
-                        Pažymėti kaip atliktą
-                      </Button>
-                      <ChatIcon mr={3} />
-                      <Heading
-                        fontWeight={"none"}
-                        size={"sm"}
-                        textColor="red"
-                        cursor={"pointer"}
-                        onClick={() => <Submissions />}
-                        mr={3}
-                      >
-                        Pranešti administratoriui
-                      </Heading>
                       {(role === UserRole.Teacher ||
                         role === UserRole.Admin) && (
                         <DeleteIcon

@@ -1,9 +1,8 @@
 export interface ProgrammingTaskTypes {
   id: number;
-  subTopicId: number;
-  learningTopicId: number;
   name: string;
   description: string;
+  programmingCode: string;
   learningTopicName: string;
   subTopicName: string;
 }

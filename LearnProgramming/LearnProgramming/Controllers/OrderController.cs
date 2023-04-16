@@ -54,5 +54,35 @@ namespace LearnProgramming.API.Controllers
 
             return Ok(order);
         }
+
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<string>> Post(OrderDto order)
+        {
+            var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
+
+            var newOrder = new Order
+            {
+                UserId = userId,
+                OrderNumber = Guid.NewGuid(),
+                OrderTime = order.OrderTime,
+                Total = order.Total,
+            };
+
+            await _orderRep.Create(newOrder);
+
+            var orderItems = order.OrderItems.Select(x => new OrderItem
+            {
+                Photo = x.Photo,
+                Price = x.Price,
+                Name = x.Name,
+                ProductId = x.ProductId,
+                OrderId = newOrder.Id
+            }).ToList();
+
+            await _itemRep.Create(orderItems);
+
+            return Created($"api/{newOrder.Id}", newOrder.OrderNumber.ToString());
+        }
     }
 }

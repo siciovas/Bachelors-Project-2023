@@ -1,4 +1,10 @@
-import React, { FormEvent, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import {
   Box,
   Badge,
@@ -29,7 +35,7 @@ import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
 import { GetRandomPhotos } from "../Helpers/GetRandomPhotos";
 // @ts-ignore
-import Fade from 'react-reveal/Fade';
+import Fade from "react-reveal/Fade";
 
 const LearningTopics = () => {
   const navigate = useNavigate();
@@ -108,7 +114,6 @@ const LearningTopics = () => {
   useEffect(() => {
     getLearningTopics();
   }, [isLoading]);
-  
 
   const deleteLearningTopic = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -148,111 +153,112 @@ const LearningTopics = () => {
       <Flex mt={5} justify="center">
         <Heading size="lg">Kursai</Heading>
       </Flex>
-      <Grid margin={18} templateColumns={{base: "repeat(2, 1fr)", md: "repeat(3, 1fr)"}} gap={6}>
+      <Grid
+        margin={18}
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+        gap={6}
+      >
         {role === UserRole.Teacher && (
           <>
             <AddNewLearningTopic AddLearningTopic={AddLearningTopic} />
           </>
         )}
-        <Fade left>
-        {topics.map((topic, index) => {
-          return (
-            <Box
-              borderWidth="1px"
-              borderRadius="lg"
-              borderColor={"black"}
-              overflow="hidden"
-              bg={"whitesmoke"}
-              >
-              <Flex
-                cursor={"pointer"}
-                height="100px"
-                align={"center"}
-                justify={"center"}
-                onClick={() => NavigateToSubTopics(topic.id)}
-                bg={`url(${photos[index]})`}
-              >
-              </Flex>
-              <Box
-                p="6"
-                borderWidth="1px 0px 0px 0px"
-                borderRadius={"md"}
-                borderColor={"black"}
-              >
-                <Box height={55}>
-                <Text
-                  color={"black"}
-                  textTransform="uppercase"
-                  fontWeight={"bold"}
-                  fontSize={{base: "x-small", sm: "md"}}
-                  textAlign={"center"}
-                  cursor={"pointer"}
-                  onClick={() => NavigateToSubTopics(topic.id)}
+          {topics.map((topic, index) => {
+            return (
+                <Fade left>
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  borderColor={"black"}
+                  overflow="hidden"
+                  bg={"whitesmoke"}
                 >
-                  {topic.title}
-                </Text>
-                </Box>
-                <Box mt={3} display="flex" alignItems="baseline">
-                  <Badge
-                    borderRadius="full"
-                    px="2"
-                    colorScheme={GetDifficultyColor(topic.difficultyInText)}
-                  >
-                    {GetTopicDifficulty(topic.difficultyInText)}
-                  </Badge>
+                  <Flex
+                    cursor={"pointer"}
+                    height="100px"
+                    align={"center"}
+                    justify={"center"}
+                    onClick={() => NavigateToSubTopics(topic.id)}
+                    bg={`url(${photos[index]})`}
+                  ></Flex>
                   <Box
-                    color="black"
-                    fontWeight="semibold"
-                    letterSpacing="wide"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                    ml="2"
-                    display={{base: "none", xl:"block"}}
+                    p="6"
+                    borderWidth="1px 0px 0px 0px"
+                    borderRadius={"md"}
+                    borderColor={"black"}
                   >
-                    {topic.numberOfSubTopics} potemės/ių &bull;{" "}
-                    {topic.numberOfAllTasks} uždaviniai/ių
+                    <Box height={55}>
+                      <Text
+                        color={"black"}
+                        textTransform="uppercase"
+                        fontWeight={"bold"}
+                        fontSize={{ base: "x-small", sm: "md" }}
+                        textAlign={"center"}
+                        cursor={"pointer"}
+                        onClick={() => NavigateToSubTopics(topic.id)}
+                      >
+                        {topic.title}
+                      </Text>
+                    </Box>
+                    <Box mt={3} display="flex" alignItems="baseline">
+                      <Badge
+                        borderRadius="full"
+                        px="2"
+                        colorScheme={GetDifficultyColor(topic.difficultyInText)}
+                      >
+                        {GetTopicDifficulty(topic.difficultyInText)}
+                      </Badge>
+                      <Box
+                        color="black"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
+                        display={{ base: "none", xl: "block" }}
+                      >
+                        {topic.numberOfSubTopics} potemės/ių &bull;{" "}
+                        {topic.numberOfAllTasks} uždaviniai/ių
+                      </Box>
+                    </Box>
+                    {(role === UserRole.Teacher || role === UserRole.Admin) && (
+                      <>
+                        <Flex justify="flex-end" mt={4}>
+                          <DeleteIcon
+                            cursor={"pointer"}
+                            color={"red.500"}
+                            onClick={() => openModal(topic.id)}
+                          />
+                        </Flex>
+                      </>
+                    )}
                   </Box>
                 </Box>
-                {(role === UserRole.Teacher || role === UserRole.Admin) && (
-                  <>
-                    <Flex justify="flex-end" mt={4} >
-                      <DeleteIcon
-                        cursor={"pointer"}
-                        color={"red.500"}
-                        onClick={() => openModal(topic.id)}
-                      />
-                    </Flex>
-                  </>
-                )}
-              </Box>
-            </Box>
-          );
-        })}
-        </Fade>
+          </Fade>
+              );
+            })}
       </Grid>
-      <>
-        <Modal isOpen={isOpen} onClose={onClose}>
-          <ModalOverlay />
-          <ModalContent>
-            <ModalHeader>Perspėjimas!</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody>
-              <Text>Ar tikrai norite ištrinti temą?</Text>
-            </ModalBody>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>Perspėjimas!</ModalHeader>
+          <ModalCloseButton />
+          <ModalBody>
+            <Text>Ar tikrai norite ištrinti temą?</Text>
+          </ModalBody>
 
-            <ModalFooter>
-              <Button
-                background="red.500"
-                mr={3}
-                borderRadius={"50px 50px 50px 50px"}
-                onClick={(e) => deleteLearningTopic(e, deletingId as number)}
-              >
-                Ištrinti
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-      </>
+          <ModalFooter>
+            <Button
+              background="red.500"
+              mr={3}
+              borderRadius={"50px 50px 50px 50px"}
+              onClick={(e) => deleteLearningTopic(e, deletingId as number)}
+            >
+              Ištrinti
+            </Button>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </>
   );
 };

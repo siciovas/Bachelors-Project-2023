@@ -25,7 +25,7 @@ import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
 // @ts-ignore
-import Fade from 'react-reveal/Fade';
+import Fade from "react-reveal/Fade";
 
 const Shop = () => {
   const navigate = useNavigate();
@@ -149,69 +149,81 @@ const Shop = () => {
         <Heading size="lg">El. Parduotuvė</Heading>
       </Flex>
       {role === UserRole.Admin && <AddNewShopItem AddShopItem={AddShopItem} />}
-      <Grid margin={20} templateColumns={{base: "repeat(1, 1fr)", md: "repeat(2, 1fr)", lg:"repeat(3, 1fr)", xl: "repeat(3, 1fr)", "2xl": "repeat(4, 1fr)"}} justifyContent={"center"} gap={3} mt={10}>
-      <Fade left>
-        {items.map((item) => {
-          return (
-            <Box
-              borderWidth="1px"
-              borderRadius="lg"
-              overflow="hidden"
-              borderColor={"black"}
-              width={"325px"}
-              bg={"whitesmoke"}
-            >
-              <Image
-                cursor={"pointer"}
-                onClick={() => NavigateToItem(item.id)}
-                height="400px"
-                width="100%"
-                src={"data:image/jpeg;base64," + item.photo}
-              />
+      <Grid
+        margin={20}
+        templateColumns={{
+          base: "repeat(1, 1fr)",
+          md: "repeat(2, 1fr)",
+          lg: "repeat(3, 1fr)",
+          xl: "repeat(3, 1fr)",
+          "2xl": "repeat(4, 1fr)",
+        }}
+        justifyContent={"center"}
+        gap={3}
+        mt={10}
+      >
+            {items.map((item) => {
+              return (
+                <Fade left>
+                <Box
+                  borderWidth="1px"
+                  borderRadius="lg"
+                  overflow="hidden"
+                  borderColor={"black"}
+                  width={"325px"}
+                  bg={"whitesmoke"}
+                >
+                  <Image
+                    cursor={"pointer"}
+                    onClick={() => NavigateToItem(item.id)}
+                    height="400px"
+                    width="100%"
+                    src={"data:image/jpeg;base64," + item.photo}
+                  />
 
-              <Box p="6">
-                <Box display="flex" alignItems="baseline">
-                  <Badge borderRadius="full" px="2" colorScheme="teal">
-                    {item.price} €
-                  </Badge>
-                  <Box
-                    color="gray.500"
-                    fontWeight="semibold"
-                    letterSpacing="wide"
-                    fontSize="xs"
-                    textTransform="uppercase"
-                    ml="2"
-                  >
-                    {item.pageNumber} puslapių &bull; {item.language} kalba
+                  <Box p="6">
+                    <Box display="flex" alignItems="baseline">
+                      <Badge borderRadius="full" px="2" colorScheme="teal">
+                        {item.price} €
+                      </Badge>
+                      <Box
+                        color="gray.500"
+                        fontWeight="semibold"
+                        letterSpacing="wide"
+                        fontSize="xs"
+                        textTransform="uppercase"
+                        ml="2"
+                      >
+                        {item.pageNumber} puslapių &bull; {item.language} kalba
+                      </Box>
+                    </Box>
+
+                    <Box
+                      mt="1"
+                      fontWeight="semibold"
+                      as="h4"
+                      lineHeight="tight"
+                      noOfLines={1}
+                      textTransform={"uppercase"}
+                    >
+                      {item.name}
+                    </Box>
+                    {role === UserRole.Admin && (
+                      <>
+                        <Flex justify="flex-end">
+                          <DeleteIcon
+                            cursor={"pointer"}
+                            color={"red.500"}
+                            onClick={() => openModal(item.id)}
+                          />
+                        </Flex>
+                      </>
+                    )}
                   </Box>
                 </Box>
-
-                <Box
-                  mt="1"
-                  fontWeight="semibold"
-                  as="h4"
-                  lineHeight="tight"
-                  noOfLines={1}
-                  textTransform={"uppercase"}
-                >
-                  {item.name}
-                </Box>
-                {role === UserRole.Admin && (
-                  <>
-                    <Flex justify="flex-end">
-                      <DeleteIcon
-                        cursor={"pointer"}
-                        color={"red.500"}
-                        onClick={() => openModal(item.id)}
-                      />
-                    </Flex>
-                  </>
-                )}
-              </Box>
-            </Box>
-          );
-        })}
-        </Fade>
+          </Fade>
+              );
+            })}
       </Grid>
       <>
         <Modal isOpen={isOpen} onClose={onClose}>
