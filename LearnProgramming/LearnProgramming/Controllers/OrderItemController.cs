@@ -10,12 +10,10 @@ namespace LearnProgramming.API.Controllers
     [Route("api/order/{orderId}/orderitem")]
     public class OrderItemController : Controller
     {
-        private readonly IMapper _mapper;
         private readonly IOrderItemRep _orderItemRep;
 
-        public OrderItemController(IOrderItemRep orderItemRep, IMapper mapper)
+        public OrderItemController(IOrderItemRep orderItemRep)
         {
-            _mapper = mapper;
             _orderItemRep = orderItemRep;
         }
 

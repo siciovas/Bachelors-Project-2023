@@ -41,13 +41,12 @@ namespace LearnProgramming.API.Controllers
             var subTopic = await _subTopicsRep.Get(id);
             if (subTopic == null) return NotFound();
 
-            return new SubTopicDto
+            return Ok(new SubTopicDto
             {
                 Id = subTopic.Id,
                 SubTopicName = subTopic.SubTopicName,
 
-            };
-
+            });
         }
 
         [HttpPost]
