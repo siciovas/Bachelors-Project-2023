@@ -64,5 +64,42 @@ namespace LearnProgramming.Test
             Assert.Equal(orderItem.Name, result.First().Name);
             Assert.Equal(orderItem.Quantity, result.First().Quantity);
         }
+
+        [Fact]
+        public async void Create_OrderItems_ReturnsCorrectData()
+        {
+            var repo = CreateRepository();
+
+            var user = _fixture.Create<User>();
+
+            var product = _fixture.Create<Product>();
+
+            var order = _fixture.Build<Order>()
+                .With(x => x.UserId, user.Id)
+                .Without(x => x.User)
+                .Without(x => x.OrderItems)
+                .Create();
+
+            var orderItem = _fixture.Build<OrderItem>()
+                .With(x => x.OrderId, order.Id)
+                .With(x => x.ProductId, product.Id)
+                .Without(x => x.Order)
+                .Without(x => x.Product)
+                .CreateMany(1)
+                .ToList();
+
+            await _databaseContext.AddRangeAsync(user, product, order);
+            await _databaseContext.SaveChangesAsync();
+
+            await repo.Create(orderItem);
+
+            var expected = await _databaseContext.OrderItem.FirstOrDefaultAsync();
+
+            Assert.Equal(expected!.Id, orderItem[0].Id);
+            Assert.Equal(expected.Name, orderItem[0].Name);
+            Assert.Equal(expected.Price, orderItem[0].Price);
+            Assert.Equal(expected.Quantity, orderItem[0].Quantity);
+            Assert.Equal(expected.Photo, orderItem[0].Photo);
+        }
     }
 }
