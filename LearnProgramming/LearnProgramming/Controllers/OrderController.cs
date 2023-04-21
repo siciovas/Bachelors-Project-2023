@@ -14,11 +14,9 @@ namespace LearnProgramming.API.Controllers
     {
         private readonly IOrderRep _orderRep;
         private readonly IOrderItemRep _itemRep;
-        private readonly IMapper _mapper;
 
-        public OrderController(IOrderRep orderRep, IMapper mapper, IOrderItemRep itemRep)
+        public OrderController(IOrderRep orderRep, IOrderItemRep itemRep)
         {
-            _mapper = mapper;
             _orderRep = orderRep;
             _itemRep = itemRep;
         }

@@ -29,7 +29,7 @@ namespace LearnProgramming.Infrastructure.Repositories
             await _db.SaveChangesAsync();
         }
 
-        public async Task<Product> Get(int id)
+        public async Task<Product?> Get(int id)
         {
             return await _db.Product.FirstOrDefaultAsync(shop => shop.Id == id);
         }
