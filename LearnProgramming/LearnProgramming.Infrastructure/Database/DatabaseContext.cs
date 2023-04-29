@@ -15,7 +15,6 @@ namespace LearnProgramming.Infrastructure.Database
         public DbSet<Order> Order { get; set; }
         public DbSet<OrderItem> OrderItem { get; set; }
         public DbSet<ShippingInformation> ShippingInformation { get; set; }
-        public DbSet<Submission> Submission { get; set; }
         public DbSet<TeacherAndStudent> TeacherAndStudent { get; set; }
         public DbSet<ProgrammingTask> ProgrammingTasks { get; set; }
         public DbSet<ProgrammingTaskTest> ProgrammingTaskTests { get; set; }

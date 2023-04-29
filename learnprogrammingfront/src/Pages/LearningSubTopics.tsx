@@ -20,7 +20,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { LearningTopicTypes } from "../Types/LearningTopicsTypes";
 import { AddNewSubTopic } from "../Components/AddNewSubTopic";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import eventBus from "../Helpers/EventBus";
 import toast from "react-hot-toast";
@@ -159,7 +159,7 @@ const LearningSubTopics = () => {
         <Grid className="col-md-12">
           <Flex justifyContent={"center"}>
             <Box>
-              <Heading size={"lg"}>„{topic?.title}“ potemės</Heading>
+              <Heading fontFamily={"Roboto"} size={"lg"}>„{topic?.title}“ potemės</Heading>
             </Box>
           </Flex>
           {role === UserRole.Teacher && (
@@ -169,7 +169,8 @@ const LearningSubTopics = () => {
           )}
           {subtopics.map((subtopic) => {
             return (
-              <Box mt={3}>
+              <Flex justify={"center"}>
+              <Box mt={3} width={"50%"} >
                 <Flex flexDir={"column"}>
                   <Flex
                     justifyContent={"space-between"}
@@ -184,9 +185,10 @@ const LearningSubTopics = () => {
                       justifyContent={"space-between"}
                       width={"100%"}
                     >
-                      <Flex width="45%" align={"center"}>
+                      <Flex align={"center"} wordBreak={"break-all"}>
                         <Heading
                           position="relative"
+                          fontFamily={"Roboto"}
                           color="black"
                           fontWeight="semibold"
                           letterSpacing="wide"
@@ -228,23 +230,30 @@ const LearningSubTopics = () => {
                           letterSpacing="wide"
                           textTransform="uppercase"
                           display={{ base: "none", md: "block" }}
-                          mr={10}
+                          mr={5}
                         >
                           uždaviniai/ių: {subtopic.numberOfTasks}
                         </Box>
-                        {(role === UserRole.Teacher ||
-                          role === UserRole.Admin) && (
+                        {(role === UserRole.Teacher) && (
+                          <>
+                          <EditIcon 
+                           cursor="pointer"
+                           onClick={() => openModal(subtopic.id)}
+                           mr={5}
+                          />
                           <DeleteIcon
                             cursor="pointer"
                             onClick={() => openModal(subtopic.id)}
                             color="red.500"
                           />
+                          </>
                         )}
                       </Flex>
                     </Flex>
                   </Flex>
                 </Flex>
               </Box>
+              </Flex>
             );
           })}
         </Grid>

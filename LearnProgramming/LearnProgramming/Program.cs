@@ -77,7 +77,6 @@ builder.Services.AddTransient<IShoppingCartItemRep, ShoppingCartItemRepository>(
 builder.Services.AddTransient<IShippingInformationRep, ShippingInformationRepository>();
 builder.Services.AddTransient<IOrderRep, OrderRepository>();
 builder.Services.AddTransient<IOrderItemRep, OrderItemRepository>();
-builder.Services.AddTransient<ISubmissionRep, SubmissionRepository>();
 builder.Services.AddTransient<IProgrammingTaskRep, ProgrammingTaskRepository>();
 builder.Services.AddTransient<IStudentGradesRep, StudentGradesRepository>();
 

@@ -14,22 +14,6 @@ namespace LearnProgramming.Infrastructure.Repositories
         {
             _db = db;
         }
-
-        public async Task<List<LearningTopicsDto>> GetAll()
-        {
-            var learningTopics = await _db.LearningTopics
-                .Select(x => new LearningTopicsDto
-                {
-                    Id = x.Id,
-                    Title = x.Title,
-                    DifficultyInText = x.DifficultyInText,
-                    NumberOfSubTopics = _db.SubTopics.Count(y => y.LearningTopicId == x.Id),
-                    NumberOfAllTasks = _db.ProgrammingTasks.Count(y => y.LearningTopicId == x.Id)
-                })
-                .ToListAsync();
-
-            return learningTopics;
-        }
         public async Task<List<LearningTopicsDto>> GetAllByTeacher(Guid teacherId)
         {
             var learningTopics = await _db.LearningTopics

@@ -37,7 +37,7 @@ const GuestNavbar = () => {
     <Box
       px={4}
       width={"100%"}
-      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      backgroundColor={location.pathname === "/" ? "none" : "black"}
       zIndex={1}
       position={location.pathname === "/" ? "absolute" : "relative"}
     >

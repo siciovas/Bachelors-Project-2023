@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuDivider,
   MenuList,
-  Link,
   useDisclosure,
   Avatar,
   Stack,
@@ -16,7 +15,6 @@ import {
 } from "@chakra-ui/react";
 import { CloseIcon, HamburgerIcon } from "@chakra-ui/icons";
 import { useLocation, useNavigate } from "react-router-dom";
-import { Submissions } from "../../Pages/Submissions";
 import eventBus from "../../Helpers/EventBus";
 
 interface LinksProps {
@@ -25,7 +23,7 @@ interface LinksProps {
 }
 
 const LinksTeachers: LinksProps[] = [
-  { title: "Mano kursai", url: "/kursai" },
+  { title: "Mano temos", url: "/kursai" },
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
@@ -65,7 +63,7 @@ const TeacherNavbar = () => {
     <Box
       px={4}
       width={"100%"}
-      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      backgroundColor={location.pathname === "/" ? "none" : "black"}
       zIndex={1}
       position={location.pathname === "/" ? "absolute" : "relative"}
     >
@@ -110,9 +108,8 @@ const TeacherNavbar = () => {
               {link.title}
             </Button>
           ))}
-          <Submissions />
         </Flex>
-        <Flex alignItems={"center"} gap={2}>
+        <Flex alignItems={"center"} gap={2} mr={3}>
           <Box color={"white"} display={{ base: "none", xl: "block" }}>
             {" "}
             Naudojatės mokytojo prieiga
@@ -135,24 +132,21 @@ const TeacherNavbar = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar size={"md"} src={avatar} />
+              <Avatar size={"sm"} src={avatar} />
             </MenuButton>
             <MenuList>
               <MenuItem onClick={() => navigate("/paskyra")}>Paskyra</MenuItem>
               <MenuDivider />
               <MenuItem onClick={() => navigate("/manostudentai")}>
-                Mano studentai
+                Mano mokiniai
               </MenuItem>
               <MenuItem onClick={() => navigate("/studentuivertinimai")}>
-                Studentų įverčiai
+                Mokinių įverčiai
               </MenuItem>
               <MenuItem onClick={() => navigate("/studentusarasas")}>
-                Priskirti studentą
+                Priskirti mokinį
               </MenuItem>
               <MenuDivider />
-              <MenuItem onClick={(e) => navigate("/manoprasymai")}>
-                Mano prašymai
-              </MenuItem>
               <MenuItem onClick={(e) => navigate("/manouzsakymai")}>
                 Užsakymų istorija
               </MenuItem>
@@ -190,7 +184,6 @@ const TeacherNavbar = () => {
                 {link.title}{" "}
               </Button>
             ))}
-            <Submissions />
           </Stack>
         </Box>
       ) : null}

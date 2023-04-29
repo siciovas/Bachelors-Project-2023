@@ -71,13 +71,13 @@ const GetAllUsersForAdmin = () => {
   return (
     <Box p={4}>
       <Flex mb={8} justify="center">
-        <Heading size="lg">Vartotojų sąrašas</Heading>
+        <Heading size="lg" fontFamily={"Roboto"}>Vartotojų sąrašas</Heading>
       </Flex>
       <Flex justify={"center"} width={"25%"} margin={"auto"}>
         <InputGroup mb={4}>
           <InputLeftElement
             pointerEvents="none"
-            children={<Icon as={SearchIcon} color="white" />}
+            children={<Icon as={SearchIcon} color="black" />}
           />
           <Input
             type="text"

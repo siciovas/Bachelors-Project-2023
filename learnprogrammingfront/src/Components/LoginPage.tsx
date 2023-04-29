@@ -81,20 +81,7 @@ const LoginPage = () => {
                   }}
                 />
               </FormControl>
-              <Stack spacing={10}>
-                <Stack
-                  direction={{ base: "column", sm: "row" }}
-                  align={"start"}
-                  justify={"space-between"}
-                >
-                  <Checkbox>Prisiminti mane</Checkbox>
-                  <Link
-                    color={"blue.400"}
-                    onClick={() => navigate("/atkurimas")}
-                  >
-                    Pamiršai slaptažodį?
-                  </Link>
-                </Stack>
+              <Stack mt={5}>
                 <Button
                   type="submit"
                   bg={"green.500"}

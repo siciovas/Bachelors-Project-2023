@@ -112,13 +112,13 @@ const TeacherStudents = () => {
     <>
       <Box p={4}>
         <Flex mb={8} justify="center">
-          <Heading size="lg">Mano mokinių sąrašas</Heading>
+          <Heading size="lg" fontFamily={"Roboto"}>Mano mokinių sąrašas</Heading>
         </Flex>
         <Flex justify={"center"} width={"25%"} margin={"auto"}>
           <InputGroup mb={4}>
             <InputLeftElement
               pointerEvents="none"
-              children={<Icon as={SearchIcon} color="white" />}
+              children={<Icon as={SearchIcon} color="black" />}
             />
             <Input
               type="text"
@@ -180,7 +180,7 @@ const TeacherStudents = () => {
             <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>Ar tikrai norite pašalinti studentą iš savo sąrašo?</Text>
+              <Text >Ar tikrai norite pašalinti studentą iš savo sąrašo?</Text>
             </ModalBody>
 
             <ModalFooter>

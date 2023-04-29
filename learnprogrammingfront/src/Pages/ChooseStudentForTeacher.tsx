@@ -112,16 +112,17 @@ const ChooseStudentForTeacher = () => {
     <>
       <Box p={4}>
         <Flex mb={8} justify="center">
-          <Heading size="lg">Studentų sąrašas</Heading>
+          <Heading size="lg" fontFamily={"Roboto"}>Studentų sąrašas</Heading>
         </Flex>
         <Flex justify={"center"} width={"25%"} margin={"auto"}>
           <InputGroup mb={4}>
             <InputLeftElement
               pointerEvents="none"
-              children={<Icon as={SearchIcon} color="white" />}
+              children={<Icon as={SearchIcon} color="black" />}
             />
             <Input
               type="text"
+              fontFamily={"Roboto"}
               placeholder="Ieškokite pagal vardą ir pavardę"
               value={searchTerm}
               onChange={(event) => setSearchTerm(event.target.value)}
@@ -132,7 +133,7 @@ const ChooseStudentForTeacher = () => {
           <Table variant="striped">
             <Thead>
               <Tr>
-                <Th>Nuotrauka</Th>
+                <Th >Nuotrauka</Th>
                 <Th>Asmuo</Th>
                 <Th>El.Paštas</Th>
                 <Th>Miestas</Th>
@@ -170,7 +171,7 @@ const ChooseStudentForTeacher = () => {
                           bg: "green",
                         }}
                       >
-                        Priskirti studentą
+                        Priskirti mokinį
                       </Button>
                     ) : (
                       <Text>Užimtas</Text>

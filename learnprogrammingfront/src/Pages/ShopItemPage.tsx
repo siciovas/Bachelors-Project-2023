@@ -154,11 +154,11 @@ const ShopItemPage = () => {
               >
                 {items?.price}€
               </Badge>
-              <Box mt={5} pr={3}>
+              <Box mt={5} pr={3} >
                 {items?.description}
               </Box>
               <Box mt={5}>
-                <Text className="fw-bold">PAPILDOMA INFORMACIJA</Text>
+                <Text className="fw-bold" >PAPILDOMA INFORMACIJA</Text>
                 <Text>Kalba: {items?.language}</Text>
                 <Text>Puslapių skaičius: {items?.pageNumber}</Text>
                 <Text>Leidėjas: {items?.publisher}</Text>
@@ -173,7 +173,7 @@ const ShopItemPage = () => {
               role === UserRole.Teacher ||
               role === UserRole.Student) && (
               <>
-                <Flex ml={5} flexDirection={"row"} mt={5} gap={3}>
+                <Flex ml={5} flexDirection={"row"} gap={3}>
                   <Button
                     bg={"green.500"}
                     borderRadius={"50px 50px 50px 50px"}
@@ -189,8 +189,8 @@ const ShopItemPage = () => {
               </>
             )}
           </Box>
-          <Divider mt={3} />
-          <Heading mt={3} size={"lg"} textAlign={"center"}>
+          <Divider mt={10}/>
+          <Heading mt={3} size={"lg"} textAlign={"center"} fontFamily="Roboto">
             Rekomenduojame
           </Heading>
           <Grid

@@ -29,12 +29,7 @@ namespace LearnProgramming.API.Controllers
             var userId = Guid.Parse(User.FindFirstValue(ClaimTypes.Sid));
             List<LearningTopicsDto>? learningTopics;
 
-            if (User.IsInRole("Admin"))
-            {
-                learningTopics = await _learningTopicsRep.GetAll();
-            }
-
-            else if (User.IsInRole("Teacher"))
+            if (User.IsInRole("Teacher"))
             {
                 learningTopics = await _learningTopicsRep.GetAllByTeacher(userId);
             }
@@ -61,7 +56,7 @@ namespace LearnProgramming.API.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin,Teacher")]
+        [Authorize(Roles = "Teacher")]
         public async Task<ActionResult> Delete(int id)
         {
             var topics = await _learningTopicsRep.Get(id);

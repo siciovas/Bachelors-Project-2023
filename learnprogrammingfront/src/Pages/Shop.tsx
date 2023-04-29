@@ -146,7 +146,7 @@ const Shop = () => {
   return (
     <>
       <Flex mt={5} justify="center">
-        <Heading size="lg">El. Parduotuvė</Heading>
+        <Heading size="lg" fontFamily={"Roboto"}>El. Parduotuvė</Heading>
       </Flex>
       {role === UserRole.Admin && <AddNewShopItem AddShopItem={AddShopItem} />}
       <Grid

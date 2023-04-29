@@ -52,6 +52,7 @@ const AddNewLearningTopic = ({ AddLearningTopic }: Props) => {
           width="100%"
           height="100%"
           fontSize={"200%"}
+          bg={"whitesmoke"}
           color={"grey"}
           borderWidth="1px"
           borderRadius="lg"
