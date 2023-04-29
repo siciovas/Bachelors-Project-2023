@@ -77,38 +77,6 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async Task Test_GetAll()
-        {
-            var learningTopicsDto = _fixture.CreateMany<LearningTopicsDto>(2).ToList();
-            _learningTopicsRep.Setup(x => x.GetAll())
-                .ReturnsAsync(learningTopicsDto);
-
-            var userId = Guid.NewGuid();
-
-            var user = new ClaimsPrincipal(new ClaimsIdentity(
-                new Claim[]
-                {
-                    new Claim(ClaimTypes.Sid, userId.ToString()),
-                    new Claim(ClaimTypes.Role, "Admin")
-                }
-                ));
-
-            var controller = CreateController();
-            controller.ControllerContext = new ControllerContext();
-            controller.ControllerContext.HttpContext = new DefaultHttpContext { User = user };
-
-            var response = await controller.GetAll();
-
-            var requestResult = (OkObjectResult)response.Result!;
-
-            var objectResult = (List<LearningTopicsDto>)requestResult!.Value!;
-
-            _learningTopicsRep.Verify(x => x.GetAll(), Times.Once);
-            Assert.Equal(StatusCodes.Status200OK, requestResult.StatusCode);
-            Assert.Equal(2, objectResult.Count);
-        }
-
-        [Fact]
         public async Task Test_GetAllByTeacher()
         {
             var userId = Guid.NewGuid();

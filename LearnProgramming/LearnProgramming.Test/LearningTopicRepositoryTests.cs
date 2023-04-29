@@ -33,64 +33,6 @@ namespace LearnProgramming.Test
         }
 
         [Fact]
-        public async void GetAll_ExistingTopicWithoutSubtopicsAndTasks_ReturnsCorrectData()
-        {
-            var repo = CreateRepository();
-
-            var learningTopic = _fixture
-                .Build<LearningTopic>()
-                .Create();
-
-            await _databaseContext.AddAsync(learningTopic);
-            await _databaseContext.SaveChangesAsync();
-
-            var result = await repo.GetAll();
-
-            Assert.Single(result);
-            Assert.Equal(0, result[0].NumberOfSubTopics);
-            Assert.Equal(0, result[0].NumberOfAllTasks);
-            Assert.Equal(learningTopic.Title, result[0].Title);
-            Assert.Equal(learningTopic.DifficultyInText, result[0].DifficultyInText);
-            Assert.Equal(learningTopic.Id, result[0].Id);
-        }
-
-        [Fact]
-        public async void GetAll_ExistingTopicWithSubtopicsAndTasks_ReturnsCorrectData()
-        {
-            var repo = CreateRepository();
-
-            var learningTopic = _fixture
-                .Build<LearningTopic>()
-                .Create();
-
-            var subTopic = _fixture
-                .Build<SubTopic>()
-                .With(x => x.LearningTopicId, learningTopic.Id)
-                .Without(x => x.LearningTopic)
-                .Create();
-
-            var programmingTask = _fixture
-                .Build<ProgrammingTask>()
-                .With(x => x.SubTopicId, subTopic.Id)
-                .With(x => x.LearningTopicId, learningTopic.Id)
-                .Without(x => x.LearningTopic)
-                .Without(x => x.SubTopic)
-                .Create();      
-
-            await _databaseContext.AddRangeAsync(learningTopic, subTopic, programmingTask);
-            await _databaseContext.SaveChangesAsync();
-
-            var result = await repo.GetAll();
-
-            Assert.Single(result);
-            Assert.Equal(1, result[0].NumberOfSubTopics);
-            Assert.Equal(1, result[0].NumberOfAllTasks);
-            Assert.Equal(learningTopic.Title, result[0].Title);
-            Assert.Equal(learningTopic.DifficultyInText, result[0].DifficultyInText);
-            Assert.Equal(learningTopic.Id, result[0].Id);
-        }
-
-        [Fact]
         public async void GetAllByTeacher_ExistingTeacherTopicWithoutSubtopicsAndTasks_ReturnsCorrectData()
         {
             var repo = CreateRepository();

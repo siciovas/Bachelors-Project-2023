@@ -85,7 +85,7 @@ const StudentsMarksForTeacher = () => {
   return (
     <>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="lg">
+        <Heading mt={15} size="lg" fontFamily={"Roboto"}>
           Mokinių įverčiai
         </Heading>
       </Flex>
@@ -93,7 +93,7 @@ const StudentsMarksForTeacher = () => {
         <InputGroup mb={4}>
           <InputLeftElement
             pointerEvents="none"
-            children={<Icon as={SearchIcon} color="white" />}
+            children={<Icon as={SearchIcon} color="black" />}
           />
           <Input
             type="text"
@@ -148,10 +148,10 @@ const StudentsMarksForTeacher = () => {
               display={expandedIndex === index ? "block" : "none"}
             >
               <Box overflowX="auto" maxWidth="100%">
-                <Table variant="striped">
+                <Table>
                   <Thead>
                     <Tr>
-                      <Th>Kurso tema</Th>
+                      <Th>Tema</Th>
                       <Th>Potemė</Th>
                       <Th>Uždavinys</Th>
                       <Th>Pažymys (%)</Th>

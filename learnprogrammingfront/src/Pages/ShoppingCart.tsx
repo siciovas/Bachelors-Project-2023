@@ -230,9 +230,9 @@ const ShoppingCart = () => {
         <>
           <Steps
             activeStep={activeStep}
-            mt={3}
             maxW={{ base: "100%", md: "50%" }}
             m={{ base: "0", md: "auto" }}
+            mt={{ base: "0", md: "auto", lg: "10" }}
             ml={isMobile ? "none" : "25%"}
             colorScheme={"green"}
           >

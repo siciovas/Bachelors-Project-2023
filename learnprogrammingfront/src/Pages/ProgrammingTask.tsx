@@ -26,6 +26,7 @@ import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
 import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
 import { ProgrammingTaskTest } from "../Types/ProgrammingTaskTest";
+import { UserRole } from "../Constants/RolesConstants";
 
 interface ThemeType {
   value: string;
@@ -44,6 +45,7 @@ const ProgrammingTask = () => {
     useState<ProgrammingTaskTypes>();
   const [taskTests, setTaskTests] = useState<ProgrammingTaskTest[]>([]);
   const [grade, setGrade] = useState<number>();
+  const role = localStorage.getItem("role");
 
   const openModal = () => {
     onOpen();
@@ -125,15 +127,15 @@ const ProgrammingTask = () => {
         }
       })
     )
-      .then(() => {
+      .then(async() => {
         mark = (testsPassed / taskTests.length) * 100;
         setGrade(mark);
+        await postGrade(mark);
       })
       .catch((e) => {
         console.log(e);
         toast.error("Kodas neatitinka reikalavimų");
       });
-    await postGrade(mark);
   };
 
   const handleEditorChange = (value: any) => {
@@ -149,34 +151,34 @@ const ProgrammingTask = () => {
   }
 
   return (
-    <>
+    <Box mx={8} my={5}>
       <Flex>
-        <Heading size="sm" paddingRight={1}>
-          Kurso tema:
+        <Heading size="sm" paddingRight={1} fontFamily={"Roboto"}>
+          Tema:
         </Heading>
-        <Heading size="sm" fontWeight={"none"}>
+        <Heading size="sm" fontWeight={"none"} fontFamily={"Roboto"}>
           {taskInformation?.learningTopicName}
         </Heading>
       </Flex>
       <Flex>
-        <Heading size="sm" paddingRight={1}>
+        <Heading size="sm" paddingRight={1} fontFamily={"Roboto"}>
           Potemė:
         </Heading>
-        <Heading size="sm" fontWeight={"none"}>
+        <Heading size="sm" fontWeight={"none"} fontFamily={"Roboto"}>
           {taskInformation?.subTopicName}
         </Heading>
       </Flex>
       <Flex>
-        <Heading size="sm" paddingRight={1}>
+        <Heading size="sm" paddingRight={1} fontFamily={"Roboto"}>
           Uždavinys:
         </Heading>
-        <Heading size="sm" fontWeight={"none"}>
+        <Heading size="sm" fontWeight={"none"} fontFamily={"Roboto"}>
           {taskInformation?.name}
         </Heading>
       </Flex>
-      <Flex mt={5} width="100%">
+      <Flex mt={5} width="100%" >
         <Flex flexDirection={"column"} width="50%">
-          <Flex mt={5}>
+          <Flex mb={3}>
             <Button
               onClick={compile}
               bg={"green.500"}
@@ -187,6 +189,7 @@ const ProgrammingTask = () => {
             >
               Kompiliuoti
             </Button>
+            {(role === UserRole.Student) && (
             <Button
               onClick={openModal}
               bg={"orange.500"}
@@ -194,9 +197,11 @@ const ProgrammingTask = () => {
               _hover={{
                 bg: "orange.700",
               }}
+              ml={4}
             >
               Gauti įvertinimą
             </Button>
+            )}
           </Flex>
           <Editor
             height="50vh"
@@ -216,12 +221,12 @@ const ProgrammingTask = () => {
             id="output"
             value={value}
           />
-          <Box>Įvertis: {grade}%</Box>
+          <Box >Įvertis: {grade}%</Box>
         </Flex>
-        <Flex mt={5} mr={5} ml={20} flexDirection="column" w="50%">
-          <Heading size="sm">Užduoties aprašymas</Heading>
+        <Flex flexDirection="column" w="50%" ml={5} mt={5}>
+          <Heading size="sm" mb={3} fontFamily={"Roboto"}>Užduoties aprašymas</Heading>
           <Box
-            mt={5}
+            padding={2}
             border={"1px solid black"}
             height={"50vh"}
             bg={"white"}
@@ -268,7 +273,7 @@ const ProgrammingTask = () => {
           </ModalContent>
         </Modal>
       </>
-    </>
+    </Box>
   );
 };
 

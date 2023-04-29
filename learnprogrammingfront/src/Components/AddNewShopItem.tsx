@@ -108,6 +108,7 @@ const AddNewShopItem = ({ AddShopItem }: Props) => {
     <>
       <Flex justifyContent={"center"}>
         <Heading
+         fontFamily={"Roboto"}
           size={"sm"}
           background={"none"}
           fontWeight={"none"}

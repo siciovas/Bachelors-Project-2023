@@ -9,17 +9,14 @@ import { Shop } from "./Pages/Shop";
 import { Profile } from "./Components/Profile";
 import { RegisterPage } from "./Components/RegisterPage";
 import { ShoppingCart } from "./Pages/ShoppingCart";
-import { ForgotPassword } from "./Components/ForgotPassword";
 import { LoginPage } from "./Components/LoginPage";
 import { LearningSubTopics } from "./Pages/LearningSubTopics";
 import { ShopItemPage } from "./Pages/ShopItemPage";
 import { ProgrammingTasksList } from "./Pages/ProgrammingTasksList";
-import { GetMySubmissions } from "./Pages/GetMySubmissions";
 import eventBus from "./Helpers/EventBus";
 import { Unauthorized } from "./Constants/Auth";
 import { ProgrammingTask } from "./Pages/ProgrammingTask";
 import { AddNewProgrammingTask } from "./Components/AddNewProgrammingTask";
-import { GetAllSubmissionsForAdmin } from "./Pages/GetAllSubmissionsForAdmin";
 import { GetAllUsersForAdmin } from "./Pages/GetAllUsersForAdmin";
 import { StudentsMarksForTeacher } from "./Pages/StudentsMarksForTeacher";
 import { ChooseStudentForTeacher } from "./Pages/ChooseStudentForTeacher";
@@ -73,14 +70,11 @@ function App() {
           <Route path="/parduotuve" element={<Shop />} />
           <Route path="/paskyra" element={<Profile />} />
           <Route path="/krepselis" element={<ShoppingCart />} />
-          <Route path="/atkurimas" element={<ForgotPassword />} />
           <Route path="/potemes" element={<LearningSubTopics />} />
           <Route path="/preke" element={<ShopItemPage />} />
           <Route path="/uzduotys" element={<ProgrammingTasksList />} />
-          <Route path="/manoprasymai" element={<GetMySubmissions />} />
           <Route path="/uzduotis" element={<ProgrammingTask />} />
           <Route path="/kurtiuzduoti" element={<AddNewProgrammingTask />} />
-          <Route path="/prasymai" element={<GetAllSubmissionsForAdmin />} />
           <Route path="/visinariai" element={<GetAllUsersForAdmin />} />
           <Route
             path="/studentuivertinimai"

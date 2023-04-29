@@ -19,7 +19,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
-import { DeleteIcon } from "@chakra-ui/icons";
+import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
 
@@ -127,7 +127,7 @@ const ProgrammingTasksList = () => {
         <Grid className="col-md-12">
           <Flex justifyContent={"center"}>
             <Box>
-              <Heading textAlign={"center"} size={"lg"}>
+              <Heading fontFamily={"Roboto"} textAlign={"center"} size={"lg"}>
                 „{subTopic?.subTopicName}“ užduotys
               </Heading>
             </Box>
@@ -136,6 +136,7 @@ const ProgrammingTasksList = () => {
             <>
               <Flex justifyContent={"center"}>
                 <Heading
+                fontFamily={"Roboto"}
                   size={"sm"}
                   background={"none"}
                   fontWeight={"none"}
@@ -170,71 +171,80 @@ const ProgrammingTasksList = () => {
           )}
           {tasks.map((task) => {
             return (
-              <Box mt={3}>
-                <Flex flexDir={"column"}>
-                  <Flex
-                    justifyContent={"space-between"}
-                    border={"1px solid black"}
-                    padding={"10px"}
-                    borderRadius={"5px"}
-                    marginTop={"12px"}
-                    bg={"white"}
-                  >
+              <Flex justify={"center"}>
+                <Box mt={3} width={"50%"}>
+                  <Flex flexDir={"column"}>
                     <Flex
-                      alignItems={"center"}
                       justifyContent={"space-between"}
-                      width={"100%"}
+                      border={"1px solid black"}
+                      padding={"10px"}
+                      borderRadius={"5px"}
+                      marginTop={"12px"}
+                      bg={"white"}
                     >
-                      <Flex width="45%" align={"center"}>
-                        <Heading
-                          color="black"
-                          fontWeight="semibold"
-                          letterSpacing="wide"
-                          onClick={() => NavigateTo("/uzduotis", task.id)}
-                          textTransform="uppercase"
-                          size={"sm"}
-                          cursor={"pointer"}
-                          position="relative"
-                          _hover={{
-                            _after: {
-                              transform: "scaleX(1)",
-                              transformOrigin: "bottom left",
-                            },
-                          }}
-                          _after={{
-                            content: '" "',
-                            position: "absolute",
-                            width: "100%",
-                            height: "2px",
-                            bottom: 0,
-                            left: 0,
-                            backgroundColor: "black",
-                            transform: "scaleX(0)",
-                            transformOrigin: "bottom right",
-                            transition: "transform 0.25s ease-out",
-                          }}
-                        >
-                          {task.name}
-                        </Heading>
-                      </Flex>
                       <Flex
-                        justifyContent={"flex-end"}
-                        align={"center"}
-                        justify={"center"}
+                        alignItems={"center"}
+                        justifyContent={"space-between"}
+                        width={"100%"}
                       >
-                        {(role === UserRole.Teacher ||
-                          role === UserRole.Admin) && (
-                          <DeleteIcon
+                        <Flex align={"center"} wordBreak={"break-all"}>
+                          <Heading
+                          fontFamily={"Roboto"}
+                            color="black"
+                            fontWeight="semibold"
+                            letterSpacing="wide"
+                            onClick={() => NavigateTo("/uzduotis", task.id)}
+                            textTransform="uppercase"
+                            size={"sm"}
                             cursor={"pointer"}
-                            onClick={() => openModal(task.id)}
-                            color={"red.500"}
-                          />
-                        )}
+                            position="relative"
+                            _hover={{
+                              _after: {
+                                transform: "scaleX(1)",
+                                transformOrigin: "bottom left",
+                              },
+                            }}
+                            _after={{
+                              content: '" "',
+                              position: "absolute",
+                              width: "100%",
+                              height: "2px",
+                              bottom: 0,
+                              left: 0,
+                              backgroundColor: "black",
+                              transform: "scaleX(0)",
+                              transformOrigin: "bottom right",
+                              transition: "transform 0.25s ease-out",
+                            }}
+                          >
+                            {task.name}
+                          </Heading>
+                        </Flex>
+                        <Flex
+                          justifyContent={"flex-end"}
+                          align={"center"}
+                          justify={"center"}
+                        >
+                          {role === UserRole.Teacher && (
+                            <>
+                              <EditIcon
+                                cursor="pointer"
+                                onClick={() => openModal(task.id)}
+                                mr={5}
+                              />
+                              <DeleteIcon
+                                cursor={"pointer"}
+                                onClick={() => openModal(task.id)}
+                                color={"red.500"}
+                              />
+                            </>
+                          )}
+                        </Flex>
                       </Flex>
                     </Flex>
                   </Flex>
-                </Flex>
-              </Box>
+                </Box>
+              </Flex>
             );
           })}
         </Grid>

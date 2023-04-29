@@ -306,30 +306,6 @@ namespace LearnProgramming.Infrastructure.Migrations
                     b.ToTable("StudentGrades");
                 });
 
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Message")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<string>("Topic")
-                        .IsRequired()
-                        .HasColumnType("longtext");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("char(36)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Submission");
-                });
-
             modelBuilder.Entity("LearnProgramming.Domain.Entities.SubTopic", b =>
                 {
                     b.Property<int>("Id")
@@ -540,17 +516,6 @@ namespace LearnProgramming.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("ProgrammingTask");
-
-                    b.Navigation("User");
-                });
-
-            modelBuilder.Entity("LearnProgramming.Domain.Entities.Submission", b =>
-                {
-                    b.HasOne("LearnProgramming.Domain.Entities.User", "User")
-                        .WithMany()
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
 
                     b.Navigation("User");
                 });

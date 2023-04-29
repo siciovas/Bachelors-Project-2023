@@ -143,13 +143,13 @@ const LearningTopics = () => {
   }
 
   return (
-    <>
+    <Box mx={8} my={5}>
       <Flex mt={5} justify="center">
-        <Heading size="lg">Kursai</Heading>
+        <Heading fontFamily={"Roboto"} size="lg">Temos</Heading>
       </Flex>
       <Grid
-        margin={18}
-        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(3, 1fr)" }}
+        mt={5}
+        templateColumns={{ base: "repeat(2, 1fr)", md: "repeat(4, 1fr)" }}
         gap={6}
       >
         {role === UserRole.Teacher && (
@@ -181,7 +181,7 @@ const LearningTopics = () => {
                   borderRadius={"md"}
                   borderColor={"black"}
                 >
-                  <Box height={55}>
+                  <Box>
                     <Text
                       color={"black"}
                       textTransform="uppercase"
@@ -215,7 +215,7 @@ const LearningTopics = () => {
                       {topic.numberOfAllTasks} uždaviniai/ių
                     </Box>
                   </Box>
-                  {(role === UserRole.Teacher || role === UserRole.Admin) && (
+                  {(role === UserRole.Teacher) && (
                     <>
                       <Flex justify="flex-end" mt={4}>
                         <DeleteIcon
@@ -253,7 +253,7 @@ const LearningTopics = () => {
           </ModalFooter>
         </ModalContent>
       </Modal>
-    </>
+    </Box>
   );
 };
 

@@ -1,4 +1,4 @@
-import React, { ReactElement, useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   Button,
   Flex,
@@ -8,7 +8,6 @@ import {
   MenuItem,
   MenuDivider,
   MenuList,
-  Link,
   useDisclosure,
   Avatar,
   Stack,
@@ -24,7 +23,6 @@ interface LinksProps {
 }
 
 const LinksAdmin: LinksProps[] = [
-  { title: "Kursai", url: "/kursai" },
   { title: "El. Parduotuvė", url: "/parduotuve" },
 ];
 
@@ -67,7 +65,7 @@ const AdminNavbar = () => {
     <Box
       px={4}
       width={"100%"}
-      backgroundColor={location.pathname === "/" ? "none" : "#98aad0"}
+      backgroundColor={location.pathname === "/" ? "none" : "black"}
       zIndex={1}
       position={location.pathname === "/" ? "absolute" : "relative"}
     >
@@ -114,7 +112,7 @@ const AdminNavbar = () => {
             </Button>
           ))}
         </Flex>
-        <Flex alignItems={"center"} gap={2}>
+        <Flex alignItems={"center"} gap={2} mr={3}>
           <Box display={{base: 'none', xl: 'block'}} color={"white"}>Naudojatės administratoriaus prieiga</Box>
           <Button
             background={"none"}
@@ -134,11 +132,10 @@ const AdminNavbar = () => {
               cursor={"pointer"}
               minW={0}
             >
-              <Avatar size={"md"} src={avatar} />
+              <Avatar size={"sm"} src={avatar} />
             </MenuButton>
             <MenuList >
               <MenuItem onClick={() => navigate('/paskyra')}>Paskyra</MenuItem>
-              <MenuItem onClick={() => navigate('/prasymai')}>Gauti prašymai</MenuItem>
               <MenuDivider />
               <MenuItem onClick={() => navigate('/visinariai')} >Visi nariai</MenuItem>
               <MenuDivider />

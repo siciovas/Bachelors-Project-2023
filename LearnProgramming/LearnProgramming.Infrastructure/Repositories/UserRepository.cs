@@ -40,7 +40,7 @@ namespace LearnProgramming.Infrastructure.Repositories
 
                         break;
                 }
-
+                
                 return new UserStatusDto
                 {
                     Avatar = user.Avatar,
@@ -53,7 +53,7 @@ namespace LearnProgramming.Infrastructure.Repositories
                 };
             };
 
-            var users = await _db.Users.Include(u => u.Teacher).Select(user => student(user)).ToListAsync();
+            var users = await _db.Users.Include(u => u.Teacher).ThenInclude(u => u.Teacher).Select(user => student(user)).ToListAsync();
 
             return users;
         }

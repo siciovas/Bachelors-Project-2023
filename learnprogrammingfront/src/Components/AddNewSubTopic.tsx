@@ -41,6 +41,7 @@ const AddNewSubTopic = ({ AddLearningSubTopic }: Props) => {
     <>
       <Flex justifyContent={"center"}>
         <Heading
+        fontFamily={"Roboto"}
           size={"sm"}
           background={"none"}
           fontWeight={"none"}
