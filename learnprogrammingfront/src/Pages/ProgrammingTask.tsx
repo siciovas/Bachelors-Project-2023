@@ -27,6 +27,7 @@ import toast from "react-hot-toast";
 import DOMPurify from "dompurify";
 import { ProgrammingTaskTest } from "../Types/ProgrammingTaskTest";
 import { UserRole } from "../Constants/RolesConstants";
+import { isMobile } from "react-device-detect";
 
 interface ThemeType {
   value: string;
@@ -181,25 +182,25 @@ const ProgrammingTask = () => {
           <Flex mb={3}>
             <Button
               onClick={compile}
-              bg={"green.500"}
+              bg={"black"}
               textColor={"white"}
               _hover={{
-                bg: "green.700",
+                bg: "gray",
               }}
             >
-              Kompiliuoti
+              {isMobile ? "Kompil." : "Kompiliuoti"}
             </Button>
             {(role === UserRole.Student) && (
             <Button
               onClick={openModal}
-              bg={"orange.500"}
+              bg={"red.500"}
               textColor={"white"}
               _hover={{
-                bg: "orange.700",
+                bg: "red.700",
               }}
               ml={4}
             >
-              Gauti įvertinimą
+              {isMobile ? "Įvertis" : "Gauti įvertinimą"}
             </Button>
             )}
           </Flex>
@@ -258,12 +259,11 @@ const ProgrammingTask = () => {
 
             <ModalFooter>
               <Button
-                background="green.500"
+                background="black"
                 mr={3}
                 color={"white"}
-                borderRadius={"50px 50px 50px 50px"}
                 _hover={{
-                  bg: "green.700",
+                  bg: "gray",
                 }}
                 onClick={evaluate}
               >

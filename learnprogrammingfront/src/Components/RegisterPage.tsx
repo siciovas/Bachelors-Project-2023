@@ -88,7 +88,7 @@ const RegisterPage = () => {
     <Flex>
       <Stack spacing={8} mx={"auto"} maxW={"lg"} py={12} px={6}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"} textAlign={"center"}>
+          <Heading fontFamily={"Roboto"} fontSize={"4xl"} textAlign={"center"}>
             Registruokis
           </Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
@@ -196,13 +196,11 @@ const RegisterPage = () => {
               <Stack spacing={10} pt={2}>
                 <Button
                   mt={4}
-                  loadingText="Submitting"
                   type="submit"
-                  borderRadius={"50px 50px 50px 50px"}
-                  bg={"green.500"}
+                  bg={"black"}
                   color={"white"}
                   _hover={{
-                    bg: "green",
+                    bg: "gray",
                   }}
                 >
                   Registruotis

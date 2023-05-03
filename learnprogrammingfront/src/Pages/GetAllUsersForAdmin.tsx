@@ -87,6 +87,7 @@ const GetAllUsersForAdmin = () => {
           />
         </InputGroup>
       </Flex>
+      <Box overflowX="auto" maxWidth="100%">
       <Table variant="striped">
         <Thead>
           <Tr>
@@ -125,6 +126,7 @@ const GetAllUsersForAdmin = () => {
           ))}
         </Tbody>
       </Table>
+      </Box>
     </Box>
   );
 };

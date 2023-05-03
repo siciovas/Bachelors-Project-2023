@@ -4,7 +4,6 @@ import {
   FormControl,
   FormLabel,
   Input,
-  Checkbox,
   Stack,
   Link,
   Button,
@@ -55,7 +54,7 @@ const LoginPage = () => {
     <Flex mt={10}>
       <Stack spacing={8} mx={"auto"}>
         <Stack align={"center"}>
-          <Heading fontSize={"4xl"}>Prisijunk prie paskyros</Heading>
+          <Heading fontFamily={"Roboto"} fontSize={"4xl"}>Prisijunk prie paskyros</Heading>
           <Text fontSize={"lg"} color={"gray.600"}>
             ir nerk į programavimo pasaulį ✌️
           </Text>
@@ -84,11 +83,10 @@ const LoginPage = () => {
               <Stack mt={5}>
                 <Button
                   type="submit"
-                  bg={"green.500"}
+                  bg={"black"}
                   color={"white"}
-                  borderRadius={"50px 50px 50px 50px"}
                   _hover={{
-                    bg: "green",
+                    bg: "gray",
                   }}
                 >
                   Sign in

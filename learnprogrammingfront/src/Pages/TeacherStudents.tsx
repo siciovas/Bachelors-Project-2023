@@ -157,7 +157,6 @@ const TeacherStudents = () => {
                   <Td>
                     <Button
                       background="red.500"
-                      borderRadius={"50px 50px 50px 50px"}
                       onClick={() => openModal(user.id)}
                       color={"white"}
                       _hover={{

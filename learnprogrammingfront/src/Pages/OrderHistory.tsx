@@ -67,7 +67,7 @@ const OrderHistory = () => {
   return (
     <>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="lg">
+        <Heading mt={15} size="lg"  fontFamily={"Roboto"}>
           Mano užsakymų istorija
         </Heading>
       </Flex>

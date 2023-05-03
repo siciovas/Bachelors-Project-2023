@@ -217,7 +217,7 @@ const ShoppingCart = () => {
     <>
       {items?.shoppingCartItems.length === 0 ? (
         <>
-          <Heading textAlign={"center"} mt={5}>
+          <Heading textAlign={"center"} mt={5}  fontFamily={"Roboto"}>
             Tuščias krepšelis
           </Heading>
           <Image
@@ -275,7 +275,7 @@ const ShoppingCart = () => {
                                         borderRadius={5}
                                       />
                                     </Box>
-                                    <Heading size={"md"} fontWeight="normal">
+                                    <Heading size={"md"} fontWeight="normal" fontFamily={"Roboto"}>
                                       {item.product.name}
                                     </Heading>
                                   </Flex>
@@ -319,13 +319,13 @@ const ShoppingCart = () => {
                         <Flex flexDirection={"row"} gap={5}>
                           <Flex flexDirection={"column"}>
                             Suma
-                            <Heading size={"sm"}>
+                            <Heading size={"sm"}  fontFamily={"Roboto"}>
                               {items?.cartPrice.toFixed(2)} €
                             </Heading>
                           </Flex>
                           <Flex flexDirection={"column"}>
                             Pristatymas
-                            <Heading size={"sm"}>
+                            <Heading size={"sm"}  fontFamily={"Roboto"}>
                               {items?.shipping.toFixed(2)} €
                             </Heading>
                           </Flex>
@@ -334,7 +334,7 @@ const ShoppingCart = () => {
                       <Flex justifyContent={"end"}>
                         <Flex flexDirection={"column"} mr={7}>
                           Iš viso
-                          <Heading size={"sm"}>
+                          <Heading size={"sm"}  fontFamily={"Roboto"}>
                             {items?.totalPrice.toFixed(2)} €
                           </Heading>
                         </Flex>
@@ -352,7 +352,7 @@ const ShoppingCart = () => {
                         <Grid justifyContent={"center"}>
                           <Stack maxW={"lg"} px={6}>
                             <Stack align={"center"}>
-                              <Heading fontSize={"4xl"} textAlign={"center"}>
+                              <Heading fontSize={"4xl"} textAlign={"center"}  fontFamily={"Roboto"}>
                                 Asmens duomenys
                               </Heading>
                             </Stack>
@@ -428,7 +428,7 @@ const ShoppingCart = () => {
                         >
                           <Stack maxW={"lg"} px={6}>
                             <Stack align={"center"}>
-                              <Heading fontSize={"4xl"} textAlign={"center"}>
+                              <Heading fontSize={"4xl"} textAlign={"center"}  fontFamily={"Roboto"}> 
                                 Pristatymo duomenys
                               </Heading>
                             </Stack>
@@ -527,11 +527,10 @@ const ShoppingCart = () => {
                           type="submit"
                           justifyContent={"end"}
                           mr={5}
-                          borderRadius={"50px 50px 50px 50px"}
-                          bg={"green.500"}
+                          bg={"black"}
                           color={"white"}
                           _hover={{
-                            bg: "green",
+                            bg: "gray",
                           }}
                         >
                           Apmokėti
@@ -546,15 +545,15 @@ const ShoppingCart = () => {
           <Flex width="100%" justify="flex-end" mt={4} mb={{ base: 5, md: 0 }}>
             {activeStep !== 0 ? (
               <Button
-                justifyContent={"end"}
-                mr={3}
+                justifyContent={"center"}
+                mr={5}
                 onClick={prevStep}
-                borderRadius={"50px 50px 50px 50px"}
                 bg={"red.500"}
                 color={"white"}
                 _hover={{
                   bg: "red.700",
                 }}
+                width={100}
               >
                 Atgal
               </Button>
@@ -563,11 +562,10 @@ const ShoppingCart = () => {
                 justifyContent={"end"}
                 onClick={nextStep}
                 mr={10}
-                borderRadius={"50px 50px 50px 50px"}
-                bg={"green.500"}
+                bg={"black"}
                 color={"white"}
                 _hover={{
-                  bg: "green",
+                  bg: "gray",
                 }}
               >
                 Toliau

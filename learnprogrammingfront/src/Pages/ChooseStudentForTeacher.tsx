@@ -112,7 +112,7 @@ const ChooseStudentForTeacher = () => {
     <>
       <Box p={4}>
         <Flex mb={8} justify="center">
-          <Heading size="lg" fontFamily={"Roboto"}>Studentų sąrašas</Heading>
+          <Heading size="lg" fontFamily={"Roboto"}>Mokinių sąrašas</Heading>
         </Flex>
         <Flex justify={"center"} width={"25%"} margin={"auto"}>
           <InputGroup mb={4}>
@@ -164,11 +164,11 @@ const ChooseStudentForTeacher = () => {
                   <Td>
                     {user.isAssigned === false ? (
                       <Button
-                        colorScheme={"green"}
-                        borderRadius={"50px 50px 50px 50px"}
-                        onClick={() => openModal(user.id)}
+                      background="black"
+                      color={"white"}
+                      onClick={() => openModal(user.id)}
                         _hover={{
-                          bg: "green",
+                          bg: "gray",
                         }}
                       >
                         Priskirti mokinį
@@ -195,13 +195,12 @@ const ChooseStudentForTeacher = () => {
 
             <ModalFooter>
               <Button
-                background="green.500"
+                background="black"
                 color={"white"}
                 mr={3}
-                borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => assignStudent(e)}
                 _hover={{
-                  bg: "green",
+                  bg: "gray",
                 }}
               >
                 Priskirti
