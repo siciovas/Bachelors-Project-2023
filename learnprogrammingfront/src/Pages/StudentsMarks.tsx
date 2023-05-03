@@ -56,7 +56,7 @@ const StudentsMarks = () => {
   return (
     <>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="lg">
+        <Heading mt={15} size="lg"  fontFamily={"Roboto"}>
           Mano įverčiai
         </Heading>
       </Flex>
@@ -64,7 +64,7 @@ const StudentsMarks = () => {
         <Table variant="striped">
           <Thead>
             <Tr>
-              <Th>Kurso tema</Th>
+              <Th>Tema</Th>
               <Th>Potemė</Th>
               <Th>Uždavinys</Th>
               <Th>Pažymys (%)</Th>

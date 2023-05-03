@@ -272,8 +272,11 @@ const LearningSubTopics = () => {
               <Button
                 background="red.500"
                 mr={3}
-                borderRadius={"50px 50px 50px 50px"}
                 onClick={(e) => deleteLearningSubTopic(e, deletingId as number)}
+                color={"white"}
+                _hover={{
+                  bg: "red.700",
+                }}
               >
                 Ištrinti
               </Button>

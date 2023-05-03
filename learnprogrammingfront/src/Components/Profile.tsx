@@ -236,6 +236,7 @@ const Profile = () => {
               lineHeight={1.1}
               textAlign={"center"}
               fontSize={{ base: "2xl", sm: "3xl" }}
+              fontFamily={"Roboto"}
             >
               {`${name} ${surname}`}
             </Heading>
@@ -308,9 +309,8 @@ const Profile = () => {
               <Stack spacing={10} pt={5}>
                 <Button
                   type="submit"
-                  bg={"green.500"}
+                  bg={"black"}
                   color={"white"}
-                  borderRadius={"50px 50px 50px 50px"}
                   _hover={{
                     bg: "green",
                   }}
@@ -358,11 +358,10 @@ const Profile = () => {
                   <Button
                     type="submit"
                     loadingText="Submitting"
-                    borderRadius={"50px 50px 50px 50px"}
-                    bg={"green.500"}
+                    bg={"black"}
                     color={"white"}
                     _hover={{
-                      bg: "green",
+                      bg: "gray",
                     }}
                   >
                     Keisti slaptažodį
@@ -373,7 +372,6 @@ const Profile = () => {
             <Button
               onClick={openModal}
               background="red.500"
-              borderRadius={"50px 50px 50px 50px"}
               color={"white"}
               _hover={{
                 bg: "red.700",

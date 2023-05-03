@@ -98,11 +98,10 @@ const AddNewSubTopic = ({ AddLearningSubTopic }: Props) => {
             <ModalFooter>
               <Button
                 type="submit"
-                bg={"green.500"}
+                bg={"black"}
                 color={"white"}
-                borderRadius={"50px 50px 50px 50px"}
                 _hover={{
-                  bg: "green",
+                  bg: "gray",
                 }}
               >
                 Pateikti

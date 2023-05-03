@@ -60,7 +60,7 @@ const PayseraSuccessfully = () => {
   return (
     <>
       <Flex justify={"center"} align={"center"} mt={10}>
-        <Heading size={"md"}>Užsakymas patvirtintas!</Heading>
+        <Heading size={"md"}  fontFamily={"Roboto"}>Užsakymas patvirtintas!</Heading>
       </Flex>
       <Box className="wrapper">
         {" "}
@@ -85,7 +85,7 @@ const PayseraSuccessfully = () => {
         </svg>
       </Box>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="md">
+        <Heading mt={15} size="md"  fontFamily={"Roboto"}>
           Užsakymas
         </Heading>
       </Flex>

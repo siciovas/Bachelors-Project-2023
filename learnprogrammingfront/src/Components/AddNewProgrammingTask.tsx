@@ -138,7 +138,7 @@ const AddNewProgrammingTask = () => {
   return (
     <>
       <Flex justify={"center"}>
-        <Heading mt={4} size={"lg"}>
+        <Heading mt={4} size={"lg"}  fontFamily={"Roboto"}>
           Naujos užduoties kūrimas
         </Heading>
       </Flex>
@@ -266,12 +266,12 @@ const AddNewProgrammingTask = () => {
         <Flex mt={5} justify={"center"}>
           <Button
             type="submit"
-            bg={"green.500"}
-            borderRadius={"50px 50px 50px 50px"}
+            bg={"black"}
             color={"white"}
             _hover={{
-              bg: "green",
+              bg: "gray",
             }}
+            mb={5}
           >
             Sukurti
           </Button>

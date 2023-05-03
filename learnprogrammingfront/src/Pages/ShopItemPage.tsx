@@ -175,12 +175,11 @@ const ShopItemPage = () => {
               <>
                 <Flex ml={5} flexDirection={"row"} gap={3}>
                   <Button
-                    bg={"green.500"}
-                    borderRadius={"50px 50px 50px 50px"}
+                    bg={"black"}
                     onClick={(e) => postToShoppingCart(e)}
                     color={"white"}
                     _hover={{
-                      bg: "green",
+                      bg: "gray",
                     }}
                   >
                     Į KREPŠELĮ

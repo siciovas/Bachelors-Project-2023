@@ -62,6 +62,7 @@ const HomePage = () => {
                 transform="translate(0, -50%)"
               >
                 <Heading
+                 fontFamily={"Roboto"}
                   textColor={"white"}
                   fontSize={{ base: "3xl", md: "4xl", lg: "5xl" }}
                 >
