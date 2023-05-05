@@ -312,7 +312,7 @@ const Profile = () => {
                   bg={"black"}
                   color={"white"}
                   _hover={{
-                    bg: "green",
+                    bg: "gray",
                   }}
                 >
                   Atnaujinti profilį

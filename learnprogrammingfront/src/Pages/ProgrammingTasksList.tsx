@@ -19,7 +19,7 @@ import {
 import { useLocation, useNavigate } from "react-router-dom";
 import { LearningSubTopicsType } from "../Types/LearningSubTopicsType";
 import { ProgrammingTaskTypes } from "../Types/ProgrammingTaskTypes";
-import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
+import { DeleteIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import toast from "react-hot-toast";
 
@@ -227,11 +227,6 @@ const ProgrammingTasksList = () => {
                         >
                           {role === UserRole.Teacher && (
                             <>
-                              <EditIcon
-                                cursor="pointer"
-                                onClick={() => openModal(task.id)}
-                                mr={5}
-                              />
                               <DeleteIcon
                                 cursor={"pointer"}
                                 onClick={() => openModal(task.id)}

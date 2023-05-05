@@ -143,7 +143,7 @@ const ShopItemPage = () => {
           <Box className="col-md-6">
             <Box className="p-3 right-side">
               <Box className="d-flex justify-content-between align-items-center">
-                <Heading>{items?.name}</Heading>
+                <Heading textTransform="uppercase">{items?.name}</Heading>
               </Box>
               <Badge
                 mt={5}
@@ -154,11 +154,11 @@ const ShopItemPage = () => {
               >
                 {items?.price}€
               </Badge>
-              <Box mt={5} pr={3} >
+              <Box mt={5} pr={3}>
                 {items?.description}
               </Box>
               <Box mt={5}>
-                <Text className="fw-bold" >PAPILDOMA INFORMACIJA</Text>
+                <Text className="fw-bold">PAPILDOMA INFORMACIJA</Text>
                 <Text>Kalba: {items?.language}</Text>
                 <Text>Puslapių skaičius: {items?.pageNumber}</Text>
                 <Text>Leidėjas: {items?.publisher}</Text>
@@ -188,7 +188,7 @@ const ShopItemPage = () => {
               </>
             )}
           </Box>
-          <Divider mt={10}/>
+          <Divider mt={10} />
           <Heading mt={3} size={"lg"} textAlign={"center"} fontFamily="Roboto">
             Rekomenduojame
           </Heading>

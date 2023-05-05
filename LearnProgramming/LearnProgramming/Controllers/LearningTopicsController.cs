@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using LearnProgramming.Core.Dto;
 using LearnProgramming.Core.Dto.DtoPost;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using Microsoft.AspNetCore.Authorization;
@@ -67,10 +68,10 @@ namespace LearnProgramming.API.Controllers
             return NoContent();
         }
 
-        [HttpPut]
+        [HttpPut("{id}")]
         [Authorize(Roles = "Teacher")]
 
-        public async Task<ActionResult<LearningTopicsDto>> Update(LearningTopicsDto learningTopics, int id) 
+        public async Task<ActionResult<LearningTopicUpdateDto>> Update(LearningTopicUpdateDto learningTopics, int id) 
         {
 
             await _learningTopicsRep.Update(learningTopics, id);

@@ -72,7 +72,7 @@ const LoginPage = () => {
                 />
               </FormControl>
               <FormControl id="password">
-                <FormLabel>Password</FormLabel>
+                <FormLabel>Slaptažodis</FormLabel>
                 <Input
                   type="password"
                   onChange={(e) => {
@@ -89,7 +89,7 @@ const LoginPage = () => {
                     bg: "gray",
                   }}
                 >
-                  Sign in
+                  Prisijungti
                 </Button>
               </Stack>
               <Stack pt={6}>

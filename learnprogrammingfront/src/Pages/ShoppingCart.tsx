@@ -234,7 +234,7 @@ const ShoppingCart = () => {
             m={{ base: "0", md: "auto" }}
             mt={{ base: "0", md: "auto", lg: "10" }}
             ml={isMobile ? "none" : "25%"}
-            colorScheme={"green"}
+            colorScheme={"gray"}
           >
             {steps.map(({ label, description, icon }, index) => (
               <Step

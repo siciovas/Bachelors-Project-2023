@@ -1,4 +1,5 @@
 ﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Core.Interfaces;
 using LearnProgramming.Domain.Entities;
 using LearnProgramming.Infrastructure.Database;
@@ -76,7 +77,7 @@ namespace LearnProgramming.Infrastructure.Repositories
         }
 
 
-        public async Task<LearningTopic> Update(LearningTopicsDto learningTopics, int id)
+        public async Task<LearningTopic> Update(LearningTopicUpdateDto learningTopics, int id)
         {
             var topic = await _db.LearningTopics
                 .AsTracking()

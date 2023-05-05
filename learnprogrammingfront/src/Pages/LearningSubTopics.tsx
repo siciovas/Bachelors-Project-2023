@@ -24,6 +24,7 @@ import { DeleteIcon, EditIcon } from "@chakra-ui/icons";
 import { UserRole } from "../Constants/RolesConstants";
 import eventBus from "../Helpers/EventBus";
 import toast from "react-hot-toast";
+import { EditChosenSubTopic } from "../Components/EditChosenSubTopic";
 
 const LearningSubTopics = () => {
   const navigate = useNavigate();
@@ -88,6 +89,35 @@ const LearningSubTopics = () => {
   useEffect(() => {
     getLearningSubTopics();
   }, [isLoading]);
+
+  const EditSubTopic = useCallback(
+    async (
+      e: FormEvent<HTMLFormElement>,
+      subTopicName: string,
+      subTopicId: number
+    ): Promise<void> => {
+      e.preventDefault();
+      const response = await fetch(`https://localhost:7266/api/learningtopic/${state.learningTopicId}/subtopic/${subTopicId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          subTopicName,
+        }),
+      });
+      if (response.status === 401) {
+        eventBus.dispatch("logOut", "");
+      } else if (response.status === 200) {
+        setIsLoading(true);
+        toast.success("Potemė atnaujinta!");
+      } else {
+        toast.error("Nepavyko!");
+      }
+    },
+    []
+  );
 
   const deleteLearningSubTopic = async (
     e: React.MouseEvent<HTMLButtonElement, MouseEvent>,
@@ -236,11 +266,11 @@ const LearningSubTopics = () => {
                         </Box>
                         {(role === UserRole.Teacher) && (
                           <>
-                          <EditIcon 
-                           cursor="pointer"
-                           onClick={() => openModal(subtopic.id)}
-                           mr={5}
-                          />
+                          <EditChosenSubTopic
+                          EditSubTopic={EditSubTopic}
+                          TopicId={state.learningTopicId}
+                          SubTopicId={subtopic.id}
+                        />
                           <DeleteIcon
                             cursor="pointer"
                             onClick={() => openModal(subtopic.id)}
