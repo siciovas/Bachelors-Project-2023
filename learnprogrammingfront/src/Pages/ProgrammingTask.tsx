@@ -119,24 +119,29 @@ const ProgrammingTask = () => {
   const evaluate = async () => {
     var testsPassed = 0;
     var mark = 0;
-    await Promise.all(
-      taskTests?.map(async (test) => {
-        const result = await runTest(code, test.input);
-        console.log(result);
-        if (result.toString().trim() === test.output.toString().trim()) {
+    var error = false;
+    for (var i = 0; i < taskTests.length; i++) {
+      try {
+        const result = await runTest(code, taskTests[i].input);
+        console.log(result.toString().replace(/\s+/g, ''));
+        const equal = result.toString().replace(/\s+/g, '') === taskTests[i].output.toString().replace(/\s+/g, '');
+        console.log(taskTests[i].output.toString().replace(/\s+/g, ''));
+        if (equal) {
+          console.log("+++");
           testsPassed++;
         }
-      })
-    )
-      .then(async() => {
-        mark = (testsPassed / taskTests.length) * 100;
-        setGrade(mark);
-        await postGrade(mark);
-      })
-      .catch((e) => {
-        console.log(e);
+      }
+      catch {
+        error = true;
         toast.error("Kodas neatitinka reikalavimų");
-      });
+        break;
+      }
+    }
+    if (!error) {
+      mark = (testsPassed / taskTests.length) * 100;
+      setGrade(mark);
+      await postGrade(mark);
+    }
   };
 
   const handleEditorChange = (value: any) => {
@@ -191,17 +196,17 @@ const ProgrammingTask = () => {
               {isMobile ? "Kompil." : "Kompiliuoti"}
             </Button>
             {(role === UserRole.Student) && (
-            <Button
-              onClick={openModal}
-              bg={"red.500"}
-              textColor={"white"}
-              _hover={{
-                bg: "red.700",
-              }}
-              ml={4}
-            >
-              {isMobile ? "Įvertis" : "Gauti įvertinimą"}
-            </Button>
+              <Button
+                onClick={openModal}
+                bg={"red.500"}
+                textColor={"white"}
+                _hover={{
+                  bg: "red.700",
+                }}
+                ml={4}
+              >
+                {isMobile ? "Įvertis" : "Gauti įvertinimą"}
+              </Button>
             )}
           </Flex>
           <Editor
@@ -213,16 +218,12 @@ const ProgrammingTask = () => {
             value={taskInformation?.programmingCode}
           />
           Išvestis
-          <Input
-            disabled
-            _disabled={{
-              backgroundColor: "#1b2b34",
-              textColor: "white",
-            }}
+          <Text
             id="output"
-            value={value}
-          />
-          <Box >Įvertis: {grade}%</Box>
+            backgroundColor="#1b2b34"
+            textColor="white"
+          >{value}</Text>
+          <Box >Įvertis: {grade?.toFixed(2)}%</Box>
         </Flex>
         <Flex flexDirection="column" w="50%" ml={5} mt={5}>
           <Heading size="sm" mb={3} fontFamily={"Roboto"}>Užduoties aprašymas</Heading>
@@ -248,12 +249,7 @@ const ProgrammingTask = () => {
             <ModalCloseButton />
             <ModalBody>
               <Text>
-                Ar tikrai norite išsaugoti programos kodą ir gauti siūlomą
-                įvertį? Atlikus šį veiksmą, grįžti atgal nebebus galima.
-              </Text>
-              <Text mt={3} textColor="green.500">
-                Norėdami pateikti programos kodą testavimui - paspauskite
-                mygtuką "Įvertinti!"
+                Ar tikrai pateikti parašytą kodą testavimui?
               </Text>
             </ModalBody>
 

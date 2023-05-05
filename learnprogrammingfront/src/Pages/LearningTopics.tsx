@@ -30,6 +30,7 @@ import toast from "react-hot-toast";
 import { GetRandomPhotos } from "../Helpers/GetRandomPhotos";
 // @ts-ignore
 import Fade from "react-reveal/Fade";
+import { EditChosenLearningTopic } from "../Components/EditChosenLearningTopic";
 
 const LearningTopics = () => {
   const navigate = useNavigate();
@@ -77,6 +78,37 @@ const LearningTopics = () => {
       } else if (response.status === 201) {
         setIsLoading(true);
         toast.success("Tema pridėta!");
+      } else {
+        toast.error("Nepavyko!");
+      }
+    },
+    []
+  );
+
+  const EditLearningTopic = useCallback(
+    async (
+      e: FormEvent<HTMLFormElement>,
+      title: string,
+      difficultyInText: Difficulty,
+      learningTopicId: number
+    ): Promise<void> => {
+      e.preventDefault();
+      const response = await fetch(`https://localhost:7266/api/learningtopic/${learningTopicId}`, {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        method: "PUT",
+        body: JSON.stringify({
+          title,
+          difficultyInText,
+        }),
+      });
+      if (response.status === 401) {
+        eventBus.dispatch("logOut", "");
+      } else if (response.status === 200) {
+        setIsLoading(true);
+        toast.success("Tema atnaujinta!");
       } else {
         toast.error("Nepavyko!");
       }
@@ -145,7 +177,9 @@ const LearningTopics = () => {
   return (
     <Box mx={8} my={5}>
       <Flex mt={5} justify="center">
-        <Heading fontFamily={"Roboto"} size="lg">Temos</Heading>
+        <Heading fontFamily={"Roboto"} size="lg">
+          Temos
+        </Heading>
       </Flex>
       <Grid
         mt={5}
@@ -215,9 +249,13 @@ const LearningTopics = () => {
                       {topic.numberOfAllTasks} uždaviniai/ių
                     </Box>
                   </Box>
-                  {(role === UserRole.Teacher) && (
+                  {role === UserRole.Teacher && (
                     <>
-                      <Flex justify="flex-end" mt={4}>
+                      <Flex justify="flex-end" mt={4}>    
+                        <EditChosenLearningTopic
+                          EditLearningTopic={EditLearningTopic}
+                          TopicId={topic.id}
+                        />
                         <DeleteIcon
                           cursor={"pointer"}
                           color={"red.500"}

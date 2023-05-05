@@ -1,4 +1,5 @@
 ﻿using LearnProgramming.Core.Dto;
+using LearnProgramming.Core.Dto.DtoUpdate;
 using LearnProgramming.Domain.Entities;
 
 namespace LearnProgramming.Core.Interfaces
@@ -9,7 +10,7 @@ namespace LearnProgramming.Core.Interfaces
         Task<List<LearningTopicsDto>> GetAllByStudent(Guid studentId);
         Task<LearningTopic> Get(int id);
         Task<LearningTopic> Create(LearningTopic learningTopics);
-        Task<LearningTopic> Update(LearningTopicsDto learningTopics, int id);
+        Task<LearningTopic> Update(LearningTopicUpdateDto learningTopics, int id);
         Task Delete(LearningTopic learningTopics);
     }
 }

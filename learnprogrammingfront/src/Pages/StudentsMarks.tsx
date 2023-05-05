@@ -56,11 +56,11 @@ const StudentsMarks = () => {
   return (
     <>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="lg"  fontFamily={"Roboto"}>
+        <Heading mt={5} size="lg"  fontFamily={"Roboto"}>
           Mano įverčiai
         </Heading>
       </Flex>
-      <Box overflowX="auto" maxWidth="100%">
+      <Box overflowX="auto" maxWidth="100%" mt={5}>
         <Table variant="striped">
           <Thead>
             <Tr>

@@ -1,9 +1,9 @@
 /* eslint-disable no-undef */
 var testCase;
-var testResult;
+var testResult = "";
 export const outf = (text) => {
   var mypre = document.getElementById("output");
-  mypre.value = mypre.innerHTML + text;
+  mypre.value = mypre.value + text;
 };
 
 function stdinInput(prompt) {
@@ -13,10 +13,7 @@ function stdinInput(prompt) {
 }
 
 function stdoutOutput(text) {
-  return new Promise((resolve, reject) => {
-    resolve(text);
-    testResult = text;
-  });
+    testResult = testResult + text;
 }
 
 function callPrompt(args) {
@@ -24,6 +21,8 @@ function callPrompt(args) {
 }
 
 export const run = async (code) => {
+  var mypre = document.getElementById("output");
+  mypre.value = "";
   Sk.pre = "output";
   Sk.configure({
     inputfun: callPrompt,
@@ -43,6 +42,7 @@ export const run = async (code) => {
 };
 
 export const runTest = async (code, test) => {
+  testResult = "";
   testCase = test;
   Sk.configure({
     inputfun: stdinInput,
