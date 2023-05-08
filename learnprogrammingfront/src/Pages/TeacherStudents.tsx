@@ -179,7 +179,7 @@ const TeacherStudents = () => {
             <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text >Ar tikrai norite pašalinti studentą iš savo sąrašo?</Text>
+              <Text >Ar tikrai norite pašalinti mokinį iš savo sąrašo?</Text>
             </ModalBody>
 
             <ModalFooter>

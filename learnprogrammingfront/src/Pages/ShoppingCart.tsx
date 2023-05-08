@@ -275,7 +275,7 @@ const ShoppingCart = () => {
                                         borderRadius={5}
                                       />
                                     </Box>
-                                    <Heading size={"md"} fontWeight="normal" fontFamily={"Roboto"}>
+                                    <Heading size={"md"} fontWeight="normal" fontFamily={"Roboto"} textTransform="uppercase" >
                                       {item.product.name}
                                     </Heading>
                                   </Flex>
