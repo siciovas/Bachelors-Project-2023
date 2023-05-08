@@ -211,7 +211,6 @@ const LearningTopics = () => {
                 ></Flex>
                 <Box
                   p="6"
-                  borderWidth="1px 0px 0px 0px"
                   borderRadius={"md"}
                   borderColor={"black"}
                 >

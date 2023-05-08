@@ -80,7 +80,15 @@ const RegisterPage = () => {
       toast.success("Registracija sėkminga!");
       navigate("/prisijungimas");
     } else {
-      toast.error(data.message);
+      console.log(data.message)
+      if(data.message)
+      {
+        toast.error(data.message);
+      }
+      else
+      {
+        toast.error(Object.values(data.errors)[0] as any)
+      }
     }
   };
 

@@ -112,7 +112,7 @@ const ProgrammingTask = () => {
       })
       .catch((result) => {
         toast.error("Kode yra klaidų. Klaidos informacija išvesties eilutėje!");
-        setValue(result);
+        setValue(result.toString());
       });
   };
 
@@ -222,6 +222,7 @@ const ProgrammingTask = () => {
             id="output"
             backgroundColor="#1b2b34"
             textColor="white"
+            minH={"25px"}
           >{value}</Text>
           <Box >Įvertis: {grade?.toFixed(2)}%</Box>
         </Flex>

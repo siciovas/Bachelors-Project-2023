@@ -190,7 +190,7 @@ const ChooseStudentForTeacher = () => {
             <ModalHeader>Perspėjimas!</ModalHeader>
             <ModalCloseButton />
             <ModalBody>
-              <Text>Ar tikrai norite priskirti studentą į savo komandą?</Text>
+              <Text>Ar tikrai norite priskirti mokinį į savo komandą?</Text>
             </ModalBody>
 
             <ModalFooter>
