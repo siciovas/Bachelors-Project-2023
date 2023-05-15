@@ -93,7 +93,7 @@ const TeacherStudents = () => {
 
     if (response.status === 204) {
       setIsLoading(true);
-      toast.success("Studentas pašalintas!");
+      toast.success("Mokinys pašalintas!");
       onClose();
     } else {
       toast.error("Nepavyko pašalinti!");

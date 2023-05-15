@@ -85,7 +85,7 @@ const StudentsMarksForTeacher = () => {
   return (
     <>
       <Flex justifyContent={"center"}>
-        <Heading mt={15} size="lg" fontFamily={"Roboto"}>
+        <Heading mt={5} size="lg" fontFamily={"Roboto"}>
           Mokinių įverčiai
         </Heading>
       </Flex>
