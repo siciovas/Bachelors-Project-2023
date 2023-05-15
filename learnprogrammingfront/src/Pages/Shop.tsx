@@ -128,7 +128,7 @@ const Shop = () => {
 
     if (response.status === 204) {
       setIsLoading(true);
-      toast.success("Tema ištrinta!");
+      toast.success("Prekė ištrinta!");
       onClose();
     } else {
       toast.error("Nepavyko ištrinti!");

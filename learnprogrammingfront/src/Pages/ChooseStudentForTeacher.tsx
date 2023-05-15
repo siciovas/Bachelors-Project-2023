@@ -94,7 +94,7 @@ const ChooseStudentForTeacher = () => {
     }
     if (response.status === 200) {
       setIsLoading(true);
-      toast.success("Studentas priskirtas!");
+      toast.success("Mokinys priskirtas!");
       onClose();
     } else {
       toast.error("Nepavyko!");
